@@ -1,5 +1,5 @@
 {
-    "name": "ngframer/ngframer.php.querybuilder",
+    "name": "ngframer/ngframer.php.sqlbuilder",
     "description": "Build all the SQL queries using PHP.",
     "license": "MIT",
     "autoload": {
