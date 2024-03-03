@@ -1,0 +1,21 @@
+{
+    "name": "ngframer/ngframer.php.querybuilder",
+    "description": "Build all the SQL queries using PHP.",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "NGFramer\\NGFramerPHPSQLBuilder\\": "/"
+        }
+    },
+    "authors": [
+        {
+            "name": "NG Framer",
+            "homepage": "https://github.com/ngframer"
+        },
+        {
+            "name": "Kishor Neupane",
+            "homepage": "https://github.com/neupkishor"
+        }
+    ],
+    "require": {}
+}
