@@ -1,7 +1,6 @@
 # SQL Builder, by NGFramer
 
 NGFramer SQL Builder is a simple PHP-based SQL query generator developed by NGFramer, NeupGroup. It allows users to dynamically create SQL queries based on specified conditions through a user-friendly simple functions.
-You might be looking for 
 
 ## Installation
 
