@@ -1,22 +1,22 @@
 <?php
 
-namespace NGFramer\NGFramerPHPSQLBuilder
+namespace NGFramer\NGFramerPHPSQLBuilder;
 
 Class Query
 {
     // Variable to carry the name of the table.
-    $this->tableName = null;
+    private $tableName = null;
 
     // Function to get and set the tableName;
-    public function table(string $tableName)
+    public function table(string $tableName): void
     {
         \NGFramer\NGFramerPHPSQLBuilder\datamanipulation\Table::setTableName($tableName);
-        return \NGFramer\NGFramerPHPSQLBuilder\datamanipulation\Table::getTableName();
+        $this->tableName = \NGFramer\NGFramerPHPSQLBuilder\datamanipulation\Table::getTableName();
     }
 
-    public function select(string ...$fields = null)
+    public function select(string ...$fields)
     {
         $tableName = $this->tableName;
-        \NGFramer\NGFramerPHPSQLBuilder\datamanipulation\Select::build($tableName, $fields = null)
+        \NGFramer\NGFramerPHPSQLBuilder\datamanipulation\Select::build($tableName, $fields);
     }
 }
