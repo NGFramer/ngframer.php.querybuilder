@@ -22,7 +22,7 @@ Class Query
     }
 
     // More utilities functions for the class.
-    public function accessbindParametersIndex(): int
+    public function accessBindParametersIndex(): int
     {
         // Returns the number of binding parameters that have been stored.
         return count($this->bindParameters);
@@ -30,7 +30,7 @@ Class Query
 
     public function updateBindParameters(string $key, string $value){
         if (array_key_exists($key, $this->bindParameters)){
-            throw new Exception("Something unexpected happened. Repeated bindParameters Key.");
+            throw new \Exception("Something unexpected happened. Repeated bindParameters Key.");
         }else{
             $this->bindParameters[$key] = $value;
         }
