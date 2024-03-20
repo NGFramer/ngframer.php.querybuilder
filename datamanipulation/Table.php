@@ -6,7 +6,7 @@ namespace NGFramer\NGFramerPHPSQLBuilder\datamanipulation;
 Class Table {
     private static $tableName = null;
 
-    public function getTableName(): string
+    public static function getTableName(): string
     {
         return self::$tableName;
     }
