@@ -2,9 +2,9 @@
 
 namespace NGFramer\NGFramerPHPSQLBuilder\datamanipulation;
 
-// Non functional class. Only set's and get's the table name.
+// Non-functional class. Only set's and gets the table name.
 Class Table {
-    private static $tableName = null;
+    private static ?string $tableName = null;
 
     public static function getTableName(): string
     {
