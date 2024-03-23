@@ -30,6 +30,14 @@ Class Query
         \NGFramer\NGFramerPHPSQLBuilder\datamanipulation\Insert::build($tableName, $data, $goDirect, $bindIndexStarter);
     }
 
+    public function update(array $data)
+    {
+        $tableName = $this->tableName;
+        $goDirect = $this->goDirect;
+        $bindIndexStarter = $this->getBindIndexStarter();
+        \NGFramer\NGFramerPHPSQLBuilder\datamanipulation\Update::build($tableName, $data, $goDirect, $bindIndexStarter);
+    }
+
     // More utilities functions for the class.
     public function accessBindParametersIndex(): int
     {
