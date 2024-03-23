@@ -38,6 +38,12 @@ Class Query
         \NGFramer\NGFramerPHPSQLBuilder\datamanipulation\Update::build($tableName, $data, $goDirect, $bindIndexStarter);
     }
 
+    public function delete()
+    {
+        $tableName = $this->tableName;
+        \NGFramer\NGFramerPHPSQLBuilder\datamanipulation\Delete::build($tableName);
+    }
+
     // More utilities functions for the class.
     public function accessBindParametersIndex(): int
     {
