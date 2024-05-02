@@ -1,6 +1,6 @@
 <?php
 
-namespace NGFramer\NGFramerPHPSQLBuilder\datamanipulation;
+namespace NGFramer\NGFramerPHPSQLBuilder;
 
 // Non-functional class. Only set's and gets the table name.
 Class Table {
