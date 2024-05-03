@@ -2,52 +2,62 @@
 
 namespace NGFramer\NGFramerPHPSQLBuilder;
 
-use NGFramer\NGFramerPHPSQLBuilder\datadefinition\Truncate;
+use NGFramer\NGFramerPHPSQLBuilder\DataManipulation\Delete;
+use NGFramer\NGFramerPHPSQLBuilder\DataManipulation\Insert;
+use NGFramer\NGFramerPHPSQLBuilder\DataManipulation\Select;
+use NGFramer\NGFramerPHPSQLBuilder\DataManipulation\Update;
 
 Class Query
 {
     // Variable defined here.
-    private ?string $tableName = null;
+    private static ?string $tableName = null;
     private bool $goDirect = false;
     private array $bindParameters = [];
 
 
+
     // Function to get and set the tableName;
-    public function table(string $tableName): void
+    public static function table(string $tableName): self
     {
-        Table::setTableName($tableName);
-        $this->tableName = Table::getTableName();
+        $table = new Table();
+        $table->setTableName($tableName);
+        self::$tableName = $table->getTableName();
+        return new Query;
     }
 
 
     // Data manipulation functions.
-    public function select(string ...$fields)
+    public function select(string ...$fields): void
     {
-        $tableName = $this->tableName;
-        DataManipulation::select($tableName, $fields);
+        $tableName = self::$tableName;
+        Select::build($tableName, $fields);
     }
 
-    public function insert(array $data)
+
+    public function insert(array $data): void
     {
         $tableName = $this->tableName;
         $goDirect = $this->goDirect;
         $bindIndexStarter = $this->accessBindParametersIndex();
-        DataManipulation::insert($tableName, $data, $goDirect, $bindIndexStarter);
+        Insert::build($tableName, $data, $goDirect, $bindIndexStarter);
     }
 
-    public function update(array $data)
+
+    public function update(array $data): void
     {
         $tableName = $this->tableName;
         $goDirect = $this->goDirect;
         $bindIndexStarter = $this->accessBindParametersIndex();
-        DataManipulation::update($tableName, $data, $goDirect, $bindIndexStarter);
+        Update::build($tableName, $data, $goDirect, $bindIndexStarter);
     }
 
-    public function delete()
+
+    public function delete(): void
     {
         $tableName = $this->tableName;
-        DataManipulation::delete($tableName);
+        Delete::build($tableName);
     }
+
 
 
     // More utilities functions for the class.

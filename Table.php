@@ -4,15 +4,15 @@ namespace NGFramer\NGFramerPHPSQLBuilder;
 
 // Non-functional class. Only set's and gets the table name.
 Class Table {
-    private static ?string $tableName = null;
+    private ?string $tableName = null;
 
-    public static function getTableName(): string
+    public function getTableName(): string
     {
-        return self::$tableName;
+        return $this->tableName;
     }
 
-    public static function setTableName($tableName): void
+    public function setTableName($tableName): void
     {
-        self::$tableName = $tableName;
+        $this->tableName = $tableName;
     }
 }
