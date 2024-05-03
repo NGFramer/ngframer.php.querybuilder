@@ -3,6 +3,7 @@
 namespace NGFramer\NGFramerPHPSQLBuilder;
 
 use NGFramer\NGFramerPHPSQLBuilder\DataDefinition\Drop;
+use NGFramer\NGFramerPHPSQLBuilder\DataDefinition\Truncate;
 use NGFramer\NGFramerPHPSQLBuilder\DataManipulation\Delete;
 use NGFramer\NGFramerPHPSQLBuilder\DataManipulation\Insert;
 use NGFramer\NGFramerPHPSQLBuilder\DataManipulation\Select;
@@ -57,6 +58,11 @@ Class Query
     public function Drop(): void
     {
         Drop::build(self::$tableName);
+    }
+
+    public function Truncate(): void
+    {
+        Truncate::build(self::$tableName);
     }
 
     // More utilities functions for the class.
