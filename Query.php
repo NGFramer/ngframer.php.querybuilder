@@ -2,6 +2,7 @@
 
 namespace NGFramer\NGFramerPHPSQLBuilder;
 
+use NGFramer\NGFramerPHPSQLBuilder\DataDefinition\Drop;
 use NGFramer\NGFramerPHPSQLBuilder\DataManipulation\Delete;
 use NGFramer\NGFramerPHPSQLBuilder\DataManipulation\Insert;
 use NGFramer\NGFramerPHPSQLBuilder\DataManipulation\Select;
@@ -25,40 +26,38 @@ Class Query
         return new Query;
     }
 
-
     // Data manipulation functions.
     public function select(string ...$fields): void
     {
-        $tableName = self::$tableName;
-        Select::build($tableName, $fields);
+        Select::build(self::$tableName, $fields);
     }
-
 
     public function insert(array $data): void
     {
-        $tableName = $this->tableName;
-        $goDirect = $this->goDirect;
         $bindIndexStarter = $this->accessBindParametersIndex();
-        Insert::build($tableName, $data, $goDirect, $bindIndexStarter);
+        Insert::build(self::$tableName, $data, $this->goDirect, $bindIndexStarter);
     }
-
 
     public function update(array $data): void
     {
-        $tableName = $this->tableName;
-        $goDirect = $this->goDirect;
         $bindIndexStarter = $this->accessBindParametersIndex();
-        Update::build($tableName, $data, $goDirect, $bindIndexStarter);
+        Update::build(self::$tableName, $data, $this->goDirect, $bindIndexStarter);
     }
 
 
     public function delete(): void
     {
-        $tableName = $this->tableName;
-        Delete::build($tableName);
+        Delete::build(self::$tableName);
     }
 
 
+
+
+    // Data Definition Functions.
+    public function Drop(): void
+    {
+        Drop::build(self::$tableName);
+    }
 
     // More utilities functions for the class.
     public function accessBindParametersIndex(): int
