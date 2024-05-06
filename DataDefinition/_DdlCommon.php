@@ -92,6 +92,11 @@ abstract class _DdlCommon
         $this->queryLog[$this->selectedAction]['view'] = $viewName;
     }
 
+    protected function logViewValue(string $viewValue): void
+    {
+        $this->queryLog[$this->selectedAction][self::getViewName()]['value'] = $viewValue;
+    }
+
 
 
 
