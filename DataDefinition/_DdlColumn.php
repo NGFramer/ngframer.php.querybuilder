@@ -2,7 +2,7 @@
 
 namespace NGFramer\NGFramerPHPSQLBuilder\DataDefinition;
 
-abstract class _DdlCommonColumn extends _DdlCommon{
+abstract class _DdlColumn extends _DdlCommon{
 
     // Everything about the column.
     // The select column selects the column. This will be used during the time of modification of columns.
@@ -10,7 +10,7 @@ abstract class _DdlCommonColumn extends _DdlCommon{
     public function selectColumn(string $columnName): void
     {
         if (!$this->getTableName()) {
-            throw new \Exception("No table has been selected. Please select a table before proceeding to select $columnName column.");
+            throw new \Exception("No table has been selected. Please select a table before proceeding to select $columnName column.", '01001', null);
         }
         $this->selectedColumn = $columnName;
     }
