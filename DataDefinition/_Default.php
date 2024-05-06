@@ -6,7 +6,7 @@ class _Default
 {
     private static array $defaultLength;
 
-    public static function setter(): void
+    public static function setLength(): void
     {
         self::$defaultLength['int'] = 11;
         self::$defaultLength['varchar'] = 255;
@@ -38,7 +38,7 @@ class _Default
 
     public static function getLength(string $type): int
     {
-        self::setter();
+        self::setLength();
         return self::$defaultLength[$type];
     }
 
