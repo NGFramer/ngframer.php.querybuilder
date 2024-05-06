@@ -4,11 +4,10 @@ namespace NGFramer\NGFramerPHPSQLBuilder\DataDefinition;
 
 class Create extends _DdlCommonColumn
 {
-    public function addTable(string $tableName): void
+    public function addTable(): void
     {
         $this->addAction('createTable');
-        $this->setTableName($tableName);
-        $this->logTable($tableName);
+        $this->logTable($this->getTableName());
     }
 
     public function createTable(string $tableName): void
