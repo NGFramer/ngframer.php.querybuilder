@@ -2,11 +2,16 @@
 
 namespace NGFramer\NGFramerPHPSQLBuilder\DataDefinition;
 
-class Drop
+class Drop extends _DdlCommon
 {
-    public static function build(string $tableName): string
+    public function drop(): void
     {
-        // Initialize the query with the table name and return.
-        return "DROP TABLE IF EXISTS " . $tableName;
+        $this->addAction('dropTable');
+        $this->logTable($this->getTableName());
+    }
+
+    public function build(): string
+    {
+        return "";
     }
 }
