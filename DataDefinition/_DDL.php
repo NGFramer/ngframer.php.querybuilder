@@ -2,429 +2,249 @@
 
 namespace NGFramer\NGFramerPHPSQLBuilder\DataDefinition;
 
-class _DDL
+abstract class _DDL
 {
-    // Variables to store the table and column data.
-    public string $table;
-    public static ?array $columns = [];
-    public static string $selectedColumn;
-    public static array $attributeCounter = ['primary' => 0, 'unique' => 0, 'autoIncrement' => 0];
+    // Variables to store table and query data.
+    protected string $tableName;
+    protected string $selectedColumn;
+    protected array $queryLog;
+    protected int $selectedAction;
 
 
 
-    // The data definition column functions.
-    public static function addColumn(string $columnName): void
+
+    // Everything about the action.
+    // The function look into the queryLog and then make a new entry.
+    // If I were to do something, it will explain what needs to be done to the table.
+    protected function addAction(string $action): void
     {
-        self::$columns[$columnName] = [];
-        self::selectColumn($columnName);
+        $this->queryLog[]['action'] = $action;
+        $this->selectedAction = count($this->queryLog) - 1;
     }
 
-    // Clone of the function addColumn.
-    public static function addField(string $columnName): void
+
+
+
+    // Everything about the table.
+    protected function setTableName(string $tableName): void
     {
-        self::addColumn($columnName);
+        $this->tableName = $tableName;
     }
 
-    public static function dropColumn(string|null $columnName = null): void
+    protected function getTableName(): string
     {
-
-        // If the column name is not set, get the selected column.
-        if (!$columnName){
-            $columnName = self::getSelectedColumn();
-            // If the column name was also not selected, throw an error.
-            if (!$columnName) throw new \Exception("No column was selected to drop.");
+        if (empty($this->tableName)) {
+            throw new \Exception("No table has been selected. Please select a table before proceeding.");
         }
+        return $this->tableName;
+    }
 
-        // If the column name was set, then process the information.
-        // Check if the column exists in the columns array.
-        if (self::checkColumnExistence($columnName)) {
-            // Check and update the key's of the column.
-            foreach(self::$columns[$columnName] as $keyName => $keyValue) {
-                if ($keyValue) self::$attributeCounter[$keyName] = self::$attributeCounter[$keyName] - 1;
-            }
-            // Unset the column from the columns array.
-            unset(self::$columns[$columnName]);
+
+
+
+    // Everything about the column.
+    // The select column selects the column. This will be used during the time of modification of columns.
+    // To select the column, the table must be selected first.
+    public function selectColumn(string $columnName): void
+    {
+        if (!$this->getTableName()) {
+            throw new \Exception("No table has been selected. Please select a table before proceeding to select $columnName column.");
         }
-        // If the column does not exist, throw an error.
-        else throw new \Exception("The column $columnName does not exist in the table.");
+        $this->selectedColumn = $columnName;
     }
 
-    // Clone of the function dropColumn.
-    public static function dropField(string|null $columnName = null): void
+    public function selectField(string $columnName): void
     {
-        self::dropColumn($columnName);
+        $this->selectColumn($columnName);
     }
 
-
-
-
-    // The data definition attributes functions.
-    // Everything around keys.
-    public function key(string $keyName, string|null $columnName = null, int $tableKeyLimit = null ): void
+    public function select(string $columnName): void
     {
-        // Check if the attribute counter has number more than $tableKeyLimit, no more keys allowed, allowed only when the counter is less than $tableKeyLimit.
-        // $tableKeyLimit is the number of type of keys allowed in the table. If $tableKeyLimit is null, means no limit.
-        // If the table has tableKeyLimit, we will validate if the key is allowed to be added.
-        if (!$tableKeyLimit === null){
-            if (self::$attributeCounter[$keyName] > $tableKeyLimit) {
-                throw new \Exception("Only one $keyName key is allowed per table.");
-            }
+        $this->selectColumn($columnName);
+    }
+
+    // This function returns the tableColumn that has been selected.
+    // If a column is created, the column is selected by default.
+    protected function getSelectedColumn(): string
+    {
+        if (empty($this->selectedColumn)) {
+            throw new \Exception("No column has been selected. Please select a column before proceeding.");
         }
+        return $this->selectedColumn;
+    }
 
-        // If the column name is not set, get the selected column.
-        if (!$columnName){
-            $columnName = self::getSelectedColumn();
-            // If the column name was also not selected, throw an error.
-            if (!$columnName) throw new \Exception("No column was selected to add the $keyName key to.");
+    abstract public function addColumn(string $columnName): void;
+
+    public function addField(string $columnName): void
+    {
+        $this->addColumn($columnName);
+    }
+
+    abstract protected function addColumnAttribute(string $attributeName, mixed $attributeValue): void;
+
+
+
+
+    // The publicly accessible function from above the system code files.
+    // Workable column attributes for DDL common.
+    public function type(string $type): void
+    {
+        $this->addColumnAttribute("type", $type);
+    }
+
+    // Clone function of type() function.
+    public function addType(string $type): void
+    {
+        $this->type($type);
+    }
+
+    public function length(int|null $length = null): void
+    {
+        if (is_null($length)) {
+            $length = _Default::getLength($this->queryLog[self::getTableName()][self::getSelectedColumn()]["type"]);
         }
-
-        // If the column name was set, process the following.
-        if ($columnName) {
-            if (self::checkColumnExistence($columnName)){
-                self::$columns[$columnName][$keyName] = true;
-                self::$attributeCounter[$keyName] = self::$attributeCounter[$keyName] + 1;
-            } else {
-                // If the column does not exist, throw an error.
-                throw new \Exception("The column $columnName does not exist in the table.");
-            }
-        }
+        $this->addColumnAttribute("length", $length);
     }
 
-    public function dropKey(string $keyName, string|null $columnName = null): void
+    // Clone function of length() function.
+    public function addLength(int $length): void
     {
-        // Check if the attribute counter has the Key set as defined.
-        if (self::$attributeCounter[$keyName] == 0) {
-            throw new \Exception("No $keyName key exists in the table.");
-        }
-
-        // If the column name is not set, get the selected column.
-        if (!$columnName){
-            $columnName = self::getSelectedColumn();
-            // If the column name was also not selected, throw an error.
-            if (!$columnName) throw new \Exception("No column was selected to add the $keyName key to.");
-        }
-
-        // If the column name was set, or passed, then process the information.
-        if (self::checkColumnExistence($columnName)) {
-            self::notKey($keyName, $columnName);
-        } else {
-            throw new \Exception("The column $columnName does not exist in the table.");
-        }
+        $this->length($length);
     }
 
-    public function notKey(string $keyName, string|null $columnName = null): void
+    public function typeLength(string $type, int $length): void
     {
-        // If the column name is not set, get the selected column.
-        if (!$columnName){
-            $columnName = self::getSelectedColumn();
-            // If the column name was also not selected, throw an error.
-            if (!$columnName) throw new \Exception("No column was selected to add the $keyName key to.");
-        }
-
-        // If the column is set or passed, then process the information.
-        // Check if the column does not exist in the columns array, throw ane error.
-        if (!self::checkColumnExistence($columnName)) {
-            throw new \Exception("The column $columnName does not exist in the table.");
-        }
-
-        // Prev Cond: If the column exists, then process the information.
-        // If key exists in the attribute counter or the array column.
-        if (!self::$columns[$columnName][$keyName] || (self::$attributeCounter[$keyName] == 0)) {
-            throw new \Exception("The column $columnName was not a $keyName key.");
-        }
-
-        // Prev Cond: If the does not exist, then process the information.
-        // Main operation, remove the key and update the attribute counter.
-        self::$columns[$columnName][$keyName] = false;
-        self::$attributeCounter[$keyName] = self::$attributeCounter[$keyName] - 1;
+        $this->type($type);
+        $this->length($length);
     }
 
-    // Might or might not be used, changing the key from one column to another.
-    public function changeKey(string $keyName, string $newKeyColumn): void
+    public function addTypeLength(string $type, int $length): void
     {
-        self::dropKey($keyName, $newKeyColumn);
-        self::key($keyName, $newKeyColumn);
+        $this->typeLength($type, $length);
     }
 
-
-
-
-    // Everything about the primary key.
-    public static function primary(string|null $primaryColumn = null): void
+    public function default(mixed $default): void
     {
-        self::key('primary', $primaryColumn, 1);
+        $this->addColumnAttribute("default", $default);
     }
 
-    // A clone of the addPrimary function.
-    public static function addPrimary(string|null $primaryColumn = null): void
+    public function addDefault(mixed $default): void
     {
-        self::primary($primaryColumn);
+        $this->default($default);
     }
 
-    public static function dropPrimary(): void
+    public function null(): void
     {
-        self::dropKey('primary');
+        $this->addColumnAttribute("null", true);
     }
 
-    public static function notPrimary(string $columnName): void
+    public function addNull(): void
     {
-        self::notKey('primary', $columnName);
+        $this->null();
     }
 
-    public static function changePrimary(string $newPrimaryColumn): void
+    public function notNull(): void
     {
-        self::dropPrimary();
-        self::primary($newPrimaryColumn);
+        $this->addColumnAttribute("null", false);
     }
 
-    // Everything around unique keys.
-    public static function unique(string|null $uniqueColumn = null): void
+    public function addNotNull(): void
     {
-        self::key('unique', $uniqueColumn, 16);
+        $this->notNull();
     }
 
-    // Clone of the function unique.
-    public static function addUnique(string|null $uniqueColumn = null): void
+    public function primary(): void
     {
-        self::unique($uniqueColumn);
+        $this->addColumnAttribute("primary", true);
     }
 
-        public static function dropUnique($uniqueColumn): void
+    public function addPrimary(): void
     {
-        self::dropKey('unique', $uniqueColumn);
+        $this->primary();
     }
 
-    public static function notUnique(string|null $columnName = null): void
+    public function unique(): void
     {
-        self::notKey('unique', $columnName);
+        $this->addColumnAttribute("unique", true);
     }
 
-    public static function autoIncrement(string|null $aiColumn = null): void
+    public function addUnique(): void
     {
-        self::key('autoIncrement', $aiColumn, 1);
+        $this->unique();
     }
 
-    // Clone of the function autoIncrement
-    public static function ai(string|null $aiColumn = null): void
+    public function autoIncrement(): void
     {
-        self::autoIncrement($aiColumn);
+        $this->addColumnAttribute("autoIncrement", true);
     }
 
-    // Clone of the function autoIncrement
-    public static function addAutoIncrement(string|null $aiColumn = null): void
+    public function addAutoIncrement(): void
     {
-        self::autoIncrement($aiColumn);
+        $this->autoIncrement();
     }
 
-    // Clone of the function autoIncrement
-    public static function addAi(string|null $aiColumn = null): void
+    public function ai(): void
     {
-        self::autoIncrement($aiColumn);
+        $this->autoIncrement();
     }
 
-    public static function dropAutoIncrement(string|null $aiColumn = null): void
+    public function addAI(): void
     {
-        self::dropKey('autoIncrement', $aiColumn);
+        $this->autoIncrement();
     }
 
-    // Clone of the function dropAutoIncrement
-    public static function dropAi(string|null $aiColumn = null): void
+    public function foreignKey(string $referenceTable, string $referenceColumn): void
     {
-        self::dropKey('autoIncrement', $aiColumn);
+        $reference = ['table' => $referenceTable, 'column' => $referenceColumn];
+        $this->addColumnAttribute("foreignKey", $reference);
     }
 
-    // Everything around nullNull key.
-    public static function notNull(string|null $notNullColumn = null): void
+    public function addForeignKey(string $referenceTable, string $referenceColumn): void
     {
-        self::key('notNull', $notNullColumn);
+        $this->foreignKey($referenceTable, $referenceColumn);
     }
 
-    // Clone of the function notNull.
-    public static function addNotNull(string|null $notNullColumn = null): void
+    public function fk(string $referenceTable, string $referenceColumn): void
     {
-        self::notNull($notNullColumn);
+        $this->foreignKey($referenceTable, $referenceColumn);
     }
 
-    public static function dropNotNull(string|null $notNullColumn = null): void
+    public function addFk(string $referenceTable, string $referenceColumn): void
     {
-        self::dropKey('notNull', $notNullColumn);
-    }
-
-    public static function notNotNull(string|null $notNullColumn = null): void
-    {
-        self::notKey('notNull', $notNullColumn);
+        $this->foreignKey($referenceTable, $referenceColumn);
     }
 
 
 
 
-    // The supporting data manipulation functions from attributes.
-    public static function addAttribute(string $attributeName, string|int|null $attributeValue = null, string|null $columnName = null): void
+    // Everything about the query log.
+    // Not to be accessed from anywhere out of this class and extending class.
+    protected function logAction(string $action): void
     {
-        // If the attribute is not passed.
-        if (!$columnName) {
-            // Get the selected column.
-            $columnName = self::getSelectedColum();
-            // If no columns were selected.
-            if (!$columnName) throw new \Exception("No column selected to add $attributeName to.");
-        }
-
-        // Check if the column exists or not.
-        if (!isset(self::$columns[$columnName])) throw new \Exception("The column $columnName does not exist.");
-
-        // Add the attribute to the column.
-        self::$columns[$columnName][$attributeName] = $attributeValue;
+        $this->queryLog[$this->selectedAction]['action'] = $action;
+    }
+    protected function logTable(string $tableName): void
+    {
+        $this->queryLog[$this->selectedAction]['table'] = $tableName;
     }
 
-    public static function dropAttribute(string $attributeName, string|null $columnName = null): void
+    protected function logColumn(string $tableName, string $columnName): void
     {
-        // If the attribute is not passed.
-        if (!$columnName) {
-            // Get the selected column.
-            $columnName = self::getSelectedColum();
-            // If no columns were selected.
-            if (!$columnName) throw new \Exception("No column selected to drop $attributeName from.");
-        }
-
-        // Check if the column exists or not.
-        if (!isset(self::$columns[$columnName])) throw new \Exception("The column $columnName does not exist.");
-
-        // Check if the attribute has been set or not.
-        if (isset(self::$columns[$columnName][$attributeName])){
-            unset(self::$columns[$columnName][$attributeName]);
-        }else {
-            throw new \Exception("The attribute $attributeName does not exist in the column $columnName.");
-        }
+        $this->queryLog[$this->selectedAction][$tableName][] = $columnName;
     }
 
-    public static function changeAttribute(string $attributeName, string|int $newAttributeValue, string|null $columnName = null): void
+    protected function logColumnAttribute(string $attributeName, string|bool|int|null $attributeValue): void
     {
-        // If the attribute is not passed.
-        if (!$columnName) {
-            // Get the selected column.
-            $columnName = self::getSelectedColum();
-            // If no columns were selected.
-            if (!$columnName) throw new \Exception("No column selected to change $attributeName to.");
-        }
-
-        // Check if the column exists or not.
-        if (!isset(self::$columns[$columnName])) throw new \Exception("The column $columnName does not exist.");
-
-        // Check if the attribute has been set or not.
-        if (isset(self::$columns[$columnName][$attributeName])){
-            self::$columns[$columnName][$attributeName] = $newAttributeValue;
-        }else {
-            throw new \Exception("The attribute $attributeName does not exist in the column $columnName.");
-        }
+        $this->queryLog[$this->selectedAction][self::getTableName()][self::getSelectedColumn()][$attributeName] = $attributeValue;
     }
 
 
 
 
-    // The data manipulation attribute functions.
-    public static function type(string $type, string|null $columnName = null): void
+    // The final function to build the result and return the query.
+    abstract public function build(): string;
+    public function buildLog(): array
     {
-        self::addAttribute('type', $type, $columnName);
-    }
-
-    public static function addType(string $type, string|null $columnName = null): void
-    {
-        self::type($type, $columnName);
-    }
-
-    public static function length(int $length, string|null $columnName = null): void
-    {
-        self::addAttribute('length', $length, $columnName);
-    }
-
-    public static function addLength(int $length, string|null $columnName = null): void
-    {
-        self::length($length, $columnName);
-    }
-
-    public static function typeLength(string $type, int $length, string|null $columnName = null): void
-    {
-        self::type($type, $columnName);
-        self::length($length, $columnName);
-    }
-
-    public static function addTypeLength(string $type, int $length, string|null $columnName = null): void
-    {
-        self::typeLength($type, $length, $columnName);
-    }
-
-    public static function changeType(string $newType, string|null $columnName = null): void
-    {
-        self::type($newType, $columnName);
-        self::dropAttribute('length', $columnName);
-    }
-
-    public static function changeLength(int $newLength, string|null $columnName = null): void
-    {
-        self::length($newLength, $columnName);
-    }
-
-    public static function addDefaultLength(string $type, string|null $columnName = null): void
-    {
-        $length = _Default::getLength($type);
-        self::length($length, $columnName);
-    }
-
-    public static function changeTypeLength(string $newType, int $newLength, string|null $columnName = null): void
-    {
-        self::changeType($newType, $columnName);
-        self::changeLength($newLength, $columnName);
-    }
-
-    public static function default(string|int|null $value, string|null $columnName = null): void
-    {
-        self::addAttribute('default', $value, $columnName);
-    }
-
-    public static function addDefault(string|int|null|array $value, string|null $columnName = null): void
-    {
-        self::default($value, $columnName);
-    }
-
-    public static function dropDefault(string|null $columnName = null): void
-    {
-        self::dropAttribute('default', $columnName);
-    }
-
-    public static function changeDefault(string|int|null|array $value, string|null $columnName = null): void
-    {
-        self::changeAttribute('default', $value, $columnName);
-    }
-
-
-
-
-    // The supporting data definition functions.
-    public static function selectColumn(string|null $columnName = null): void
-    {
-        // If the column name is not set, select the last column as column to be selected.
-        if (!$columnName) $columnName = self::getLastColumn();
-
-        // Check for if the selected columnName exists in the columns array.
-        if (!self::checkColumnExistence($columnName)) {
-            throw new \Exception("The column $columnName does not exist in the table.");
-        }
-        // Set the selected column to the selected column.
-        else self::$selectedColumn = $columnName;
-    }
-
-    public static function checkColumnExistence(string $columnName): bool
-    {
-        return array_key_exists($columnName, self::$columns);
-    }
-
-    public static function getLastColumn(): string
-    {
-        return self::$columns[array_key_last(self::$columns)];
-    }
-
-    public static function getSelectedColumn(): string
-    {
-        return self::$selectedColumn;
+        return $this->queryLog;
     }
 }
