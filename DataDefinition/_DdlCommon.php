@@ -6,6 +6,7 @@ abstract class _DdlCommon
 {
     // Variables to store table and query data.
     protected string $tableName;
+    protected string $viewName;
     protected string $selectedColumn;
     protected array $queryLog;
     protected int $selectedAction;
@@ -14,9 +15,10 @@ abstract class _DdlCommon
 
 
     // Constructor function.
-    public function __construct($tableName)
+    public function __construct(string $tableName = null, string $viewName = null)
     {
         $this->setTableName($tableName);
+        $this->setViewName($viewName);
     }
 
 
@@ -48,6 +50,19 @@ abstract class _DdlCommon
         return $this->tableName;
     }
 
+    protected function setViewName(string $viewName): void
+    {
+        $this->viewName = $viewName;
+    }
+
+    protected function getViewName(): string
+    {
+        if (empty($this->viewName)) {
+            throw new \Exception("No view has been selected. Please select a view before proceeding.");
+        }
+        return $this->viewName;
+    }
+
 
 
 
@@ -70,6 +85,11 @@ abstract class _DdlCommon
     protected function logColumnAttribute(string $attributeName, string|bool|int|null $attributeValue): void
     {
         $this->queryLog[$this->selectedAction][self::getTableName()][self::getSelectedColumn()][$attributeName] = $attributeValue;
+    }
+
+    protected function logView(string $viewName): void
+    {
+        $this->queryLog[$this->selectedAction]['view'] = $viewName;
     }
 
 
