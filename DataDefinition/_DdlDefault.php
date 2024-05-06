@@ -2,7 +2,7 @@
 
 namespace NGFramer\NGFramerPHPSQLBuilder\DataDefinition;
 
-class _Default
+class _Ddl_Default
 {
     private static array $defaultLength;
 
