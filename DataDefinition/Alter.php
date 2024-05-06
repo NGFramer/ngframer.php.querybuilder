@@ -2,7 +2,7 @@
 
 namespace NGFramer\NGFramerPHPSQLBuilder\DataDefinition;
 
-class Alter extends _DDL
+class Alter extends _DdlCommonColumn
 {
     // The functions related to modification of columns in a table.
     // Modification means the addition and deletion, of columns.

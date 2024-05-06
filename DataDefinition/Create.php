@@ -2,7 +2,7 @@
 
 namespace NGFramer\NGFramerPHPSQLBuilder\DataDefinition;
 
-class Create extends _DDL
+class Create extends _DdlCommonColumn
 {
     public function addTable(string $tableName): void
     {
