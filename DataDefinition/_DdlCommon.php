@@ -13,6 +13,15 @@ abstract class _DdlCommon
 
 
 
+    // Constructor function.
+    public function __construct($tableName)
+    {
+        $this->setTableName($tableName);
+    }
+
+
+
+
     // Everything about the action.
     // The function look into the queryLog and then make a new entry.
     // If I were to do something, it will explain what needs to be done to the table.
