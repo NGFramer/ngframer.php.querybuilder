@@ -2,8 +2,9 @@
 
 namespace NGFramer\NGFramerPHPSQLBuilder\DataDefinition;
 
-class CreateView extends _DdlCommon
+class AlterView extends _DdlCommon
 {
+
     public function select(string $selectQuery): self
     {
         $this->logViewValue($selectQuery);
@@ -13,5 +14,6 @@ class CreateView extends _DdlCommon
     public function build(): string
     {
         return "";
+        // TODO: Implement build() method.
     }
 }

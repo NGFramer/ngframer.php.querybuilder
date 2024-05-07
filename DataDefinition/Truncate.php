@@ -2,11 +2,21 @@
 
 namespace NGFramer\NGFramerPHPSQLBuilder\DataDefinition;
 
-class Truncate
+class Truncate extends _DdlCommon
 {
-    public static function build(string $tableName): string
+    public function truncate(string $lastSetAction): void
     {
-        // Initialize the query with a table name and return it.
-        return "TRUNCATE TABLE $tableName IF EXISTS";
+        if ($lastSetAction === "setTable") {
+            $this->truncateTable();
+        } else {
+            throw new \Exception("Invalid action");
+        }
+    }
+
+    private function truncateTable(): TruncateTable
+    {
+        $this->addAction('truncateTable');
+        $this->logTable($this->getTableName());
+        return new TruncateTable($this->getTableName(), null);
     }
 }

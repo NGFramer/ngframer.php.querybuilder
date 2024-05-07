@@ -2,37 +2,33 @@
 
 namespace NGFramer\NGFramerPHPSQLBuilder\DataDefinition;
 
-class Create extends _DdlColumn
+class Create extends _DdlCommon
 {
-    public function addTable(): self
+
+    public function create(string $lastSetAction): void
+    {
+        if ($lastSetAction == 'setTable') {
+            $this->createTable();
+        } elseif ($lastSetAction == 'setView') {
+            $this->createView();
+        } else {
+            throw new \Exception("No table or view has been set. You must set a table or view before creating.");
+        }
+    }
+
+    private function createTable(): CreateTable
     {
         $this->addAction('createTable');
         $this->logTable($this->getTableName());
-        return $this;
+        return new CreateTable($this->getTableName());
     }
 
-    public function createTable(string $tableName): self
+    private function createView(): CreateView
     {
-        $this->addTable($tableName);
-        return $this;
+        $this->addAction('createView');
+        $this->logView($this->getViewName());
+        return new CreateView($this->getViewName());
     }
 
-    protected function addColumnAttribute(string $attributeName, mixed $attributeValue): void
-    {
-        $this->logColumnAttribute($attributeName, $attributeValue);
-    }
 
-    public function addColumn(string $columnName): self
-    {
-        $tableName = $this->getTableName();
-        $this->selectColumn($columnName);
-        $this->logColumn($tableName, $columnName);
-        return $this;
-    }
-
-    public function build(): string
-    {
-        return "CREATE TABLE " . $this->getTableName();
-        // TODO: Implement build() method.
-    }
 }

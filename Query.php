@@ -2,7 +2,9 @@
 
 namespace NGFramer\NGFramerPHPSQLBuilder;
 
-use NGFramer\NGFramerPHPSQLBuilder\DataDefinition\Drop;
+use NGFramer\NGFramerPHPSQLBuilder\DataDefinition\Alter;
+use NGFramer\NGFramerPHPSQLBuilder\DataDefinition\Create;
+use NGFramer\NGFramerPHPSQLBuilder\DataDefinition\CreateView;
 use NGFramer\NGFramerPHPSQLBuilder\DataDefinition\Truncate;
 use NGFramer\NGFramerPHPSQLBuilder\DataManipulation\Delete;
 use NGFramer\NGFramerPHPSQLBuilder\DataManipulation\Insert;
@@ -12,22 +14,81 @@ use NGFramer\NGFramerPHPSQLBuilder\DataManipulation\Update;
 Class Query
 {
     // Variable defined here.
-    private static ?string $tableName = null;
     private bool $goDirect = false;
     private array $bindParameters = [];
+    private string $lastSetAction;
+    private Table $table;
+    private View $view;
 
 
 
-    // Function to get and set the tableName;
-    public static function table(string $tableName): self
+
+    // Constructor for the config.
+    public function __construct()
     {
-        $table = new Table();
-        $table->setTableName($tableName);
-        self::$tableName = $table->getTableName();
-        return new Query;
+        require_once "config.php";
     }
 
+
+
+
+    // Setting last action for check points.
+    private function setLastAction(string $action): void
+    {
+        $this->lastSetAction = $action;
+    }
+
+    private function getLastAction(): string
+    {
+        return $this->lastSetAction;
+    }
+
+
+
+
+    // Function to get and set the tableName and viewName;
+    public function table(string $tableName): self
+    {
+        $this->table = new Table();
+        $this->table->setTableName($tableName);
+        $this->setLastAction('setTable');
+        return $this;
+    }
+
+    public function view(string $viewName): self
+    {
+        $this->view = new View();
+        $this->view->setViewName($viewName);
+        $this->setLastAction('setView');
+        return $this;
+    }
+
+
+
+
+    // Data Definition functions.
+    public function create(): void
+    {
+        $create = new Create();
+        $create->create($this->getLastAction());
+    }
+
+    public function alter(): void
+    {
+        $alter = new Alter();
+        $alter->alter($this->getLastAction());
+    }
+
+    public function modify(): void
+    {
+        $this->alter();
+    }
+
+
+
+
     // Data manipulation functions.
+    // TODO: All the manipulation function need to be maintained.
     public function select(string ...$fields): void
     {
         Select::build(self::$tableName, $fields);
@@ -57,13 +118,17 @@ Class Query
     // Data Definition Functions.
     public function Drop(): void
     {
-        Drop::build(self::$tableName);
+        (new DataDefinition\Drop)->build(self::$tableName);
     }
 
     public function Truncate(): void
     {
         Truncate::build(self::$tableName);
     }
+
+
+
+
 
     // More utilities functions for the class.
     public function accessBindParametersIndex(): int

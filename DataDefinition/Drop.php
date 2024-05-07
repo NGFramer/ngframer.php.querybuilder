@@ -4,22 +4,29 @@ namespace NGFramer\NGFramerPHPSQLBuilder\DataDefinition;
 
 class Drop extends _DdlCommon
 {
-    public function drop(string $type = 'table'): self
+    public function drop(string $lastSetAction): void
     {
-        if ($type == 'table'){
-            $this->addAction('dropTable');
-            $this->logTable($this->getTableName());
-        } elseif ($type == 'view'){
-            $this->addAction('dropView');
-            $this->logView($this->getViewName());
+        if ($lastSetAction === "setTable") {
+            $this->dropTable();
+        } elseif ($lastSetAction === "setView") {
+            $this->dropView();
         } else {
-            throw new \Exception("The type of object to drop is not supported.");
+            throw new \Exception("Invalid action");
         }
-        return $this;
     }
 
-    public function build(): string
+    private function dropTable(): DropTable
     {
-        return "";
+        $this->addAction('dropTable');
+        $this->logTable($this->getTableName());
+        return new DropTable($this->getTableName(), null);
     }
+
+    private function dropView(): DropView
+    {
+        $this->addAction('dropView');
+        $this->logView($this->getViewName());
+        return new DropView(null, $this->getViewName());
+    }
+
 }

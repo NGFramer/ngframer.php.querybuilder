@@ -101,7 +101,6 @@ abstract class _DdlCommon
 
 
     // The final function to build the result and return the query.
-    abstract public function build(): string;
     public function buildLog(): array
     {
         return $this->queryLog;
