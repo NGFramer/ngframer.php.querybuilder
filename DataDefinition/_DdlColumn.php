@@ -7,22 +7,25 @@ abstract class _DdlColumn extends _DdlCommon{
     // Everything about the column.
     // The select column selects the column. This will be used during the time of modification of columns.
     // To select the column, the table must be selected first.
-    public function selectColumn(string $columnName): void
+    public function selectColumn(string $columnName): self
     {
         if (!$this->getTableName()) {
             throw new \Exception("No table has been selected. Please select a table before proceeding to select $columnName column.", '01001', null);
         }
         $this->selectedColumn = $columnName;
+        return $this;
     }
 
-    public function selectField(string $columnName): void
+    public function selectField(string $columnName): self
     {
         $this->selectColumn($columnName);
+        return $this;
     }
 
-    public function select(string $columnName): void
+    public function select(string $columnName): self
     {
         $this->selectColumn($columnName);
+        return $this;
     }
 
     // This function returns the tableColumn that has been selected.
@@ -35,11 +38,12 @@ abstract class _DdlColumn extends _DdlCommon{
         return $this->selectedColumn;
     }
 
-    abstract public function addColumn(string $columnName): void;
+    abstract public function addColumn(string $columnName): self;
 
-    public function addField(string $columnName): void
+    public function addField(string $columnName): self
     {
         $this->addColumn($columnName);
+        return $this;
     }
 
     abstract protected function addColumnAttribute(string $attributeName, mixed $attributeValue): void;
@@ -49,131 +53,154 @@ abstract class _DdlColumn extends _DdlCommon{
 
     // The publicly accessible function from above the system code files.
     // Workable column attributes for DDL common.
-    public function type(string $type): void
+    public function type(string $type): self
     {
         $this->addColumnAttribute("type", $type);
+        return $this;
     }
 
     // Clone function of type() function.
-    public function addType(string $type): void
+    public function addType(string $type): self
     {
         $this->type($type);
+        return $this;
     }
 
-    public function length(int|null $length = null): void
+    public function length(int|null $length = null): self
     {
         if (is_null($length)) {
-            $length = _Ddl_Default::getLength($this->queryLog[self::getTableName()][self::getSelectedColumn()]["type"]);
+            $length = _Ddl_Default::getLength($this->queryLog[$this->getTableName()][$this->getSelectedColumn()]["type"]);
         }
         $this->addColumnAttribute("length", $length);
+        return $this;
     }
 
     // Clone function of length() function.
-    public function addLength(int $length): void
+    public function addLength(int $length): self
     {
         $this->length($length);
+        return $this;
     }
 
-    public function typeLength(string $type, int $length): void
+    public function typeLength(string $type, int $length): self
     {
         $this->type($type);
         $this->length($length);
+        return $this;
     }
 
-    public function addTypeLength(string $type, int $length): void
+    public function addTypeLength(string $type, int $length): self
     {
         $this->typeLength($type, $length);
+        return $this;
     }
 
-    public function default(mixed $default): void
+    public function default(mixed $default): self
     {
         $this->addColumnAttribute("default", $default);
+        return $this;
     }
 
-    public function addDefault(mixed $default): void
+    public function addDefault(mixed $default): self
     {
         $this->default($default);
+        return $this;
     }
 
-    public function null(): void
+    public function null(): self
     {
         $this->addColumnAttribute("null", true);
+        return $this;
     }
 
-    public function addNull(): void
+    public function addNull(): self
     {
         $this->null();
+        return $this;
     }
 
-    public function notNull(): void
+    public function notNull(): self
     {
         $this->addColumnAttribute("null", false);
+        return $this;
     }
 
-    public function addNotNull(): void
+    public function addNotNull(): self
     {
         $this->notNull();
+        return $this;
     }
 
-    public function primary(): void
+    public function primary(): self
     {
         $this->addColumnAttribute("primary", true);
+        return $this;
     }
 
-    public function addPrimary(): void
+    public function addPrimary(): self
     {
         $this->primary();
+        return $this;
     }
 
-    public function unique(): void
+    public function unique(): self
     {
         $this->addColumnAttribute("unique", true);
+        return $this;
     }
 
-    public function addUnique(): void
+    public function addUnique(): self
     {
         $this->unique();
+        return $this;
     }
 
-    public function autoIncrement(): void
+    public function autoIncrement(): self
     {
         $this->addColumnAttribute("autoIncrement", true);
+        return $this;
     }
 
-    public function addAutoIncrement(): void
+    public function addAutoIncrement(): self
     {
         $this->autoIncrement();
+        return $this;
     }
 
-    public function ai(): void
+    public function ai(): self
     {
         $this->autoIncrement();
+        return $this;
     }
 
-    public function addAI(): void
+    public function addAI(): self
     {
         $this->autoIncrement();
+        return $this;
     }
 
-    public function foreignKey(string $referenceTable, string $referenceColumn): void
+    public function foreignKey(string $referenceTable, string $referenceColumn): self
     {
         $reference = ['table' => $referenceTable, 'column' => $referenceColumn];
         $this->addColumnAttribute("foreignKey", $reference);
+        return $this;
     }
 
-    public function addForeignKey(string $referenceTable, string $referenceColumn): void
+    public function addForeignKey(string $referenceTable, string $referenceColumn): self
     {
         $this->foreignKey($referenceTable, $referenceColumn);
+        return $this;
     }
 
-    public function fk(string $referenceTable, string $referenceColumn): void
+    public function fk(string $referenceTable, string $referenceColumn): self
     {
         $this->foreignKey($referenceTable, $referenceColumn);
+        return $this;
     }
 
-    public function addFk(string $referenceTable, string $referenceColumn): void
+    public function addFk(string $referenceTable, string $referenceColumn): self
     {
         $this->foreignKey($referenceTable, $referenceColumn);
+        return $this;
     }
-
 }

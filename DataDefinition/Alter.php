@@ -6,30 +6,34 @@ class Alter extends _DdlColumn
 {
     // The functions related to modification of columns in a table.
     // Modification means the addition and deletion, of columns.
-    public function addColumn(string $columnName): void
+    public function addColumn(string $columnName): self
     {
         $this->addAction('addColumn');
         $tableName = $this->getTableName();
         $this->selectColumn($columnName);
         $this->logColumn($tableName, $columnName);
+        return $this;
     }
 
-    public function addField(string $columnName): void
+    public function addField(string $columnName): self
     {
         $this->addColumn($columnName);
+        return $this;
     }
 
-    public function dropColumn(): void
+    public function dropColumn(): self
     {
         $this->addAction('dropColumn');
         $tableName = $this->getTableName();
         $this->selectColumn($this->getSelectedColumn());
         $this->logColumn($tableName, $this->getSelectedColumn());
+        return $this;
     }
 
-    public function dropField(): void
+    public function dropField(): self
     {
         $this->dropColumn();
+        return $this;
     }
 
 
@@ -73,24 +77,28 @@ class Alter extends _DdlColumn
 
 
     // Only functions available for the use from the external class.
-    public function changeType(string $type): void
+    public function changeType(string $type): self
     {
         $this->changeColumnAttribute("type", $type);
+        return $this;
     }
 
-    public function changeLength(int|null $length = null): void
+    public function changeLength(int|null $length = null): self
     {
         $this->changeColumnAttribute("length", $length);
+        return $this;
     }
 
-    public function dropPrimary(): void
+    public function dropPrimary(): self
     {
         $this->dropColumnAttribute('primary');
+        return $this;
     }
 
-    public function dropUnique(): void
+    public function dropUnique(): self
     {
         $this->dropColumnAttribute('unique');
+        return $this;
     }
 
 
