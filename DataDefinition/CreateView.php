@@ -2,10 +2,23 @@
 
 namespace NGFramer\NGFramerPHPSQLBuilder\DataDefinition;
 
-class CreateView
+class CreateView extends _DdlCommon
 {
-    public static function create(string $viewName): string
+    public function create(string $viewName): self
     {
-        return "CREATE VIEW " . $viewName . " AS ";
+        $this->addAction('createView');
+        $this->logView($viewName);
+        return $this;
+    }
+
+    public function select(string $selectQuery): self
+    {
+        $this->logViewValue($selectQuery);
+        return $this;
+    }
+
+    public function build(): string
+    {
+        return "";
     }
 }
