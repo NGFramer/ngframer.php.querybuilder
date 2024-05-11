@@ -1,35 +1,52 @@
 <?php
 
-namespace NGFramer\NGFramerPHPSQLBuilder\DataDefinition;
+namespace NGFramer\NGFramerPHPSQLBuilder\DataDefinition\Supportive;
 
-abstract class _DdlColumn extends _DdlCommon{
+abstract class _DdlTableColumn extends _DdlTable
+{
+    // Variable to store the column data.
+    private string $selectedColumn;
+
+
+
+
+    // Construct function from parent class.
+    // __construct($tableName) function.
+    public function __construct(string $tableName)
+    {
+        parent::__construct($tableName);
+    }
+
+
+
 
     // Everything about the column.
-    // The select column selects the column. This will be used during the time of modification of columns.
+    // The select function selects the column.
     // To select the column, the table must be selected first.
-    public function selectColumn(string $columnName): self
+    public function select(string $columnName): self
     {
-        if (!$this->getTableName()) {
-            throw new \Exception("No table has been selected. Please select a table before proceeding to select $columnName column.", '01001', null);
+        if (!$this->getTable()) {
+            throw new \Exception("No table has been selected. Please select a table before proceeding to select $columnName column.");
         }
         $this->selectedColumn = $columnName;
         return $this;
     }
 
+    // Clone function of select() function.
     public function selectField(string $columnName): self
     {
-        $this->selectColumn($columnName);
+        $this->select($columnName);
         return $this;
     }
 
-    public function select(string $columnName): self
+    // Clone function of select() function.
+    public function selectColumn(string $columnName): self
     {
-        $this->selectColumn($columnName);
+        $this->select($columnName);
         return $this;
     }
 
     // This function returns the tableColumn that has been selected.
-    // If a column is created, the column is selected by default.
     protected function getSelectedColumn(): string
     {
         if (empty($this->selectedColumn)) {
@@ -38,7 +55,11 @@ abstract class _DdlColumn extends _DdlCommon{
         return $this->selectedColumn;
     }
 
-    abstract public function addColumn(string $columnName): self;
+
+
+
+    // Function related to the addition of columns.
+    abstract public function addColumn($columnName):self;
 
     public function addField(string $columnName): self
     {
@@ -46,7 +67,28 @@ abstract class _DdlColumn extends _DdlCommon{
         return $this;
     }
 
-    abstract protected function addColumnAttribute(string $attributeName, mixed $attributeValue): void;
+
+
+
+    // Functions related ot the addition of attributes to the columns.
+    // The functions related to modification of attributes of columns in a table.
+    // Logic behind the modification of attributes of columns:
+    // 1. Find the index of the selected column,
+    // 1. If it's null (index of selected column in queryLog), thrown an error, column must be selected first.
+    // 1. If the index does not exist means, the column name was not found in the query log.
+    // 2. If column index is found, add an entry to the queryLog = [columns => [ 0 => [ attributeName => attributeValue ] ] ].
+    protected function addColumnAttribute(string $attributeName, mixed $attributeValue): void
+    {
+        // Find the name of the column.
+        $columnName = $this->getSelectedColumn();
+        // Find the index in which the column is located.
+        $columnIndex = $this->getIndexOfColumn($columnName);
+        // Check if the column index is null or not.
+        if ($columnIndex === null){
+            throw new \Exception("Column not found. Please add a column first.");
+        }
+        $this->addToQueryLogDeep('columns', $columnIndex, $attributeName, $attributeValue);
+    }
 
 
 
@@ -68,9 +110,6 @@ abstract class _DdlColumn extends _DdlCommon{
 
     public function length(int|null $length = null): self
     {
-        if (is_null($length)) {
-            $length = _Ddl_Default::getLength($this->queryLog[$this->getTableName()][$this->getSelectedColumn()]["type"]);
-        }
         $this->addColumnAttribute("length", $length);
         return $this;
     }
@@ -202,5 +241,35 @@ abstract class _DdlColumn extends _DdlCommon{
     {
         $this->foreignKey($referenceTable, $referenceColumn);
         return $this;
+    }
+
+
+
+
+    // Supportive function for column operations.
+    protected function getIndexOfColumn(string $columnName): int|null
+    {
+        $columnElementCounter = 0;
+        foreach ($this->queryLog['columns'] as $columnElements) {
+            if ($columnElements['column'] == $columnName) {
+                return $columnElementCounter;
+            }
+            $columnElementCounter++;
+        }
+        return null;
+    }
+
+    protected function columnsCount(): int
+    {
+        return $this->getElementsCount($this->queryLog, 'columns');
+    }
+
+    protected function getElementsCount(array $source, string $key): int
+    {
+        if (isset($source[$key])){
+            return count($source[$key]);
+        } else {
+            return 0;
+        }
     }
 }
