@@ -7,6 +7,12 @@ use NGFramer\NGFramerPHPSQLBuilder\DataManipulation\Supportive\_DmlTable;
 
 class UpdateTable extends _DmlTable
 {
+    // Use the following trait to access the functions.
+    use WhereTrait;
+
+
+
+
     // Constructor for the UpdateTable class.
     public function __construct($tableName, $data)
     {
@@ -35,6 +41,8 @@ class UpdateTable extends _DmlTable
             }
         }
     }
+
+
 
 
     // Builder function for the class.
