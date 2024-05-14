@@ -26,7 +26,7 @@ class Table
     // Data Modification functions.
     public function select(string ...$fields): SelectTable
     {
-        return new SelectTable($this->tableName, ...$fields);
+        return new SelectTable($this->tableName, $fields);
     }
 
     public function insert(array $data): InsertTable
@@ -42,10 +42,6 @@ class Table
     public function delete(): DeleteTable
     {
         return new DeleteTable($this->tableName);
-    }
-
-    public function where(): void
-    {
     }
 
 
