@@ -6,6 +6,12 @@ use NGFramer\NGFramerPHPSQLBuilder\DataManipulation\Supportive\_DmlView;
 
 class SelectView extends _DmlView
 {
+    // Use the following trait to access the functions.
+    use WhereTrait;
+
+
+
+
     // Constructor function for the class.
     public function __construct(string $viewName, array $columns)
     {
@@ -18,7 +24,7 @@ class SelectView extends _DmlView
 
 
     // Main function for the class.
-    public function select(array $fields)
+    public function select(array $fields): void
     {
         foreach ($fields as $field) {
             if (!is_string($field)) {

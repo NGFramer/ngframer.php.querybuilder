@@ -2,7 +2,6 @@
 
 namespace NGFramer\NGFramerPHPSQLBuilder\DataManipulation;
 
-use NGFramer\NGFramerPHPSQLBuilder\_Builder;
 use NGFramer\NGFramerPHPSQLBuilder\DataManipulation\Supportive\_DmlTable;
 
 class UpdateTable extends _DmlTable

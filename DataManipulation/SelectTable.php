@@ -6,6 +6,12 @@ use NGFramer\NGFramerPHPSQLBuilder\DataManipulation\Supportive\_DmlTable;
 
 class SelectTable extends _DmlTable
 {
+    // Use the following trait to access the functions.
+    use whereTrait;
+
+
+
+
     // Constructor function for the class.
     public function __construct(string $tableName, array $columns)
     {
@@ -18,7 +24,7 @@ class SelectTable extends _DmlTable
 
 
     // Main function for the class.
-    public function select(array $fields)
+    public function select(array $fields): void
     {
         foreach ($fields as $field) {
             if (!is_string($field)) {
