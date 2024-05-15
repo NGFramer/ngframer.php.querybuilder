@@ -7,7 +7,12 @@ use NGFramer\NGFramerPHPSQLBuilder\DataManipulation\Supportive\_DmlTable;
 class SelectTable extends _DmlTable
 {
     // Use the following trait to access the functions.
-    use whereTrait;
+    use whereTrait, limitTrait, sortByTrait, groupByTrait{
+        whereTrait::build as buildWhere; // TODO: To be built.
+        limitTrait::build as buildLimit; // TODO: To be built.
+        sortByTrait::build as buildSortBy; // TODO: To be built.
+        groupByTrait::build as buildGroupBy; // TODO: To be built.
+    }
 
 
 

@@ -7,7 +7,9 @@ use NGFramer\NGFramerPHPSQLBuilder\DataManipulation\Supportive\_DmlTable;
 class DeleteTable extends _DmlTable
 {
     // Use the following trait to access the functions.
-    use WhereTrait;
+    use WhereTrait{
+        WhereTrait::build as buildWhere; // TODO: To be built.
+    }
 
 
 
