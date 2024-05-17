@@ -6,7 +6,15 @@ use NGFramer\NGFramerPHPSQLBuilder\_Builder;
 
 abstract class _DmlStructure extends _Builder
 {
+    // Variable defined here.
+    private bool $goDirect = false;
+    private array $bindParameters = [];
     private array $structure;
+
+
+
+
+    // Constructor function for the class.
     protected function __construct(string $structureType, string $structureValue)
     {
         if (empty($structureType)) {
@@ -27,5 +35,31 @@ abstract class _DmlStructure extends _Builder
     protected function getStructureValue(): string
     {
         return $this->structure['value'];
+    }
+
+
+
+
+    // Functions used for defining the query execution method.
+    public function goDirect(): void
+    {
+        // Use this function to set the method of executing the query to direct (not using prepare).
+        $this->goDirect = true;
+    }
+
+    // Function to update/add to the bind parameters.
+    protected function updateBindParameters(string $key, string $value): void
+    {
+        if (array_key_exists($key, $this->bindParameters)){
+            throw new \Exception("Something unexpected happened. Repeated bindParameters Key.");
+        }else{
+            $this->bindParameters[$key] = $value;
+        }
+    }
+
+    // Provides number to use further for the another binding, array starts from 0th position.
+    protected function getBindIndexStarter(): int
+    {
+        return $this->goDirect ? count($this->bindParameters):0;
     }
 }
