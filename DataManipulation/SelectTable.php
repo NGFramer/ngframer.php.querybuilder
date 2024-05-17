@@ -7,11 +7,11 @@ use NGFramer\NGFramerPHPSQLBuilder\DataManipulation\Supportive\_DmlTable;
 class SelectTable extends _DmlTable
 {
     // Use the following trait to access the functions.
-    use whereTrait, limitTrait, sortByTrait, groupByTrait{
-        whereTrait::build as buildWhere; // TODO: To be built.
-//        limitTrait::build as buildLimit; // TODO: To be built.
-//        sortByTrait::build as buildSortBy; // TODO: To be built.
-//        groupByTrait::build as buildGroupBy; // TODO: To be built.
+    use WhereTrait, LimitTrait, SortByTrait, GroupByTrait{
+        WhereTrait::build as buildWhere;
+        LimitTrait::build as buildLimit;
+//      SortByTrait::build as buildSortBy; // TODO: To be built.
+//      GroupByTrait::build as buildGroupBy; // TODO: To be built.
     }
 
 
@@ -45,6 +45,16 @@ class SelectTable extends _DmlTable
     // Builder function for the class.
     public function build(): string
     {
-        return "";
+        // Get the queryLog initially to process.
+        $queryLog = $this->getQueryLog();
+        // Start building the where query.
+        $query = 'SELECT ';
+        $query .= implode(', ', $queryLog['columns']);
+        $query .= ' FROM ' . $queryLog['table'];
+        $query .= $this->buildWhere();
+//        $query .= $this->buildSortBy();
+//        $query .= $this->buildGroupBy();
+//        $query .= $this->buildLimit();
+        return $query;
     }
 }
