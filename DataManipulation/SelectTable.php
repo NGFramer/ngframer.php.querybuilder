@@ -11,7 +11,7 @@ class SelectTable extends _DmlTable
         WhereTrait::build as buildWhere;
         LimitTrait::build as buildLimit;
 //      SortByTrait::build as buildSortBy; // TODO: To be built.
-//      GroupByTrait::build as buildGroupBy; // TODO: To be built.
+        GroupByTrait::build as buildGroupBy;
     }
 
 
@@ -53,7 +53,7 @@ class SelectTable extends _DmlTable
         $query .= ' FROM ' . $queryLog['table'];
         $query .= $this->buildWhere();
 //      $query .= $this->buildSortBy();
-//      $query .= $this->buildGroupBy();
+        $query .= $this->buildGroupBy();
         $query .= $this->buildLimit();
         return $query;
     }
