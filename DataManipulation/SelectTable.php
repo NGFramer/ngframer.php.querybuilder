@@ -52,9 +52,9 @@ class SelectTable extends _DmlTable
         $query .= implode(', ', $queryLog['columns']);
         $query .= ' FROM ' . $queryLog['table'];
         $query .= $this->buildWhere();
-//        $query .= $this->buildSortBy();
-//        $query .= $this->buildGroupBy();
-//        $query .= $this->buildLimit();
+//      $query .= $this->buildSortBy();
+//      $query .= $this->buildGroupBy();
+        $query .= $this->buildLimit();
         return $query;
     }
 }
