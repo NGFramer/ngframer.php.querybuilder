@@ -6,6 +6,7 @@ Trait SortByTrait
 {
     // Abstract function used in the class.
     abstract function addToQueryLogDeepArray(mixed ... $arguments): void;
+    abstract function getQueryLog(): array;
 
 
 
@@ -51,5 +52,41 @@ Trait SortByTrait
     {
         $this->sortBy($columnName, 'DESC');
         return $this;
+    }
+
+
+
+
+    // Builder function for the trait.
+    public function build(): string
+    {
+        // Get the query log.
+        $queryLog = $this->getQueryLog();
+        // Check if the sortBy is empty or filled.
+        if (!isset($queryLog['sortBy'])) return '';
+        else{
+            $sortByString = '';
+            $sortBy = $queryLog['sortBy'];
+            if (empty($sortBy)) throw new \InvalidArgumentException('Empty sortBy asked, modify the query to continue.');
+            else if (is_array($sortBy)) {
+                foreach ($sortBy as $sortInstruction) {
+                    $sortByString .= $this->getSortByString($sortInstruction);
+                }
+            }
+            else {
+                $sortByString = $this->getSortByString($sortBy);
+            }
+            return ' ORDER BY ' . rtrim($sortByString, ', ');
+        }
+    }
+
+    private function getSortByString(mixed $sortByInstruction): string
+    {
+        $field = $sortByInstruction['field'] ?? $sortByInstruction[0];
+        $order = $sortByInstruction['order'] ?? $sortByInstruction[1];
+        if (!in_array(strtoupper($order), ['ASC', 'DESC'])) {
+            throw new \InvalidArgumentException('Invalid sorting order provided. Please provide either ASC or DESC.');
+        }
+        return $field . ' ' . $order . ', ';
     }
 }

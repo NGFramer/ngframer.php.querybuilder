@@ -9,9 +9,9 @@ class SelectTable extends _DmlTable
     // Use the following trait to access the functions.
     use WhereTrait, LimitTrait, SortByTrait, GroupByTrait{
         WhereTrait::build as buildWhere;
-        LimitTrait::build as buildLimit;
-//      SortByTrait::build as buildSortBy; // TODO: To be built.
         GroupByTrait::build as buildGroupBy;
+        SortByTrait::build as buildSortBy;
+        LimitTrait::build as buildLimit;
     }
 
 
@@ -52,8 +52,8 @@ class SelectTable extends _DmlTable
         $query .= implode(', ', $queryLog['columns']);
         $query .= ' FROM ' . $queryLog['table'];
         $query .= $this->buildWhere();
-//      $query .= $this->buildSortBy();
         $query .= $this->buildGroupBy();
+        $query .= $this->buildSortBy();
         $query .= $this->buildLimit();
         return $query;
     }

@@ -9,9 +9,9 @@ class SelectView extends _DmlView
     // Use the following trait to access the functions.
     use WhereTrait, LimitTrait, SortByTrait, GroupByTrait{
         WhereTrait::build as buildWhere;
-        LimitTrait::build as buildLimit;
-//      SortByTrait::build as buildSortBy; // TODO: To be built.
+        SortByTrait::build as buildSortBy;
         GroupByTrait::build as buildGroupBy;
+        LimitTrait::build as buildLimit;
     }
 
 
@@ -52,7 +52,7 @@ class SelectView extends _DmlView
         $query .= implode(', ', $queryLog['columns']);
         $query .= ' FROM ' . $queryLog['view'];
         $query .= $this->buildWhere();
-//      $query .= $this->buildSortBy();
+        $query .= $this->buildSortBy();
         $query .= $this->buildGroupBy();
         $query .= $this->buildLimit();
         return $query;
