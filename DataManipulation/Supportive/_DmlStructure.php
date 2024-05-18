@@ -69,7 +69,7 @@ abstract class _DmlStructure extends _Builder
     protected function getBindIndexStarter(): int
     {
         // Bind parameter will start from 1.
-        return $this->goDirect ? (count($this->bindParameters)+1):0;
+        return !$this->goDirect ? (count($this->bindParameters)+1):0;
     }
 
     protected function sanitizeValue(string $value): string
