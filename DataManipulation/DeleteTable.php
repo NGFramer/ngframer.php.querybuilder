@@ -24,6 +24,18 @@ class DeleteTable extends _DmlTable
 
 
 
+    // Go direct function for where conditions.
+    public function goDirect(): self
+    {
+        // Get the goDirect function from parent.
+        parent::goDirect();
+        // Return instance for object chaining.
+        return $this;
+    }
+
+
+
+    
     // Main builder function for the class.
     public function build(): string
     {
