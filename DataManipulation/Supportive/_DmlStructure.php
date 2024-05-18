@@ -41,10 +41,18 @@ abstract class _DmlStructure extends _Builder
 
 
     // Functions used for defining the query execution method.
-    public function goDirect(): void
+    protected function goDirect(): mixed
     {
         // Use this function to set the method of executing the query to direct (not using prepare).
         $this->goDirect = true;
+        // Returning nothing, only for compatibility, mixed to reuse in the further classes.
+        return null;
+    }
+
+    // Function to check if execution method is direct.
+    protected function isGoDirect(): bool
+    {
+        return $this->goDirect;
     }
 
     // Function to update/add to the bind parameters.
@@ -60,6 +68,15 @@ abstract class _DmlStructure extends _Builder
     // Provides number to use further for the another binding, array starts from 0th position.
     protected function getBindIndexStarter(): int
     {
-        return $this->goDirect ? count($this->bindParameters):0;
+        // Bind parameter will start from 1.
+        return $this->goDirect ? (count($this->bindParameters)+1):0;
+    }
+
+    protected function sanitizeValue(string $value): string
+    {
+        // Escape special characters in the string
+        $escapedValue = addslashes($value);
+        // Convert special characters to HTML entities
+        return htmlspecialchars($escapedValue);
     }
 }
