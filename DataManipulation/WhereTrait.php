@@ -15,6 +15,8 @@ trait WhereTrait
     abstract protected function getBindIndexStarter(): int;
     // Will be used to sanitize the value, accessed from the parent class.
     abstract protected function sanitizeValue(string $value): string;
+    //  Will be used to update the bind parameters, accessed from the builder class.
+    abstract protected function areElementsArray(array $elementContainer): bool;
 
 
 
@@ -250,16 +252,4 @@ trait WhereTrait
     {
         return addslashes($value);
     }
-
-    private function areElementsArray(array $elementContainer): bool
-    {
-        // Loop through the element container elements.
-        foreach ($elementContainer as $element) {
-            if (!is_array($element)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
 }

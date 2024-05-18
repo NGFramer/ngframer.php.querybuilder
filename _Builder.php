@@ -82,4 +82,15 @@ abstract class _Builder
         return false; // It's just a list of values
     }
 
+    // Supportive function, to check if all the elements of an array are arrays.
+    protected function areElementsArray(array $elementContainer): bool
+    {
+        // Loop through the element container elements.
+        foreach ($elementContainer as $element) {
+            if (!is_array($element)) {
+                return false;
+            }
+        }
+        return true;
+    }
 }
