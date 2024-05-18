@@ -5,7 +5,6 @@ namespace NGFramer\NGFramerPHPSQLBuilder;
 use NGFramer\NGFramerPHPSQLBuilder\DataDefinition\AlterView;
 use NGFramer\NGFramerPHPSQLBuilder\DataDefinition\CreateView;
 use NGFramer\NGFramerPHPSQLBuilder\DataDefinition\DropView;
-use NGFramer\NGFramerPHPSQLBuilder\DataManipulation\SelectTable;
 use NGFramer\NGFramerPHPSQLBuilder\DataManipulation\SelectView;
 
 class View
