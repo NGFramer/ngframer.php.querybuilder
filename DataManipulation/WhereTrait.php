@@ -7,9 +7,16 @@ trait WhereTrait
     // Function to add to the query log.
     // Will be used as has been defined in the _builder abstract class, accessed from the parent class.
     abstract protected function addToQueryLogDeepArray(mixed ...$arguments): void;
-
     // Will be used to check if the array is associated array or not, accessed from the parent class.
     abstract protected function isAssocArray(array $array): bool;
+    // Will be used to get the query log, accessed from the parent class.
+    abstract protected function getQueryLog(): array;
+    // Will be used to get the bind index starter, accessed from the parent class.
+    abstract protected function getBindIndexStarter(): int;
+    // Will be used to sanitize the value, accessed from the parent class.
+    abstract protected function sanitizeValue(string $value): string;
+
+
 
 
     public function where(mixed ...$arguments): self
@@ -226,8 +233,22 @@ trait WhereTrait
         $column = $element['column'] ?? $element[0];
         $value = $element['value'] ?? $element[1];
         $operator = $element['operator'] ?? $element[2] ?? '=';
+        // Return based on the type of the execution method.
+        // If the default condition, bind the parameters execution method.
+        if ($this->isGoDirect()) {
+            $bindIndex = $this->getBindIndexStarter();
+            $this->updateBindParameters($column.$bindIndex, $value.$bindIndex);
+            return "$column $operator :$column$bindIndex";
+        } // If the other condition, direct execution method.
+        else {
+            $value = $this->sanitizeValue($value);
+            return "$column $operator '$value'";
+        }
+    }
 
-        return "$column $operator '$value'";
+    private function escapeValue(string $value): string
+    {
+        return addslashes($value);
     }
 
     private function areElementsArray(array $elementContainer): bool
