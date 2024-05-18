@@ -29,7 +29,7 @@ class Table
         return new SelectTable($this->tableName, $fields);
     }
 
-    public function insert(array $data): InsertTable
+    public function insert(array ...$data): InsertTable
     {
         return new InsertTable($this->tableName, $data);
     }
