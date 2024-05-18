@@ -235,7 +235,7 @@ trait WhereTrait
         $operator = $element['operator'] ?? $element[2] ?? '=';
         // Return based on the type of the execution method.
         // If the default condition, bind the parameters execution method.
-        if ($this->isGoDirect()) {
+        if (!$this->isGoDirect()) {
             $bindIndex = $this->getBindIndexStarter();
             $this->updateBindParameters($column.$bindIndex, $value.$bindIndex);
             return "$column $operator :$column$bindIndex";
