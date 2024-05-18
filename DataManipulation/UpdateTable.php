@@ -18,6 +18,8 @@ class UpdateTable extends _DmlTable
     }
 
 
+
+
     // Constructor for the UpdateTable class.
     public function __construct($tableName, $data)
     {
@@ -28,6 +30,8 @@ class UpdateTable extends _DmlTable
         // Call the update function.
         $this->update($data);
     }
+
+
 
 
     public function update(array $data): void
@@ -57,6 +61,8 @@ class UpdateTable extends _DmlTable
     }
 
 
+
+
     // Go direct function for where conditions.
     public function goDirect(): self
     {
@@ -67,12 +73,13 @@ class UpdateTable extends _DmlTable
     }
 
 
+
+
     // Builder function for the class.
     public function build(): string
     {
         // Get the queryLog initially to process.
         $queryLog = $this->getQueryLog();
-
         // Start building the update query.
         $query = 'UPDATE ' . $queryLog['table'] . ' SET ';
 
