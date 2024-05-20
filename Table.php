@@ -31,7 +31,7 @@ class Table
 
     public function insert(array ...$data): InsertTable
     {
-        return new InsertTable($this->tableName, $data);
+        return new InsertTable($this->tableName, ...$data);
     }
 
     public function update(array ...$data): UpdateTable
