@@ -247,9 +247,4 @@ trait WhereTrait
             return "$column $operator '$value'";
         }
     }
-
-    private function escapeValue(string $value): string
-    {
-        return addslashes($value);
-    }
 }
