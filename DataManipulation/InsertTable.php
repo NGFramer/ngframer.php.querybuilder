@@ -35,9 +35,7 @@ class InsertTable extends _DmlTable
                 foreach ($row as $columnName => $columnValue) {
                     $rowData[] = ['column' => $columnName, 'value' => $columnValue];
                 }
-            }
-
-            // If the row is not an associative array ['value1', 'value2', ...]
+            } // If the row is not an associative array ['value1', 'value2', ...]
             else {
                 // If the row is an array of values (assuming column order)
                 foreach ($row as $columnValue) {
@@ -73,55 +71,62 @@ class InsertTable extends _DmlTable
             throw new \InvalidArgumentException('No data to insert.');
         }
 
-        // Initialize query components.
-        $query = "INSERT INTO " . $queryLog['table'];
-        // Array to store column names.
-        $columns = [];
-        // Array to store values
-        $values = [];
+        // Array to store all generated queries
+        $queries = [];
 
         // Handle multiple insert rows
-        if (count($queryLog['data']) > 1) {
-            foreach ($queryLog['data'] as $rowIndex => $rowData) {
-                $rowColumns = [];
-                $rowValues = [];
+        foreach ($queryLog['data'] as $rowData) {
 
-                foreach ($rowData as $column => $value) {
-                    $rowColumns[] = $column; // Add the column name
+            // Initialize query components
+            $query = "INSERT INTO " . $queryLog['table'];
+            $columns = [];
+            $values = [];
 
-                    if ($this->isGoDirect()) {
-                        // Direct execution - sanitize values and add directly
-                        $rowValues[] = "'" . $this->sanitizeValue($value) . "'";
+            // Check if the first row element has a 'column' key to determine if column names are provided
+            $hasColumnName = isset($rowData[0]['column']);
+
+            // Loop inside the row's columns (fields)
+            foreach ($rowData as $rowComponent) {
+
+                // Get bind index for the columns (field)
+                $bindIndex = $this->getBindIndexStarter();
+
+                // Execution if the column name was set
+                if ($hasColumnName) {
+                    $column = $rowComponent['column'];
+                    $value = $rowComponent['value'];
+                    $columns[] = $column;
+
+                    // Execution based on the method of execution.
+                    if (!$this->isGoDirect()) {
+                        $values[] = ':' . $column . $bindIndex;
+                        $this->updateBindParameters($column . $bindIndex, $this->sanitizeValue($value));
                     } else {
-                        // Prepared statements - add placeholders and bind parameters
-                        $bindIndex = $this->getBindIndexStarter() + $rowIndex;
-                        $rowValues[] = ":$column$bindIndex";
-                        $this->updateBindParameters("$column$bindIndex", $value);
+                        $values[] = "'" . $this->sanitizeValue($value) . "'";
+                    }
+                } // Execution if the column name was not set
+                else {
+                    $value = $rowComponent['value'];
+
+                    // Execution based on the method of execution.
+                    if (!$this->isGoDirect()) {
+                        $values[] = ':column' . $bindIndex;
+                        $this->updateBindParameters('column' . $bindIndex, $this->sanitizeValue($value));
+                    } else {
+                        $values[] = "'" . $this->sanitizeValue($value) . "'";
                     }
                 }
-
-                $columns = $rowColumns; // Use the columns from the first row (assuming consistent columns)
-                $values[] = "(" . implode(', ', $rowValues) . ")"; // Add values for the current row
             }
-        } else {
-            // Handle single insert row
-            foreach ($queryLog['data'][0] as $column => $value) {
-                $columns[] = $column; // Add the column name
 
-                if ($this->isGoDirect()) {
-                    // Direct execution - sanitize values and add directly
-                    $values[] = "'" . $this->sanitizeValue($value) . "'";
-                } else {
-                    // Prepared statements - add placeholders and bind parameters
-                    $bindIndex = $this->getBindIndexStarter();
-                    $values[] = ":$column$bindIndex";
-                    $this->updateBindParameters("$column$bindIndex", $value);
-                }
-            }
+            // Construct the query based on whether column names are provided.
+            if ($hasColumnName) $query .= ' (' . implode(', ', $columns) . ')';
+            $query .= ' VALUES (' . implode(', ', $values) . ')';
+
+            // Get the query to be saved for later.
+            $queries[] = $query;
         }
 
-        // Assemble the query finally to return.
-        $query .= " (" . implode(', ', $columns) . ") VALUES " . implode(', ', $values);
-        return $query;
+        // Combine all queries with a semicolon and return.
+        return implode('; ', $queries);
     }
 }
