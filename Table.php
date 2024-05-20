@@ -36,7 +36,7 @@ class Table
 
     public function update(array ...$data): UpdateTable
     {
-        return new UpdateTable($this->tableName, $data);
+        return new UpdateTable($this->tableName, ...$data);
     }
 
     public function delete(): DeleteTable
