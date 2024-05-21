@@ -7,7 +7,6 @@ require_once 'vendor/autoload.php';
 header('Content-Type: application/json');
 
 
-
 // Insertion Example
 // ================>
 $query1 = new Query();
@@ -20,8 +19,6 @@ $sqlQuery1 = $query1
     -> goDirect()
     // Build function generates the SQL query.
     ->build();
-echo json_encode($sqlQuery1,);
-
 
 
 // Select Example
@@ -40,7 +37,6 @@ $sqlQuery2 = $query2
     ->build();
 
 
-
 // Update Example
 // =============>
 $query3 = new Query();
@@ -55,8 +51,6 @@ $sqlQuery3 = $query3
     -> goDirect()
     // Build function generates the SQL query.
     ->build();
-echo json_encode($sqlQuery3);
-
 
 
 // Delete Example
@@ -70,5 +64,19 @@ $sqlQuery4 = $query4
     ->where('id', 1)
     // Go Direct function makes it possible for direct execution without prepared statement.
     -> goDirect()
+    // Build function generates the SQL query.
+    ->build();
+
+
+// Insertion Example
+// ================>
+$query5 = new Query();
+$sqlQuery5 = $query5
+    ->table('nameOfTable')->create()
+    // [An array is a row, and the values are the columns.] [Another array, another row], can be in one functional calling or multiple.
+    ->addColumn('id')->typeLength('varchar', 255)->notNull()->primary()
+    ->addColumn('name')->typeLength('varchar', 255)->notNull()
+    ->addColumn('website')->typeLength('varchar', 255)->notNull()
+    ->addColumn('profile')->typeLength('varchar', 255)->notNull()
     // Build function generates the SQL query.
     ->build();
