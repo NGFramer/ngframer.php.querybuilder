@@ -5,9 +5,7 @@ namespace NGFramer\NGFramerPHPSQLBuilder\DataDefinition\Supportive;
 abstract class _DdlTableColumn extends _DdlTable
 {
     // Variable to store the column data.
-    private string $selectedColumn;
-
-
+    protected string|null $selectedColumn;
 
 
     // Construct function from parent class.
@@ -16,8 +14,6 @@ abstract class _DdlTableColumn extends _DdlTable
     {
         parent::__construct($tableName);
     }
-
-
 
 
     // Everything about the column.
@@ -32,6 +28,17 @@ abstract class _DdlTableColumn extends _DdlTable
         return $this;
     }
 
+
+    // Opposite of select() function.
+    public function deselect(): self
+    {
+        if (!empty($this->selectedColumn)){
+            $this->selectedColumn = null;
+        }
+        return $this;
+    }
+
+
     // Clone function of select() function.
     public function selectField(string $columnName): self
     {
@@ -39,12 +46,30 @@ abstract class _DdlTableColumn extends _DdlTable
         return $this;
     }
 
+
+    // Clone function of deselect() function.
+    public function deselectField(): self
+    {
+        $this->deselect();
+        return $this;
+    }
+
+
     // Clone function of select() function.
     public function selectColumn(string $columnName): self
     {
         $this->select($columnName);
         return $this;
     }
+
+
+    // Clone function of deselect() function.
+    public function deselectColumn(): self
+    {
+        $this->deselect();
+        return $this;
+    }
+
 
     // This function returns the tableColumn that has been selected.
     protected function getSelectedColumn(): string
@@ -56,8 +81,6 @@ abstract class _DdlTableColumn extends _DdlTable
     }
 
 
-
-
     // Function related to the addition of columns.
     abstract public function addColumn($columnName):self;
 
@@ -66,8 +89,6 @@ abstract class _DdlTableColumn extends _DdlTable
         $this->addColumn($columnName);
         return $this;
     }
-
-
 
 
     // Functions related ot the addition of attributes to the columns.
@@ -91,8 +112,6 @@ abstract class _DdlTableColumn extends _DdlTable
     }
 
 
-
-
     // The publicly accessible function from above the system code files.
     // Workable column attributes for DDL common.
     public function type(string $type): self
@@ -101,6 +120,7 @@ abstract class _DdlTableColumn extends _DdlTable
         return $this;
     }
 
+
     // Clone function of type() function.
     public function addType(string $type): self
     {
@@ -108,11 +128,13 @@ abstract class _DdlTableColumn extends _DdlTable
         return $this;
     }
 
+
     public function length(int|null $length = null): self
     {
         $this->addColumnAttribute("length", $length);
         return $this;
     }
+
 
     // Clone function of length() function.
     public function addLength(int $length): self
@@ -121,6 +143,7 @@ abstract class _DdlTableColumn extends _DdlTable
         return $this;
     }
 
+
     public function typeLength(string $type, int $length): self
     {
         $this->type($type);
@@ -128,11 +151,13 @@ abstract class _DdlTableColumn extends _DdlTable
         return $this;
     }
 
+
     public function addTypeLength(string $type, int $length): self
     {
         $this->typeLength($type, $length);
         return $this;
     }
+
 
     public function default(mixed $default): self
     {
@@ -140,11 +165,13 @@ abstract class _DdlTableColumn extends _DdlTable
         return $this;
     }
 
+
     public function addDefault(mixed $default): self
     {
         $this->default($default);
         return $this;
     }
+
 
     public function null(): self
     {
@@ -152,11 +179,13 @@ abstract class _DdlTableColumn extends _DdlTable
         return $this;
     }
 
+
     public function addNull(): self
     {
         $this->null();
         return $this;
     }
+
 
     public function notNull(): self
     {
@@ -164,11 +193,13 @@ abstract class _DdlTableColumn extends _DdlTable
         return $this;
     }
 
+
     public function addNotNull(): self
     {
         $this->notNull();
         return $this;
     }
+
 
     public function primary(): self
     {
@@ -176,11 +207,13 @@ abstract class _DdlTableColumn extends _DdlTable
         return $this;
     }
 
+
     public function addPrimary(): self
     {
         $this->primary();
         return $this;
     }
+
 
     public function unique(): self
     {
@@ -188,11 +221,13 @@ abstract class _DdlTableColumn extends _DdlTable
         return $this;
     }
 
+
     public function addUnique(): self
     {
         $this->unique();
         return $this;
     }
+
 
     public function autoIncrement(): self
     {
@@ -200,11 +235,13 @@ abstract class _DdlTableColumn extends _DdlTable
         return $this;
     }
 
+
     public function addAutoIncrement(): self
     {
         $this->autoIncrement();
         return $this;
     }
+
 
     public function ai(): self
     {
@@ -212,11 +249,13 @@ abstract class _DdlTableColumn extends _DdlTable
         return $this;
     }
 
+
     public function addAI(): self
     {
         $this->autoIncrement();
         return $this;
     }
+
 
     public function foreignKey(string $referenceTable, string $referenceColumn): self
     {
@@ -225,11 +264,13 @@ abstract class _DdlTableColumn extends _DdlTable
         return $this;
     }
 
+
     public function addForeignKey(string $referenceTable, string $referenceColumn): self
     {
         $this->foreignKey($referenceTable, $referenceColumn);
         return $this;
     }
+
 
     public function fk(string $referenceTable, string $referenceColumn): self
     {
@@ -237,13 +278,12 @@ abstract class _DdlTableColumn extends _DdlTable
         return $this;
     }
 
+
     public function addFk(string $referenceTable, string $referenceColumn): self
     {
         $this->foreignKey($referenceTable, $referenceColumn);
         return $this;
     }
-
-
 
 
     // Supportive function for column operations.
@@ -259,10 +299,12 @@ abstract class _DdlTableColumn extends _DdlTable
         return null;
     }
 
+
     protected function columnsCount(): int
     {
         return $this->getElementsCount($this->queryLog, 'columns');
     }
+
 
     protected function getElementsCount(array $source, string $key): int
     {
