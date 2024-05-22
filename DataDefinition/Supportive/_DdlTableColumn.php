@@ -290,7 +290,13 @@ abstract class _DdlTableColumn extends _DdlTable
     protected function getIndexOfColumn(string $columnName): int|null
     {
         $columnElementCounter = 0;
+        if (!isset($this->queryLog['columns'])){
+            return null;
+        }
         foreach ($this->queryLog['columns'] as $columnElements) {
+            if (!isset($columnElements['column'])) {
+                return null;
+            }
             if ($columnElements['column'] == $columnName) {
                 return $columnElementCounter;
             }
@@ -298,6 +304,23 @@ abstract class _DdlTableColumn extends _DdlTable
         }
         return null;
     }
+
+    protected function getActionOfColumn(string $columnName): string|null
+    {
+        if (!isset($this->queryLog['columns'])){
+            return null;
+        }
+        foreach ($this->queryLog['columns'] as $columnElements) {
+            if (!isset($columnElements['column'])) {
+                return null;
+            }
+            if ($columnElements['column'] == $columnName) {
+                return $columnElements['action'] ?? null;
+            }
+        }
+        return null;
+    }
+
 
 
     protected function columnsCount(): int

@@ -7,7 +7,8 @@ use NGFramer\NGFramerPHPSQLBuilder\DataDefinition\Supportive\_DdlTableColumn;
 class AlterTable extends _DdlTableColumn
 {
     // Variable only for the Alter Table.
-    private string|null $selectedColumnAction; // Will be only addColumn, dropColumn, modifyColumn.
+    // Will be only addColumn, dropColumn, modifyColumn.
+    private string|null $selectedColumnAction;
 
 
 
@@ -40,40 +41,38 @@ class AlterTable extends _DdlTableColumn
     // Modification means the addition and deletion, of columns.
     public function addColumn($columnName):self
     {
-        // Initialize the selectedColumnAction variable for future checks to perform more operations on.
-        $this->selectedColumnAction = 'addColumn';
+        // Firstly we select the column.
+        $this->select($columnName);
         // Make modification to the query log, we have added the table name and table's action previously.
         // We find the index for the column, and add the column, and it's name there.
         // Get the columns count.
         // Logic behind this is to get count number of columns, then do -1 as array index starts from 0, and +1 for new Index.
-        $newColumnIndex = $this->columnsCount();
+        $newColumnIndex = !empty($this->getIndexOfColumn($columnName)) ? $this->getIndexOfColumn($columnName) : $this->columnsCount();
         // Add the column to the query log.
         $this->addToQueryLogDeep('columns', $newColumnIndex, 'action', 'addColumn');
         $this->addToQueryLogDeep('columns', $newColumnIndex, 'column', $columnName);
-        $this->selectColumn($columnName);
         return $this;
     }
+
 
     // No function for changeColumn.
     // Change column will be done by selecting the column and then changing the attributes of the column.
     // Using functions like: changeType(), changeLength(), dropPrimary(), dropUnique(), dropAutoIncrement(), dropNotNull(), dropDefault(), dropAi().
-
     public function dropColumn(): self
     {
-        // Initialize the selectedColumnAction variable for future checks to perform more operations on.
-        $this->selectedColumnAction = 'dropColumn';
-        // Make modification to the query log, we have added the table name and table's action previously.
-        // We find the total entries made, and then add the entry at the end of the query log.
-        // Get the columns count.
-        $newColumnIndex = $this->columnsCount();
-        // Logic behind this is to get count number of columns, then do -1 as array index starts from 0, and +1 for new Index.
-        // Add the column to the query log.
-        $this->addToQueryLogDeep('columns', $newColumnIndex, 'action', 'dropColumn');
         // Find the name of the column to drop.
         $columnName = $this->getSelectedColumn();
-        // Add the column to the query log.
+        // Check if the column has action previous defined, meaning the column has been marked to be acted in this instance.
+        if ($this->getActionOfColumn($columnName) == 'addColumn' || $this->getActionOfColumn($columnName) == 'dropColumn' || $this->getActionOfColumn($columnName) == 'modifyColumn'){
+            // If the column is being added, then you can't drop the column being added.
+            throw new \Exception("You cannot drop a column that is being modified in this instance.");
+        }
+        // Get the columns count.
+        // Logic behind this is to get count number of columns, then do -1 as array index starts from 0, and +1 for new Index.
+        $newColumnIndex = !empty($this->getIndexOfColumn($columnName)) ? $this->getIndexOfColumn($columnName) : $this->columnsCount();
+        // Add the column and action to the query log.
+        $this->addToQueryLogDeep('columns', $newColumnIndex, 'action', 'dropColumn');
         $this->addToQueryLogDeep('columns', $newColumnIndex, 'column', $columnName);
-        // UpdateTable the selected column to null.
         return $this;
     }
 
@@ -90,24 +89,28 @@ class AlterTable extends _DdlTableColumn
     // Modification means the addition, changing, and deletion of columns.
     protected function addColumnAttribute(string $attributeName, mixed $attributeValue): void
     {
-        if ($this->selectedColumnAction == 'addColumn') {
+        // Get the column that has been selected. Selection is also done during the creation of the column.
+        $columnName = $this->getSelectedColumn();
+        // If no column has been selected, select a column first.
+        if (empty($columnName)) {
+            throw new \Exception("No column has been selected. Please select a column before proceeding.");
+        }
+        // If the column is being added, then you can add an attribute to the column being added, without any additional action addition to the column.
+        if ($this->getActionOfColumn($columnName) == 'addColumn') {
             parent::addColumnAttribute($attributeName, $attributeValue);
         }
         // If the column is being dropped, then you can't add an attribute to the column being dropped.
         // You can though add attribute before and then drop the column.
-        elseif ($this->selectedColumnAction == 'dropColumn') {
+        elseif ($this->getActionOfColumn($columnName) == 'dropColumn') {
             throw new \Exception("You cannot add an attribute to a column that is being dropped.");
         }
-        // If the column is being modified, we add an action to query log, We haven't added before, only once, we set it.
-        elseif (!empty($this->getSelectedColumn())) {
-            // First make an action for the table, if not made already.
-            $this->addColumnModificationLog();
-            // Find the name of the column.
-            $columnName = $this->getSelectedColumn();
+        // If the column is being modified (has no action for it), we add an action to query log, We haven't added before, only once, we set it.
+        elseif (empty($this->getActionOfColumn($columnName))) {
             // Get a new index for the column current column.
             $columnIndex = $this->columnsCount();
+            // First make an action for the table, if not made already.
+            $this->addToQueryLogDeep('columns', $columnIndex, 'action', 'alterColumn');
             // Make an entry to the newer index.
-            $this->addToQueryLogDeep('columns', $columnIndex, 'action', 'addColumnAttribute');
             $this->addToQueryLogDeep('columns', $columnIndex, 'column', $columnName);
             $this->addToQueryLogDeep('columns', $columnIndex, $attributeName, $attributeValue);
         } else {
@@ -121,14 +124,13 @@ class AlterTable extends _DdlTableColumn
         if (isset($this->selectedColumnAction) AND ($this->selectedColumnAction == 'addColumn' OR $this->selectedColumnAction == 'dropColumn')){
             throw new \Exception("You cannot change the attribute of a column that is being added or dropped.");
         } else {
-            // First make an action for the table, if not made already.
-            $this->addColumnModificationLog();
             // Find the name of the column.
             $columnName = $this->getSelectedColumn();
             // Get a new index for the column current column.
             $newColumnIndex = $this->columnsCount();
+            // First make an action for the table, if not made already.
+            $this->addToQueryLogDeep('columns', $newColumnIndex, 'action', 'alterColumn');
             // Make an entry to the newer index.
-            $this->addToQueryLogDeep('columns', $newColumnIndex, 'action', 'modifyColumnAttribute');
             $this->addToQueryLogDeep('columns', $newColumnIndex, 'column', $columnName);
             $this->addToQueryLogDeep('columns', $newColumnIndex, $attributeName, $attributeValue);
         }
@@ -139,14 +141,17 @@ class AlterTable extends _DdlTableColumn
         if (isset($this->selectedColumnAction) AND ($this->selectedColumnAction == 'addColumn' OR $this->selectedColumnAction == 'dropColumn')){
             throw new \Exception("You cannot change the attribute of a column that is being added or dropped.");
         } else {
-            // First make an action for the table, if not made already.
-            $this->addColumnModificationLog();
             // Find the name of the column.
             $columnName = $this->getSelectedColumn();
+            // Check if the action of the column is not set, then set it.
+            if (!empty($this->getActionOfColumn($columnName))) {
+                throw new \Exception("No attribute has been set for the column. Please set an attribute before proceeding.");
+            }
             // Get a new index for the column current column.
             $newColumnIndex = $this->columnsCount();
+            // First make an action for the table, if not made already.
+            $this->addToQueryLogDeep('columns', $newColumnIndex, 'action', 'alterColumn');
             // Make an entry to the newer index.
-            $this->addToQueryLogDeep('columns', $newColumnIndex, 'action', 'dropColumnAttribute');
             $this->addToQueryLogDeep('columns', $newColumnIndex, 'column', $columnName);
             $this->addToQueryLogDeep('columns', $newColumnIndex, $attributeName, false);
         }
@@ -155,13 +160,7 @@ class AlterTable extends _DdlTableColumn
 
 
 
-    // Add column modification query logger function.
-    private function addColumnModificationLog(): void
-    {
-        if (!$this->getQueryLog()['action'] == 'modifyColumn'){
-            $this->addToQueryLogDeepArray('action', 'modifyColumn');
-        }
-    }
+
 
 
 
