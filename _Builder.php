@@ -11,15 +11,18 @@ abstract class _Builder
     // Function relating to the queryLog building, logging, and getting.
     abstract public function build(): string;
 
+
     public function buildLog(): array
     {
         return $this->getQueryLog();
     }
 
+
     protected function getQueryLog(): array
     {
         return $this->queryLog;
     }
+
 
     protected function addQueryLog(string $structure, string $structureName, string $action, array ...$structureBasedValues): void
     {
@@ -30,6 +33,7 @@ abstract class _Builder
             $this->queryLog[][$attributeName] = $attributeValue;
         }
     }
+
 
     protected function addToQueryLogDeepArray(mixed ...$arguments): void
     {
@@ -48,6 +52,7 @@ abstract class _Builder
         // Add the value at the deepest level
         $target[] = $value;
     }
+
 
     // For single values, like the table name and the action.
     // Example, primary = true, unique = true, tableName = 'name of table', etc.
@@ -69,6 +74,7 @@ abstract class _Builder
         $target = $value;
     }
 
+
     // Supportive function, to check if the array is associative or not.
     protected function isAssocArray(array $array): bool
     {
@@ -82,6 +88,7 @@ abstract class _Builder
         return false; // It's just a list of values
     }
 
+
     // Supportive function, to check if all the elements of an array are arrays.
     protected function areElementsArray(array $elementContainer): bool
     {
@@ -93,4 +100,67 @@ abstract class _Builder
         }
         return true;
     }
+
+
+    // Get the newer column index.
+    protected function getNewColumnIndex($columnName): int
+    {
+        //
+        return !empty($this->getIndexOfColumn($columnName)) ? $this->getIndexOfColumn($columnName) : $this->columnsCount();
+    }
+
+
+    // Supportive function for column operations.
+    protected function getIndexOfColumn(string $columnName): int|null
+    {
+        $columnElementCounter = 0;
+        if (!isset($this->queryLog['columns'])){
+            return null;
+        }
+        foreach ($this->queryLog['columns'] as $columnElements) {
+            if (!isset($columnElements['column'])) {
+                return null;
+            }
+            if ($columnElements['column'] == $columnName) {
+                return $columnElementCounter;
+            }
+            $columnElementCounter++;
+        }
+        return null;
+    }
+
+    protected function getActionOfColumn(string $columnName): string|null
+    {
+        if (!isset($this->queryLog['columns'])){
+            return null;
+        }
+        foreach ($this->queryLog['columns'] as $columnElements) {
+            if (!isset($columnElements['column'])) {
+                return null;
+            }
+            if ($columnElements['column'] == $columnName) {
+                return $columnElements['action'] ?? null;
+            }
+        }
+        return null;
+    }
+
+
+
+    protected function columnsCount(): int
+    {
+        return $this->getElementsCount($this->queryLog, 'columns');
+    }
+
+
+    protected function getElementsCount(array $source, string $key): int
+    {
+        if (isset($source[$key])){
+            return count($source[$key]);
+        } else {
+            return 0;
+        }
+    }
+
+
 }
