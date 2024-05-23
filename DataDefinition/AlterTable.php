@@ -6,13 +6,6 @@ use NGFramer\NGFramerPHPSQLBuilder\DataDefinition\Supportive\_DdlTableColumn;
 
 class AlterTable extends _DdlTableColumn
 {
-    // Variable only for the Alter Table.
-    // Will be only addColumn, dropColumn, modifyColumn.
-    private string|null $selectedColumnAction;
-
-
-
-
     // Construct function from parent class.
     // Location: AlterTable => _DdlTableColumn => _DdlTable.
     // __construct($tableName) function.
@@ -24,17 +17,12 @@ class AlterTable extends _DdlTableColumn
     }
 
 
-
-
     // Selection function modification from parent.
     public function select(string $columnName): self
     {
         parent::select($columnName);
-        $this->selectedColumnAction = null;
         return $this;
     }
-
-
 
 
     // The functions related to modification of columns in a table.
@@ -46,8 +34,7 @@ class AlterTable extends _DdlTableColumn
         // Make modification to the query log, we have added the table name and table's action previously.
         // We find the index for the column, and add the column, and it's name there.
         // Get the columns count.
-        // Logic behind this is to get count number of columns, then do -1 as array index starts from 0, and +1 for new Index.
-        $newColumnIndex = !empty($this->getIndexOfColumn($columnName)) ? $this->getIndexOfColumn($columnName) : $this->columnsCount();
+        $newColumnIndex = $this->getNewColumnIndex($columnName);
         // Add the column to the query log.
         $this->addToQueryLogDeep('columns', $newColumnIndex, 'action', 'addColumn');
         $this->addToQueryLogDeep('columns', $newColumnIndex, 'column', $columnName);
@@ -69,20 +56,19 @@ class AlterTable extends _DdlTableColumn
         }
         // Get the columns count.
         // Logic behind this is to get count number of columns, then do -1 as array index starts from 0, and +1 for new Index.
-        $newColumnIndex = !empty($this->getIndexOfColumn($columnName)) ? $this->getIndexOfColumn($columnName) : $this->columnsCount();
+        $newColumnIndex = $this->getNewColumnIndex($columnName);
         // Add the column and action to the query log.
         $this->addToQueryLogDeep('columns', $newColumnIndex, 'action', 'dropColumn');
         $this->addToQueryLogDeep('columns', $newColumnIndex, 'column', $columnName);
         return $this;
     }
 
+
     public function dropField(): self
     {
         $this->dropColumn();
         return $this;
     }
-
-
 
 
     // The functions related to modification of attributes of columns in a table.
@@ -119,13 +105,16 @@ class AlterTable extends _DdlTableColumn
         }
     }
 
+
     protected function changeColumnAttribute(string $attributeName, mixed $attributeValue): void
     {
-        if (isset($this->selectedColumnAction) AND ($this->selectedColumnAction == 'addColumn' OR $this->selectedColumnAction == 'dropColumn')){
+        // Find the name of the column.
+        $columnName = $this->getSelectedColumn();
+        // Check if the action of the column is not set, then set it.
+        if (($this->getActionOfColumn($columnName) == 'addColumn' OR $this->getActionOfColumn($columnName) == 'dropColumn')){
             throw new \Exception("You cannot change the attribute of a column that is being added or dropped.");
         } else {
-            // Find the name of the column.
-            $columnName = $this->getSelectedColumn();
+
             // Get a new index for the column current column.
             $newColumnIndex = $this->columnsCount();
             // First make an action for the table, if not made already.
@@ -136,19 +125,21 @@ class AlterTable extends _DdlTableColumn
         }
     }
 
+
     protected function dropColumnAttribute(string $attributeName): void
     {
-        if (isset($this->selectedColumnAction) AND ($this->selectedColumnAction == 'addColumn' OR $this->selectedColumnAction == 'dropColumn')){
+        // Find the name of the column.
+        $columnName = $this->getSelectedColumn();
+        // Check if the action of the column is not set, then set it.
+        if ($this->getActionOfColumn($columnName) == 'addColumn' OR $this->getActionOfColumn($columnName) == 'dropColumn') {
             throw new \Exception("You cannot change the attribute of a column that is being added or dropped.");
         } else {
-            // Find the name of the column.
-            $columnName = $this->getSelectedColumn();
             // Check if the action of the column is not set, then set it.
             if (!empty($this->getActionOfColumn($columnName))) {
                 throw new \Exception("No attribute has been set for the column. Please set an attribute before proceeding.");
             }
             // Get a new index for the column current column.
-            $newColumnIndex = $this->columnsCount();
+            $newColumnIndex = $this->getNewColumnIndex($columnName);
             // First make an action for the table, if not made already.
             $this->addToQueryLogDeep('columns', $newColumnIndex, 'action', 'alterColumn');
             // Make an entry to the newer index.
@@ -158,19 +149,13 @@ class AlterTable extends _DdlTableColumn
     }
 
 
-
-
-
-
-
-
-
     // Only functions available for the use from the external class.
     public function changeType(string $type): self
     {
         $this->changeColumnAttribute("type", $type);
         return $this;
     }
+    
 
     public function changeLength(int|null $length = null): self
     {
@@ -178,11 +163,13 @@ class AlterTable extends _DdlTableColumn
         return $this;
     }
 
+
     public function dropPrimary(): self
     {
         $this->dropColumnAttribute('primary');
         return $this;
     }
+
 
     public function dropUnique(): self
     {
@@ -190,11 +177,13 @@ class AlterTable extends _DdlTableColumn
         return $this;
     }
 
+
     public function dropAutoIncrement(): self
     {
         $this->dropColumnAttribute('autoIncrement');
         return $this;
     }
+
 
     public function dropNotNull(): self
     {
@@ -202,21 +191,19 @@ class AlterTable extends _DdlTableColumn
         return $this;
     }
 
+
     public function dropDefault(): self
     {
         $this->dropColumnAttribute('default');
         return $this;
     }
 
+
     public function dropAi(): self
     {
         $this->dropAutoIncrement();
         return $this;
     }
-
-
-
-
 
 
     public function build(): string
