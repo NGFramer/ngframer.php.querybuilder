@@ -2,15 +2,14 @@
 
 namespace NGFramer\NGFramerPHPSQLBuilder\DataManipulation;
 
-Trait LimitTrait
+trait LimitTrait
 {
     // Abstract function used in the class.
-    abstract function addToQueryLogDeep(mixed ... $arguments): void;
+    abstract function addToQueryLogDeep(mixed ...$arguments): void;
+
     abstract function getQueryLog(): array;
 
 
-
-    
     // Main function for the class.
     public function limit($limit): self
     {
@@ -18,8 +17,6 @@ Trait LimitTrait
         $this->addToQueryLogDeep('limit', $limit);
         return $this;
     }
-
-
 
 
     // Builder function for the class.

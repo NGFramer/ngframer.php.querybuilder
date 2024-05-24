@@ -7,14 +7,12 @@ use NGFramer\NGFramerPHPSQLBuilder\DataManipulation\Supportive\_DmlView;
 class SelectView extends _DmlView
 {
     // Use the following trait to access the functions.
-    use WhereTrait, LimitTrait, SortByTrait, GroupByTrait{
+    use WhereTrait, LimitTrait, SortByTrait, GroupByTrait {
         WhereTrait::build as buildWhere;
         SortByTrait::build as buildSortBy;
         GroupByTrait::build as buildGroupBy;
         LimitTrait::build as buildLimit;
     }
-
-
 
 
     // Constructor function for the class.
@@ -24,8 +22,6 @@ class SelectView extends _DmlView
         $this->addQueryLog('view', $viewName, 'selectData');
         $this->select($columns);
     }
-
-
 
 
     // Main function for the class.
@@ -40,8 +36,6 @@ class SelectView extends _DmlView
     }
 
 
-
-
     // Go direct function for where conditions.
     public function goDirect(): self
     {
@@ -50,8 +44,6 @@ class SelectView extends _DmlView
         // Return instance for object chaining.
         return $this;
     }
-
-
 
 
     // Builder function for the class.

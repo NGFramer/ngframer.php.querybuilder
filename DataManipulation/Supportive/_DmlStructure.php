@@ -12,8 +12,6 @@ abstract class _DmlStructure extends _Builder
     private array $structure;
 
 
-
-
     // Constructor function for the class.
     protected function __construct(string $structureType, string $structureValue)
     {
@@ -26,18 +24,18 @@ abstract class _DmlStructure extends _Builder
         $this->setStructure($structureType, $structureValue);
     }
 
+
     protected function setStructure(string $structureType, string $structureValue): void
     {
         $this->structure['type'] = $structureType;
         $this->structure['value'] = $structureValue;
     }
 
+
     protected function getStructureValue(): string
     {
         return $this->structure['value'];
     }
-
-
 
 
     // Functions used for defining the query execution method.
@@ -49,11 +47,13 @@ abstract class _DmlStructure extends _Builder
         return null;
     }
 
+
     // Function to check if execution method is direct.
     protected function isGoDirect(): bool
     {
         return $this->goDirect;
     }
+
 
     // Function to update/add to the bind parameters.
     protected function updateBindParameters(string $key, string $value): void
@@ -65,12 +65,14 @@ abstract class _DmlStructure extends _Builder
         }
     }
 
+
     // Provides number to use further for the another binding, array starts from 0th position.
     protected function getBindIndexStarter(): int
     {
         // Bind parameter will start from 1.
         return !$this->goDirect ? (count($this->bindParameters)+1):0;
     }
+
 
     protected function sanitizeValue(string $value): string
     {

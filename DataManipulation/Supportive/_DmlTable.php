@@ -9,6 +9,7 @@ abstract class _DmlTable extends _DmlStructure
         parent::__construct('table', $tableName);
     }
 
+    
     public function getTable(): string
     {
         return $this->getStructureValue();

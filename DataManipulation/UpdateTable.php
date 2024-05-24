@@ -10,14 +10,10 @@ class UpdateTable extends _DmlTable
     private int $counter = 0;
 
 
-
-
     // Use the following trait to access the functions.
     use WhereTrait {
         WhereTrait::build as whereBuild;
     }
-
-
 
 
     // Constructor for the UpdateTable class.
@@ -32,8 +28,6 @@ class UpdateTable extends _DmlTable
     }
 
 
-
-
     public function update(array $data): void
     {
         // Check if the data is an associative array.
@@ -46,10 +40,10 @@ class UpdateTable extends _DmlTable
         } else {
             // Multiple updates
             foreach ($data as $element) {
-                if (is_array($element) && $this->isAssocArray($element)) {
+                if (is_array($element) and $this->isAssocArray($element)) {
                     $this->addToQueryLogDeep('data', $this->counter, 'field', $element['field']);
                     $this->addToQueryLogDeep('data', $this->counter, 'value', $element['value']);
-                } else if (is_array($element) && !$this->isAssocArray($element)) {
+                } else if (is_array($element) and !$this->isAssocArray($element)) {
                     $this->addToQueryLogDeep('data', $this->counter, 'field', $element[0]);
                     $this->addToQueryLogDeep('data', $this->counter, 'value', $element[1]);
                 } else {
@@ -61,8 +55,6 @@ class UpdateTable extends _DmlTable
     }
 
 
-
-
     // Go direct function for where conditions.
     public function goDirect(): self
     {
@@ -71,8 +63,6 @@ class UpdateTable extends _DmlTable
         // Return instance for object chaining.
         return $this;
     }
-
-
 
 
     // Builder function for the class.
@@ -99,7 +89,7 @@ class UpdateTable extends _DmlTable
             // For the default method, prepared statements.
             if (!$this->isGoDirect()) {
                 $bindIndex = $this->getBindIndexStarter();
-                $this->updateBindParameters($key.$bindIndex, $value);
+                $this->updateBindParameters($key . $bindIndex, $value);
                 $setData[] = "$key = :$key$bindIndex";
             } // For the direct method, add the values directly.
             else {

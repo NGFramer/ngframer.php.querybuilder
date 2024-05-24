@@ -16,7 +16,7 @@ $sqlQuery1 = $query1
     ->insert(['colName1' => 'colValue', 'colName2' => 'colValue'], ['colName1' => 'colValue', 'colName2' => 2])
     ->insert(['name' => 'Kishor Neupane', 'website' => 'https://neupkishor.com', 'profile' => 'https://github.com/neupkishor'])
     // Go Direct function makes it possible for direct execution without prepared statement.
-    -> goDirect()
+    ->goDirect()
     // Build function generates the SQL query.
     ->build();
 
@@ -32,7 +32,7 @@ $sqlQuery2 = $query2
     ->where('id', 1)
     ->where('name', 'Kishor Neupane')
     // Go Direct function makes it possible for direct execution without prepared statement.
-    -> goDirect()
+    ->goDirect()
     // Build function generates the SQL query.
     ->build();
 
@@ -48,7 +48,7 @@ $sqlQuery3 = $query3
     ->where('id', 1)
     ->where('name', 'Kishor Neupane')
     // Go Direct function makes it possible for direct execution without prepared statement.
-    -> goDirect()
+    ->goDirect()
     // Build function generates the SQL query.
     ->build();
 
@@ -63,7 +63,7 @@ $sqlQuery4 = $query4
     ->where('name', 'Kishor Neupane')
     ->where('id', 1)
     // Go Direct function makes it possible for direct execution without prepared statement.
-    -> goDirect()
+    ->goDirect()
     // Build function generates the SQL query.
     ->build();
 

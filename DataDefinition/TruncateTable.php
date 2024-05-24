@@ -12,16 +12,12 @@ class TruncateTable extends _DdlTable
     public function __construct(string $tableName)
     {
         parent::__construct($tableName);
-        $this->addQueryLog('table',$tableName, 'truncateTable');
+        $this->addQueryLog('table', $tableName, 'truncateTable');
     }
-
-
 
 
     // Main function for the class drop.
     // Function drop not required, the constructor did everything required.
-
-
 
 
     // Function to build the query.

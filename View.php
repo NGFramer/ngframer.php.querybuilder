@@ -11,25 +11,30 @@ class View
 {
     private string $viewName;
 
+    
     public function __construct(string $viewName)
     {
         $this->viewName = $viewName;
     }
+
 
     public function create(): CreateView
     {
         return new CreateView($this->viewName);
     }
 
+
     public function alter(): AlterView
     {
         return new AlterView($this->viewName);
     }
 
+
     public function drop(): DropView
     {
         return new DropView($this->viewName);
     }
+
 
     public function select(string ...$fields): SelectView
     {

@@ -6,6 +6,7 @@ class _DdlDefault
 {
     private static array $defaultLength;
 
+
     public static function setLength(): void
     {
         self::$defaultLength['int'] = 11;
@@ -35,6 +36,7 @@ class _DdlDefault
         self::$defaultLength['enum'] = 0;
         self::$defaultLength['set'] = 0;
     }
+
 
     public static function getLength(string $type): int
     {

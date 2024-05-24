@@ -80,7 +80,7 @@ abstract class _Builder
     {
         // Check if any keys are non-numerical or not starting from 0
         foreach ($array as $key => $value) {
-            if (!is_int($key) || $key !== key($array)) {
+            if (!is_int($key) or $key !== key($array)) {
                 return true; // It's a key-value pair
             }
             next($array); // Move to the next key
@@ -114,7 +114,7 @@ abstract class _Builder
     protected function getIndexOfColumn(string $columnName): int|null
     {
         $columnElementCounter = 0;
-        if (!isset($this->queryLog['columns'])){
+        if (!isset($this->queryLog['columns'])) {
             return null;
         }
         foreach ($this->queryLog['columns'] as $columnElements) {
@@ -131,7 +131,7 @@ abstract class _Builder
 
     protected function getActionOfColumn(string $columnName): string|null
     {
-        if (!isset($this->queryLog['columns'])){
+        if (!isset($this->queryLog['columns'])) {
             return null;
         }
         foreach ($this->queryLog['columns'] as $columnElements) {
@@ -146,7 +146,6 @@ abstract class _Builder
     }
 
 
-
     protected function columnsCount(): int
     {
         return $this->getElementsCount($this->queryLog, 'columns');
@@ -155,7 +154,7 @@ abstract class _Builder
 
     protected function getElementsCount(array $source, string $key): int
     {
-        if (isset($source[$key])){
+        if (isset($source[$key])) {
             return count($source[$key]);
         } else {
             return 0;

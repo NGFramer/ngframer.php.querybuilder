@@ -7,14 +7,12 @@ use NGFramer\NGFramerPHPSQLBuilder\DataManipulation\Supportive\_DmlTable;
 class SelectTable extends _DmlTable
 {
     // Use the following trait to access the functions.
-    use WhereTrait, LimitTrait, SortByTrait, GroupByTrait{
+    use WhereTrait, LimitTrait, SortByTrait, GroupByTrait {
         WhereTrait::build as buildWhere;
-        GroupByTrait::build as buildGroupBy;
         SortByTrait::build as buildSortBy;
+        GroupByTrait::build as buildGroupBy;
         LimitTrait::build as buildLimit;
     }
-
-
 
 
     // Constructor function for the class.
@@ -24,8 +22,6 @@ class SelectTable extends _DmlTable
         $this->addQueryLog('table', $tableName, 'selectData');
         $this->select($columns);
     }
-
-
 
 
     // Main function for the class.
@@ -40,8 +36,6 @@ class SelectTable extends _DmlTable
     }
 
 
-
-
     // Go direct function for where conditions.
     public function goDirect(): self
     {
@@ -50,8 +44,6 @@ class SelectTable extends _DmlTable
         // Return instance for object chaining.
         return $this;
     }
-
-
 
 
     // Builder function for the class.

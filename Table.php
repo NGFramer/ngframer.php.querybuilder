@@ -15,12 +15,11 @@ class Table
 {
     private string $tableName;
 
+    
     public function __construct(string $tableName)
     {
         $this->tableName = $tableName;
     }
-
-
 
 
     // Data Modification functions.
@@ -29,22 +28,23 @@ class Table
         return new SelectTable($this->tableName, $fields);
     }
 
+
     public function insert(array ...$data): InsertTable
     {
         return new InsertTable($this->tableName, ...$data);
     }
+
 
     public function update(array ...$data): UpdateTable
     {
         return new UpdateTable($this->tableName, ...$data);
     }
 
+
     public function delete(): DeleteTable
     {
         return new DeleteTable($this->tableName);
     }
-
-
 
 
     // Data Definition Functions.
@@ -53,15 +53,18 @@ class Table
         return new CreateTable($this->tableName);
     }
 
+
     public function alter(): AlterTable
     {
         return new AlterTable($this->tableName);
     }
 
+
     public function truncate(): TruncateTable
     {
         return new TruncateTable($this->tableName);
     }
+
 
     public function drop(): DropTable
     {

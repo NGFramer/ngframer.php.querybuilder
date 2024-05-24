@@ -9,6 +9,7 @@ abstract class _DdlTable extends _DdlStructure
         parent::__construct('table', $tableName);
     }
 
+    
     public function getTable(): string
     {
         return $this->getStructureValue();

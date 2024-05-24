@@ -8,10 +8,8 @@ class DeleteTable extends _DmlTable
 {
     // Use the following trait to access the functions.
     use WhereTrait{
-        WhereTrait::build as buildWhere; // TODO: To be built.
+        WhereTrait::build as buildWhere;
     }
-
-
 
 
     // Constructor function for the class.
@@ -22,8 +20,6 @@ class DeleteTable extends _DmlTable
     }
 
 
-
-
     // Go direct function for where conditions.
     public function goDirect(): self
     {
@@ -32,8 +28,6 @@ class DeleteTable extends _DmlTable
         // Return instance for object chaining.
         return $this;
     }
-
-
 
     
     // Main builder function for the class.

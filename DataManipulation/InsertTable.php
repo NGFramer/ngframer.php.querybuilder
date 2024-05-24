@@ -66,6 +66,7 @@ class InsertTable extends _DmlTable
     {
         // Get the query log data
         $queryLog = $this->getQueryLog();
+
         // Check if there's data to insert
         if (empty($queryLog['data'])) {
             throw new \InvalidArgumentException('No data to insert.');
@@ -98,12 +99,12 @@ class InsertTable extends _DmlTable
                     $columns[] = $column;
 
                     // Execution based on the method of execution.
+                    // If not direct, use bind parameters
                     if (!$this->isGoDirect()) {
                         $values[] = ':' . $column . $bindIndex;
                         $this->updateBindParameters($column . $bindIndex, $this->sanitizeValue($value));
-                    } else {
-                        $values[] = "'" . $this->sanitizeValue($value) . "'";
-                    }
+                    } // If direct, use the value directly
+                    else $values[] = "'" . $this->sanitizeValue($value) . "'";
                 } // Execution if the column name was not set
                 else {
                     $value = $rowComponent['value'];

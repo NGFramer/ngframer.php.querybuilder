@@ -9,8 +9,6 @@ Trait SortByTrait
     abstract function getQueryLog(): array;
 
 
-
-
     // Main function for the class.
     public function sortBy(mixed ...$sortInstructions): self
     {
@@ -20,7 +18,7 @@ Trait SortByTrait
         }
 
         // If the sorting instructions are passed as two strings.
-        if (count($sortInstructions) == 2 && is_string($sortInstructions[0]) || is_string($sortInstructions[1])) {
+        if (count($sortInstructions) == 2 and is_string($sortInstructions[0]) or is_string($sortInstructions[1])) {
             $this->addToQueryLogDeepArray('sortBy', ['field' => $sortInstructions[0], 'order' => $sortInstructions[1]]);
             return $this;
         }
@@ -42,19 +40,19 @@ Trait SortByTrait
         throw new \InvalidArgumentException('Something went wrong, please check the format of sorting instructions and run the function again.');
     }
 
+
     public function addAsc(string $columnName): self
     {
         $this->sortBy($columnName, 'ASC');
         return $this;
     }
 
+
     public function addDesc(string $columnName): self
     {
         $this->sortBy($columnName, 'DESC');
         return $this;
     }
-
-
 
 
     // Builder function for the trait.
@@ -79,6 +77,7 @@ Trait SortByTrait
             return ' ORDER BY ' . rtrim($sortByString, ', ');
         }
     }
+
 
     private function getSortByString(mixed $sortByInstruction): string
     {

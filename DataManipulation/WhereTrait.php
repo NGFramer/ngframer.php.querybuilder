@@ -7,18 +7,21 @@ trait WhereTrait
     // Function to add to the query log.
     // Will be used as has been defined in the _builder abstract class, accessed from the parent class.
     abstract protected function addToQueryLogDeepArray(mixed ...$arguments): void;
+
     // Will be used to check if the array is associated array or not, accessed from the parent class.
     abstract protected function isAssocArray(array $array): bool;
+
     // Will be used to get the query log, accessed from the parent class.
     abstract protected function getQueryLog(): array;
+
     // Will be used to get the bind index starter, accessed from the parent class.
     abstract protected function getBindIndexStarter(): int;
+
     // Will be used to sanitize the value, accessed from the parent class.
     abstract protected function sanitizeValue(string $value): string;
+
     //  Will be used to update the bind parameters, accessed from the builder class.
     abstract protected function areElementsArray(array $elementContainer): bool;
-
-
 
 
     public function where(mixed ...$arguments): self
@@ -29,7 +32,7 @@ trait WhereTrait
         // Handle the case where the first argument is not an array.
         // Format for passing the arguments is (column, value) condition.
         if (!is_array($arguments[0])) {
-            if (count($arguments) > 3 || count($arguments) < 2) {
+            if (count($arguments) > 3 or count($arguments) < 2) {
                 throw new \InvalidArgumentException('Invalid where condition format. Expected 2 or 3 arguments.');
             }
             // If the argument is not an array, it is a simple "column, value" condition.
@@ -45,7 +48,7 @@ trait WhereTrait
 
                 // If the argument is an indexed array, it is a simple "column, value, operator" condition.
                 if (!$this->isAssocArray($argument)) {
-                    if (count($argument) > 3 || count($argument) < 2) {
+                    if (count($argument) > 3 or count($argument) < 2) {
                         throw new \InvalidArgumentException('Invalid where condition format. Expected 2 or 3 arguments.');
                     }
                     $where['elements'][] = $this->processWhereOne($argument[0], $argument[1], $argument[2] ?? '=');
@@ -213,7 +216,7 @@ trait WhereTrait
             // Loop through the element container elements.
             foreach ($elementContainer as $element) {
                 // If the element is an array with elements key, it is a nested WHERE condition.
-                if (isset($element['elements']) && count($element['elements']) !== 0) {
+                if (isset($element['elements']) and count($element['elements']) !== 0) {
                     $whereElementClauseContainer[] = $this->buildWhereClause($element['elements']);
                 } // If the element is an array with elements key but no elements, throw an exception.
                 else if (isset($element['elements'])) {
@@ -239,7 +242,7 @@ trait WhereTrait
         // If the default condition, bind the parameters execution method.
         if (!$this->isGoDirect()) {
             $bindIndex = $this->getBindIndexStarter();
-            $this->updateBindParameters($column.$bindIndex, $value.$bindIndex);
+            $this->updateBindParameters($column . $bindIndex, $value . $bindIndex);
             return "$column $operator :$column$bindIndex";
         } // If the other condition, direct execution method.
         else {

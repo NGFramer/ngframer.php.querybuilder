@@ -2,13 +2,12 @@
 
 namespace NGFramer\NGFramerPHPSQLBuilder\DataManipulation;
 
-Trait GroupByTrait
+trait GroupByTrait
 {
     // Abstract function used in the class.
-    abstract function addToQueryLogDeep(mixed ... $arguments): void;
+    abstract function addToQueryLogDeep(mixed ...$arguments): void;
+
     abstract function getQueryLog(): array;
-
-
 
 
     // Main function for the trait.
@@ -19,8 +18,6 @@ Trait GroupByTrait
     }
 
 
-
-
     // Builder function for the trait Group By.
     public function build(): string
     {
@@ -29,7 +26,7 @@ Trait GroupByTrait
         // Check if groupBy attribute is set.
         if (!isset($queryLog['groupBy'])) {
             return '';
-        } else if (!empty($queryLog['groupBy']) && is_string($queryLog['groupBy'])) {
+        } else if (!empty($queryLog['groupBy']) and is_string($queryLog['groupBy'])) {
             $groupBy = $queryLog['groupBy'];
             return " GROUP BY $groupBy";
         } else {

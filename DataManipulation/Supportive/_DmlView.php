@@ -9,6 +9,7 @@ abstract class _DmlView extends _DmlStructure
         parent::__construct('view', $viewName);
     }
 
+
     public function getView(): string
     {
         return $this->getStructureValue();

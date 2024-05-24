@@ -7,6 +7,8 @@ use NGFramer\NGFramerPHPSQLBuilder\_Builder;
 abstract class _DdlStructure extends _Builder
 {
     private array $structure;
+
+
     protected function __construct(string $structureType, string $structureValue)
     {
         if (empty($structureType)) {
@@ -18,11 +20,13 @@ abstract class _DdlStructure extends _Builder
         $this->setStructure($structureType, $structureValue);
     }
 
+
     protected function setStructure(string $structureType, string $structureValue): void
     {
         $this->structure['type'] = $structureType;
         $this->structure['value'] = $structureValue;
     }
+    
 
     protected function getStructureValue(): string
     {

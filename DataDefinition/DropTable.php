@@ -16,12 +16,8 @@ class DropTable extends _DdlTable
     }
 
 
-
-
     // Main function for the class drop.
     // Function drop not required, the constructor did everything required.
-
-
 
 
     // Function to build the query.
@@ -29,6 +25,7 @@ class DropTable extends _DdlTable
     {
         return "DROP TABLE " . $this->getTable();
     }
+
 
     public function buildLog(): array
     {

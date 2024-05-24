@@ -75,21 +75,21 @@ class CreateTable extends _DdlTableColumn
             $columnDefinition['length'] = _DdlDefault::getLength($columnDefinition['type']);
         }
         // Main column definition query.
-        $columnSql = '`' . $columnDefinition['column']. '`' . ' ' . $columnDefinition['type'] . '(' . $columnDefinition['length'] . ')';
+        $columnSql = '`' . $columnDefinition['column'] . '`' . ' ' . $columnDefinition['type'] . '(' . $columnDefinition['length'] . ')';
         // Check for what attribute comes when at order.
-        if (isset($columnDefinition['null']) && $columnDefinition['null'] === true) {
+        if (isset($columnDefinition['null']) and $columnDefinition['null'] === true) {
             $columnSql .= 'NULL';
         }
-        if (isset($columnDefinition['null']) && $columnDefinition['null'] === false) {
+        if (isset($columnDefinition['null']) and $columnDefinition['null'] === false) {
             $columnSql .= ' NOT NULL';
         }
-        if (isset($columnDefinition['unique']) && $columnDefinition['unique']) {
+        if (isset($columnDefinition['unique']) and $columnDefinition['unique']) {
             $columnSql .= ' UNIQUE';
         }
-        if (isset($columnDefinition['primary']) && $columnDefinition['primary']) {
+        if (isset($columnDefinition['primary']) and $columnDefinition['primary']) {
             $columnSql .= ' PRIMARY KEY';
         }
-        if (isset($columnDefinition['autoIncrement']) && $columnDefinition['autoIncrement']) {
+        if (isset($columnDefinition['autoIncrement']) and $columnDefinition['autoIncrement']) {
             $columnSql .= ' AUTO_INCREMENT';
         }
         if (isset($columnDefinition['default'])) {

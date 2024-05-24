@@ -16,8 +16,6 @@ class CreateView extends _DdlView
     }
 
 
-
-
     // Main function for the class AlterView.
     public function select(string $rawSelectQuery): self
     {
@@ -26,15 +24,13 @@ class CreateView extends _DdlView
     }
 
 
-
-
     // Builder function for the class.
     public function build(): string
     {
         $queryLog = $this->getQueryLog();
-        if ($queryLog[0]['action'] == 'createView'){
+        if ($queryLog[0]['action'] == 'createView') {
             $query = "CREATE VIEW " . $this->getView() . " AS ";
-            if (isset($queryLog[0]['select'])){
+            if (isset($queryLog[0]['select'])) {
                 $query .= $queryLog[0]['select'];
             } else {
                 throw new \Exception("SelectTable query has not been passed. Pass an raw select query to create an view.");

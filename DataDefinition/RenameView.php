@@ -12,16 +12,12 @@ class RenameView extends _DdlView
     public function __construct(string $viewName)
     {
         parent::__construct($viewName);
-        $this->addQueryLog('view',$viewName, 'renameView');
+        $this->addQueryLog('view', $viewName, 'renameView');
     }
-
-
 
 
     // Main function for the class drop.
     // Function drop not required, the constructor did everything required.
-
-
 
 
     // Function to build the query.

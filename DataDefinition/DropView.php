@@ -16,12 +16,8 @@ class DropView extends _DdlView
     }
 
 
-
-
     // Main function for the class AlterView.
     // Main function drop not required, the constructor did everything required.
-
-
 
 
     // Builder function for the class.
