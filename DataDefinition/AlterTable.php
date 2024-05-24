@@ -2,6 +2,7 @@
 
 namespace NGFramer\NGFramerPHPSQLBuilder\DataDefinition;
 
+use NGFramer\NGFramerPHPSQLBuilder\DataDefinition\Supportive\_DdlDefault;
 use NGFramer\NGFramerPHPSQLBuilder\DataDefinition\Supportive\_DdlTableColumn;
 
 class AlterTable extends _DdlTableColumn
@@ -206,10 +207,87 @@ class AlterTable extends _DdlTableColumn
 
     public function build(): string
     {
+        // Get the table name and build query initializer.
         $table = $this->getQueryLog()['table'];
-        $queryInitializer = "ALTER TABLE $table";
-        // Initialize the query with the table name and return.
-        return "CREATE TABLE IF NOT EXISTS ";
-        // TODO: Implement the rest of the query.
+        $query = "ALTER TABLE `$table` ";
+
+        // Get the columns from the query log.
+        $columns = $this->getQueryLog()['columns'];
+        if (empty($columns)) throw new \Exception('No column modifications found.');
+
+        // Merging the column SQL to the main query.
+        $queryToMerge = "";
+
+        // Loop through the columns and build the column query.
+        foreach ($columns as $column) {
+            // Get the action from the column
+            $action = $column['action'] ?? throw new \Exception("No action found for column {$column}.");
+
+            // Switch to do processes based on the type of action.
+            $queryToMerge .= match ($action) {
+                'addColumn' => "ADD COLUMN " . $this->buildColumnSql($column) . ", ",
+                'dropColumn' => "DROP COLUMN `" . $column['column'] . "`, ",
+                'alterColumn' => "MODIFY COLUMN " . $this->buildColumnSql($column) . ", ",
+                default => throw new \Exception("Unknown column action: '{$action}'."),
+            };
+        }
+
+        // If the primary key is to be dropped, then drop it.
+        if ($this->dropPrimaryAsked) {
+            $query .= "DROP PRIMARY KEY, ";
+        }
+
+        // Merge the queryToMerge with Query.
+        $query .= rtrim($queryToMerge, ', ');
+
+        // Removing the trailing comma and space.
+        return rtrim($query, ', ');
+    }
+
+
+    // Only for handling the primary key droppings.
+    private bool $dropPrimaryAsked = false;
+
+
+    private function buildColumnSql(array $columnDefinition): string
+    {
+        // Get the column name.
+        $columnName = $columnDefinition['column'];
+
+        // If the action is to drop the column, then return the column name.
+        if ($columnDefinition['action'] === 'dropColumn') {
+            return "`$columnName`";
+        }
+
+        // Check if the type of the column is set or not.
+        if (!isset($columnDefinition['type'])) {
+            throw new \Exception("Column type for '$columnName' is required.");
+        }
+
+        // Build the column query using the type and then also add the length.
+        $columnSql = "`$columnName` " . $columnDefinition['type'];
+        $columnSql .=  isset($columnDefinition['length']) ? '(' . $columnDefinition['length'] . ')' : '(' . _DdlDefault::getLength($columnDefinition['type']) . ')' ;
+
+        // Handle attributes based on their presence or absence
+        $columnSql .= isset($columnDefinition['notNull']) ? ($columnDefinition['notNull'] ? ' NOT NULL' : ' NULL') : '';
+        $columnSql .= isset($columnDefinition['unique']) && $columnDefinition['unique'] ? ' UNIQUE' : '';
+
+        // Primary key needs special handling
+        if (isset($columnDefinition['primary']) and ($columnDefinition['primary'])) {
+                $columnSql .= ' PRIMARY KEY';
+        }
+
+        // Auto increment and default values
+        $columnSql .= isset($columnDefinition['autoIncrement']) && $columnDefinition['autoIncrement'] ? ' AUTO_INCREMENT' : '';
+        $columnSql .= isset($columnDefinition['default']) ? ' DEFAULT ' . $columnDefinition['default'] : '';
+
+        // Foreign key handling.
+        $columnSql .= isset($columnDefinition['foreign']) ? ' FOREIGN KEY (' . $columnName . ') REFERENCES ' . $columnDefinition['foreign']['table'] . '(' . $columnDefinition['foreign']['column'] . ')' : '';
+
+        // Drop Primary key if it is set (to handle this).
+        $this->dropPrimaryAsked = true;
+
+        // Return the finalized column query.
+        return $columnSql;
     }
 }
