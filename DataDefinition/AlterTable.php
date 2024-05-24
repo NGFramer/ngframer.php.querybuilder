@@ -27,7 +27,7 @@ class AlterTable extends _DdlTableColumn
 
     // The functions related to modification of columns in a table.
     // Modification means the addition and deletion, of columns.
-    public function addColumn($columnName):self
+    public function addColumn($columnName): self
     {
         // Firstly we select the column.
         $this->select($columnName);
@@ -50,7 +50,7 @@ class AlterTable extends _DdlTableColumn
         // Find the name of the column to drop.
         $columnName = $this->getSelectedColumn();
         // Check if the column has action previous defined, meaning the column has been marked to be acted in this instance.
-        if ($this->getActionOfColumn($columnName) == 'addColumn' || $this->getActionOfColumn($columnName) == 'dropColumn' || $this->getActionOfColumn($columnName) == 'modifyColumn'){
+        if ($this->getActionOfColumn($columnName) == 'addColumn' or $this->getActionOfColumn($columnName) == 'dropColumn' or $this->getActionOfColumn($columnName) == 'modifyColumn') {
             // If the column is being added, then you can't drop the column being added.
             throw new \Exception("You cannot drop a column that is being modified in this instance.");
         }
@@ -81,27 +81,25 @@ class AlterTable extends _DdlTableColumn
         if (empty($columnName)) {
             throw new \Exception("No column has been selected. Please select a column before proceeding.");
         }
+
+        // Check if the action of the column is not set, then set it.
+        $currentAction = $this->getActionOfColumn($columnName);
+
         // If the column is being added, then you can add an attribute to the column being added, without any additional action addition to the column.
-        if ($this->getActionOfColumn($columnName) == 'addColumn') {
+        if ($currentAction == 'addColumn') {
             parent::addColumnAttribute($attributeName, $attributeValue);
         }
         // If the column is being dropped, then you can't add an attribute to the column being dropped.
         // You can though add attribute before and then drop the column.
-        elseif ($this->getActionOfColumn($columnName) == 'dropColumn') {
+        else if ($currentAction == 'dropColumn') {
             throw new \Exception("You cannot add an attribute to a column that is being dropped.");
-        }
-        // If the column is being modified (has no action for it), we add an action to query log, We haven't added before, only once, we set it.
-        elseif (empty($this->getActionOfColumn($columnName))) {
-            // Get a new index for the column current column.
-            $columnIndex = $this->columnsCount();
-            // First make an action for the table, if not made already.
-            $this->addToQueryLogDeep('columns', $columnIndex, 'action', 'alterColumn');
-            // Make an entry to the newer index.
-            $this->addToQueryLogDeep('columns', $columnIndex, 'column', $columnName);
-            $this->addToQueryLogDeep('columns', $columnIndex, $attributeName, $attributeValue);
-        } else {
-            // If no column has been selected, select a column first.
-            throw new \Exception("No column has been selected. Please select a column before proceeding.");
+        } // If the column is being modified (has no action for it), we add an action to query log, We haven't added before, only once, we set it.
+        else {
+            // Check if the action for its validity.
+            if (empty($currentAction) or $currentAction == 'alterColumn') {
+                $this->changeColumnAttribute($attributeName, $attributeValue);
+            } // If the action is not recognized, throw an exception.
+            else throw new \Exception("Unrecognized column action: '{$currentAction}' for column '{$columnName}'.");
         }
     }
 
@@ -111,12 +109,12 @@ class AlterTable extends _DdlTableColumn
         // Find the name of the column.
         $columnName = $this->getSelectedColumn();
         // Check if the action of the column is not set, then set it.
-        if (($this->getActionOfColumn($columnName) == 'addColumn' OR $this->getActionOfColumn($columnName) == 'dropColumn')){
+        if (($this->getActionOfColumn($columnName) == 'addColumn' or $this->getActionOfColumn($columnName) == 'dropColumn')) {
             throw new \Exception("You cannot change the attribute of a column that is being added or dropped.");
         } else {
 
             // Get a new index for the column current column.
-            $newColumnIndex = $this->columnsCount();
+            $newColumnIndex = $this->getNewColumnIndex($columnName);
             // First make an action for the table, if not made already.
             $this->addToQueryLogDeep('columns', $newColumnIndex, 'action', 'alterColumn');
             // Make an entry to the newer index.
@@ -131,7 +129,7 @@ class AlterTable extends _DdlTableColumn
         // Find the name of the column.
         $columnName = $this->getSelectedColumn();
         // Check if the action of the column is not set, then set it.
-        if ($this->getActionOfColumn($columnName) == 'addColumn' OR $this->getActionOfColumn($columnName) == 'dropColumn') {
+        if ($this->getActionOfColumn($columnName) == 'addColumn' or $this->getActionOfColumn($columnName) == 'dropColumn') {
             throw new \Exception("You cannot change the attribute of a column that is being added or dropped.");
         } else {
             // Check if the action of the column is not set, then set it.
@@ -155,7 +153,7 @@ class AlterTable extends _DdlTableColumn
         $this->changeColumnAttribute("type", $type);
         return $this;
     }
-    
+
 
     public function changeLength(int|null $length = null): self
     {
@@ -208,6 +206,8 @@ class AlterTable extends _DdlTableColumn
 
     public function build(): string
     {
+        $table = $this->getQueryLog()['table'];
+        $queryInitializer = "ALTER TABLE $table";
         // Initialize the query with the table name and return.
         return "CREATE TABLE IF NOT EXISTS ";
         // TODO: Implement the rest of the query.
