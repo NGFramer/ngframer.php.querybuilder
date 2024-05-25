@@ -6,10 +6,9 @@
     "psr-4": {
       "NGFramer\\NGFramerPHPSQLBuilder\\": ""
     },
-    "classmap": [],
-    "psr-0": {},
-    "files": [],
-    "exclude-from-classmap": []
+    "files": [
+      "init.php"
+    ]
   },
   "authors": [
     {
@@ -21,5 +20,7 @@
       "homepage": "https://github.com/neupkishor"
     }
   ],
-  "require": {}
+  "require": {
+    "ngframer/ngframer.php.exception": "dev-main"
+  }
 }
