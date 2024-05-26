@@ -2,7 +2,6 @@
 
 namespace NGFramer\NGFramerPHPSQLBuilder\DataDefinition\Supportive;
 
-use NGFramer\NGFramerPHPException\exception\SqlBuilderException;
 use NGFramer\NGFramerPHPSQLBuilder\_Builder;
 
 abstract class _DdlStructure extends _Builder
@@ -13,10 +12,10 @@ abstract class _DdlStructure extends _Builder
     protected function __construct(string $structureType, string $structureValue)
     {
         if (empty($structureType)) {
-            throw new SqlBuilderException('Structure type cannot be empty. Please provide a structure type.', 500, null);
+            throw new \Exception('Structure type cannot be empty. Please provide a structure type.');
         }
         if (empty($structureValue)) {
-            throw new SqlBuilderException("$structureType name cannot be empty. Please provide a structure value.", 500, null);
+            throw new \Exception("$structureType name cannot be empty. Please provide a structure value.");
         }
         $this->setStructure($structureType, $structureValue);
     }
