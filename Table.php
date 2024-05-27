@@ -5,6 +5,7 @@ namespace NGFramer\NGFramerPHPSQLBuilder;
 use NGFramer\NGFramerPHPSQLBuilder\DataDefinition\AlterTable;
 use NGFramer\NGFramerPHPSQLBuilder\DataDefinition\CreateTable;
 use NGFramer\NGFramerPHPSQLBuilder\DataDefinition\DropTable;
+use NGFramer\NGFramerPHPSQLBuilder\DataDefinition\RenameTable;
 use NGFramer\NGFramerPHPSQLBuilder\DataDefinition\TruncateTable;
 use NGFramer\NGFramerPHPSQLBuilder\DataManipulation\DeleteTable;
 use NGFramer\NGFramerPHPSQLBuilder\DataManipulation\InsertTable;
@@ -57,6 +58,12 @@ class Table
     public function alter(): AlterTable
     {
         return new AlterTable($this->tableName);
+    }
+
+
+    public function rename(string $newTableName): RenameTable
+    {
+        return new RenameTable($this->tableName, $newTableName);
     }
 
 
