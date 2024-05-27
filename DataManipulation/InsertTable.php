@@ -2,6 +2,7 @@
 
 namespace NGFramer\NGFramerPHPSQLBuilder\DataManipulation;
 
+use NGFramer\NGFramerPHPException\exception\SqlBuilderException;
 use NGFramer\NGFramerPHPSQLBuilder\DataManipulation\Supportive\_DmlTable;
 
 class InsertTable extends _DmlTable
@@ -69,7 +70,7 @@ class InsertTable extends _DmlTable
 
         // Check if there's data to insert
         if (empty($queryLog['data'])) {
-            throw new \InvalidArgumentException('No data to insert.');
+            throw new SqlBuilderException('InvalidArgumentException, No data to insert.', 500, ['dmlInsert_invalid_data', 0x23]);
         }
 
         // Array to store all generated queries

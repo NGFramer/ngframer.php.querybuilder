@@ -2,6 +2,7 @@
 
 namespace NGFramer\NGFramerPHPSQLBuilder\DataManipulation;
 
+use NGFramer\NGFramerPHPException\exception\SqlBuilderException;
 use NGFramer\NGFramerPHPSQLBuilder\DataManipulation\Supportive\_DmlTable;
 
 class SelectTable extends _DmlTable
@@ -29,7 +30,7 @@ class SelectTable extends _DmlTable
     {
         foreach ($fields as $field) {
             if (!is_string($field)) {
-                throw new \InvalidArgumentException('Field names must be string.');
+                throw new SqlBuilderException('InvalidArgumentException, Field names must be string.', 500, ['dmlSelect_invalid_data', 0x24]);
             }
             $this->addToQueryLogDeepArray('columns', $field);
         }

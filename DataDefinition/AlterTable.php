@@ -2,6 +2,7 @@
 
 namespace NGFramer\NGFramerPHPSQLBuilder\DataDefinition;
 
+use NGFramer\NGFramerPHPException\exception\SqlBuilderException;
 use NGFramer\NGFramerPHPSQLBuilder\DataDefinition\Supportive\_DdlDefault;
 use NGFramer\NGFramerPHPSQLBuilder\DataDefinition\Supportive\_DdlTableColumn;
 
@@ -54,7 +55,7 @@ class AlterTable extends _DdlTableColumn
         // Check if the column has action previous defined, meaning the column has been marked to be acted in this instance.
         if ($this->getActionOfColumn($columnName) == 'addColumn' or $this->getActionOfColumn($columnName) == 'dropColumn' or $this->getActionOfColumn($columnName) == 'modifyColumn') {
             // If the column is being added, then you can't drop the column being added.
-            throw new \Exception("You cannot drop a column that is being modified in this instance.");
+            throw new SqlBuilderException("You cannot drop a column that is being modified in this instance.", 500, ['ddlTable_alter_dropColumnNotAllowed', 0x6]);
         }
 
         // Get the columns count.
@@ -94,14 +95,14 @@ class AlterTable extends _DdlTableColumn
 
         // If the column is being dropped, then you can't add an attribute to the column being dropped.
         // You can though add attribute before and then drop the column.
-        else if ($currentAction == 'dropColumn') throw new \Exception("You cannot add an attribute to a column that is being dropped.");
+        else if ($currentAction == 'dropColumn') throw new SqlBuilderException("You cannot add an attribute to a column that is being dropped.", 500, ['ddlTable_alter_addAttributeToDroppedColumnNotAllowed', 0x7]);
 
         // If the column is being modified (has no action for it), we add an action to query log, We haven't added before, only once, we set it.
         else {
             // Check if the action for its validity.
             if (empty($currentAction) or $currentAction == 'alterColumn') $this->changeColumnAttribute($attributeName, $attributeValue);
             // If the action is not recognized, throw an exception.
-            else throw new \Exception("Unrecognized column action: '{$currentAction}' for column '{$columnName}'.");
+            else throw new SqlBuilderException("Unrecognized column action: '{$currentAction}' for column '{$columnName}'.", 500, ['ddlTable_alter_unrecognizedColumnAction', 0x8]);
         }
     }
 
@@ -116,7 +117,7 @@ class AlterTable extends _DdlTableColumn
 
         // Check if the action of the column is not set, then set it.
         if (($currentAction == 'addColumn' or $currentAction == 'dropColumn')) {
-            throw new \Exception("You cannot change the attribute of a column that is being added or dropped.");
+            throw new SqlBuilderException("You cannot change the attribute of a column that is being added or dropped.", 500, ['ddlTable_alter_changeAttributeOfAddedDroppedColumnNotAllowed', 0x9]);
         } else {
             // Get a new index for the column current column.
             $newColumnIndex = $this->getNewColumnIndex($columnName);
@@ -139,10 +140,10 @@ class AlterTable extends _DdlTableColumn
 
         // Check if the action of the column is not set, then set it.
         if ($currentAction == 'addColumn' or $currentAction == 'dropColumn') {
-            throw new \Exception("You cannot change the attribute of a column that is being added or dropped.");
+            throw new SqlBuilderException("You cannot change the attribute of a column that is being added or dropped.", 500, ['ddlTable_alter_dropAttributeOfAddedDroppedColumnNotAllowed', 0x10]);
         } else {
             // Check if the action of the column is not set, then set it.
-            if (!empty($currentAction)) throw new \Exception("No attribute has been set for the column. Please set an attribute before proceeding.");
+            if (!empty($currentAction)) throw new SqlBuilderException("No attribute has been set for the column. Please set an attribute before proceeding.", 500, ['ddlTable_alter_dropAttributeOfInvalidAction', 0x11]);
 
             // Get a new index for the column current column.
             $newColumnIndex = $this->getNewColumnIndex($columnName);
@@ -220,7 +221,7 @@ class AlterTable extends _DdlTableColumn
 
         // Get the columns from the query log.
         $columns = $this->getQueryLog()['columns'];
-        if (empty($columns)) throw new \Exception('No column modifications found.');
+        if (empty($columns)) throw new SqlBuilderException('No column modifications found.', 500, ['ddlTable_alter_noColumnModificationsFoundForQueryGeneration', 0x12]);
 
         // Merging the column SQL to the main query.
         $queryToMerge = "";
@@ -228,7 +229,7 @@ class AlterTable extends _DdlTableColumn
         // Loop through the columns and build the column query.
         foreach ($columns as $column) {
             // Get the action from the column
-            $action = $column['action'] ?? throw new \Exception("No action found for column {$column}.");
+            $action = $column['action'] ?? throw new SqlBuilderException("No action found for column {$column}.", 500, ['ddlTable_alter_noActionFoundForColumn', 0x13]);
 
             // Switch to do processes based on the type of action.
             $queryToMerge .= match ($action) {
@@ -260,15 +261,15 @@ class AlterTable extends _DdlTableColumn
     {
         // Get the column name.
         $columnName = $columnDefinition['column'];
-        //
-        //        // If the action is to drop the column, then return the column name.
+
+        // If the action is to drop the column, then return the column name.
         if ($columnDefinition['action'] === 'dropColumn') {
             return "`$columnName`";
         }
 
         // Check if the type of the column is set or not.
         if (!isset($columnDefinition['type'])) {
-            throw new \Exception("Column type for '$columnName' is required.");
+            throw new SqlBuilderException("Column type for '$columnName' is required.", 500, ['ddlTable_alter_columnTypeRequired', 0x14]);
         }
 
         // Build the column query using the type and then also add the length.

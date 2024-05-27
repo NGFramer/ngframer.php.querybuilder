@@ -2,6 +2,8 @@
 
 namespace NGFramer\NGFramerPHPSQLBuilder\DataManipulation;
 
+use NGFramer\NGFramerPHPException\exception\SqlBuilderException;
+
 trait WhereTrait
 {
     // Function to add to the query log.
@@ -33,7 +35,7 @@ trait WhereTrait
         // Format for passing the arguments is (column, value) condition.
         if (!is_array($arguments[0])) {
             if (count($arguments) > 3 or count($arguments) < 2) {
-                throw new \InvalidArgumentException('Invalid where condition format. Expected 2 or 3 arguments.');
+                throw new SqlBuilderException('InvalidArgumentException, Invalid where condition format. Expected 2 or 3 arguments.', 500, ['dmlWhere_invalid_data', 0x33]);
             }
             // If the argument is not an array, it is a simple "column, value" condition.
             $where['elements'][] = $this->processWhereOne($arguments[0], $arguments[1], $arguments[2] ?? '=');
@@ -43,13 +45,13 @@ trait WhereTrait
             foreach ($arguments as $argument) {
                 // If the argument is not an array, throw an exception.
                 if (!is_array($argument)) {
-                    throw new \InvalidArgumentException('Invalid where condition: Invalid argument type.');
+                    throw new SqlBuilderException('Invalid where condition: Invalid argument type.', 500, ['dmlWhere_invalid_data', 0x34]);
                 }
 
                 // If the argument is an indexed array, it is a simple "column, value, operator" condition.
                 if (!$this->isAssocArray($argument)) {
                     if (count($argument) > 3 or count($argument) < 2) {
-                        throw new \InvalidArgumentException('Invalid where condition format. Expected 2 or 3 arguments.');
+                        throw new SqlBuilderException('Invalid where condition format. Expected 2 or 3 arguments.', 500, ['dmlWhere_invalid_data', 0x35]);
                     }
                     $where['elements'][] = $this->processWhereOne($argument[0], $argument[1], $argument[2] ?? '=');
                 } // If the argument is an indexed array, it is a simple "column, value" condition.
@@ -71,7 +73,7 @@ trait WhereTrait
                     $where['elements'][] = $nestedWhere;
                 } // If the argument is an associative array, it is a nested WHERE condition.
                 else {
-                    throw new \InvalidArgumentException('Invalid where condition structure.');
+                    throw new SqlBuilderException('Invalid where condition structure.', 500, ['dmlWhere_invalid_data', 0x36]);
                 }
             }
         }
@@ -220,7 +222,7 @@ trait WhereTrait
                     $whereElementClauseContainer[] = $this->buildWhereClause($element['elements']);
                 } // If the element is an array with elements key but no elements, throw an exception.
                 else if (isset($element['elements'])) {
-                    throw new \InvalidArgumentException('Invalid where condition structure.');
+                    throw new SqlBuilderException('InvalidArgumentException, Invalid where condition structure.', 500, ['dmlWhere_invalid_data', 0x37]);
                 } // If the element is an array with no element key.
                 else {
                     $whereElementClauseContainer[] = $this->buildWhereElementaryClause($element);

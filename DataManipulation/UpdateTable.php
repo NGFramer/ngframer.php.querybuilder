@@ -2,6 +2,7 @@
 
 namespace NGFramer\NGFramerPHPSQLBuilder\DataManipulation;
 
+use NGFramer\NGFramerPHPException\exception\SqlBuilderException;
 use NGFramer\NGFramerPHPSQLBuilder\DataManipulation\Supportive\_DmlTable;
 
 class UpdateTable extends _DmlTable
@@ -47,7 +48,7 @@ class UpdateTable extends _DmlTable
                     $this->addToQueryLogDeep('data', $this->counter, 'field', $element[0]);
                     $this->addToQueryLogDeep('data', $this->counter, 'value', $element[1]);
                 } else {
-                    throw new \InvalidArgumentException('Data must be an array/s.');
+                    throw new SqlBuilderException('Data must be an array/s.', 500, ['dmlUpdate_invalid_data', 0x31]);
                 }
                 $this->counter++;
             }
@@ -78,7 +79,7 @@ class UpdateTable extends _DmlTable
 
         // Check if the data is empty.
         if (empty($queryLog['data'])) {
-            throw new \InvalidArgumentException('No data to update.');
+            throw new SqlBuilderException('InvalidArgumentException, No data to update.', 500, ['dmlUpdate_invalid_data', 0x32]);
         }
 
         // Loop through the data to find the values to update.

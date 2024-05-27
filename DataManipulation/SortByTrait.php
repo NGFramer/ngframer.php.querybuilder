@@ -2,6 +2,8 @@
 
 namespace NGFramer\NGFramerPHPSQLBuilder\DataManipulation;
 
+use NGFramer\NGFramerPHPException\exception\SqlBuilderException;
+
 Trait SortByTrait
 {
     // Abstract function used in the class.
@@ -14,7 +16,7 @@ Trait SortByTrait
     {
         // If the sorting instructions has not been passed.
         if (empty($sortInstructions)) {
-            throw new \InvalidArgumentException('At least one sorting instruction must be provided.');
+            throw new SqlBuilderException('InvalidArgumentException, At least one sorting instruction must be provided.', 500, ['dmlSortBy_invalid_data', 0x26]);
         }
 
         // If the sorting instructions are passed as two strings.
@@ -32,12 +34,12 @@ Trait SortByTrait
             }
             // Sort Instruction is not array.
             else {
-                throw new \InvalidArgumentException('Invalid sorting instruction format. Expected 2 arguments.');
+                throw new SqlBuilderException('InvalidArgumentException, Invalid sorting instruction format. Expected 2 arguments.', 500, ['dmlSortBy_invalid_data', 0x27]);
             }
         }
 
         // If anything reaches to this point, throw an exception.
-        throw new \InvalidArgumentException('Something went wrong, please check the format of sorting instructions and run the function again.');
+        throw new SqlBuilderException('Something went wrong, please check the format of sorting instructions and run the function again.', 500, ['dmlSortBy_invalid_data', 0x28]);
     }
 
 
@@ -65,7 +67,7 @@ Trait SortByTrait
         else{
             $sortByString = '';
             $sortBy = $queryLog['sortBy'];
-            if (empty($sortBy)) throw new \InvalidArgumentException('Empty sortBy asked, modify the query to continue.');
+            if (empty($sortBy)) throw new SqlBuilderException('InvalidArgumentException, Empty sortBy asked, modify the query to continue.', 500, ['dmlSortBy_invalid_data', 0x29]);
             else if (is_array($sortBy)) {
                 foreach ($sortBy as $sortInstruction) {
                     $sortByString .= $this->getSortByString($sortInstruction);
@@ -84,7 +86,7 @@ Trait SortByTrait
         $field = $sortByInstruction['field'] ?? $sortByInstruction[0];
         $order = $sortByInstruction['order'] ?? $sortByInstruction[1];
         if (!in_array(strtoupper($order), ['ASC', 'DESC'])) {
-            throw new \InvalidArgumentException('Invalid sorting order provided. Please provide either ASC or DESC.');
+            throw new SqlBuilderException('Invalid sorting order provided. Please provide either ASC or DESC.', 500, ['dmlSortBy_invalid_data', 0x30]);
         }
         return $field . ' ' . $order . ', ';
     }

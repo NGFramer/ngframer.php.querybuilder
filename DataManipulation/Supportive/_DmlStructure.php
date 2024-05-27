@@ -2,6 +2,7 @@
 
 namespace NGFramer\NGFramerPHPSQLBuilder\DataManipulation\Supportive;
 
+use NGFramer\NGFramerPHPException\exception\SqlBuilderException;
 use NGFramer\NGFramerPHPSQLBuilder\_Builder;
 
 abstract class _DmlStructure extends _Builder
@@ -16,10 +17,10 @@ abstract class _DmlStructure extends _Builder
     protected function __construct(string $structureType, string $structureValue)
     {
         if (empty($structureType)) {
-            throw new \Exception('Structure type cannot be empty. Please provide a structure type.');
+            throw new SqlBuilderException('Structure type cannot be empty. Please provide a structure type.', 500, ['dml_structureType_notDefined', 0x19]);
         }
         if (empty($structureValue)) {
-            throw new \Exception("$structureType name cannot be empty. Please provide a structure value.");
+            throw new \Exception("$structureType name cannot be empty. Please provide a structure value.", 500, ['dml_structureValue_notDefined', 0x20]);
         }
         $this->setStructure($structureType, $structureValue);
     }
@@ -59,7 +60,7 @@ abstract class _DmlStructure extends _Builder
     protected function updateBindParameters(string $key, string $value): void
     {
         if (array_key_exists($key, $this->bindParameters)){
-            throw new \Exception("Something unexpected happened. Repeated bindParameters Key.");
+            throw new SqlBuilderException("Something unexpected happened. Repeated bindParameters Key.", 500, ['dml_repeatedBindParametersKey', 0x21]);
         }else{
             $this->bindParameters[$key] = $value;
         }

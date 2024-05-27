@@ -2,6 +2,8 @@
 
 namespace NGFramer\NGFramerPHPSQLBuilder\DataDefinition\Supportive;
 
+use NGFramer\NGFramerPHPException\exception\SqlBuilderException;
+
 abstract class _DdlTableColumn extends _DdlTable
 {
     // Variable to store the column data.
@@ -22,7 +24,7 @@ abstract class _DdlTableColumn extends _DdlTable
     public function select(string $columnName): self
     {
         if (!$this->getTable()) {
-            throw new \Exception("No table has been selected. Please select a table before proceeding to select $columnName column.");
+            throw new SqlBuilderException("No table has been selected. Please select a table before proceeding to select $columnName column.", 500, ['ddl_table_notSelected', 0x3]);
         }
         $this->selectedColumn = $columnName;
         return $this;
@@ -75,7 +77,7 @@ abstract class _DdlTableColumn extends _DdlTable
     protected function getSelectedColumn(): string
     {
         if (empty($this->selectedColumn)) {
-            throw new \Exception("No column has been selected. Please select a column before proceeding.");
+            throw new SqlBuilderException("No column has been selected. Please select a column before proceeding.", 500, ['ddl_table_columnNotSelected', 0x4]);
         }
         return $this->selectedColumn;
     }
@@ -106,7 +108,7 @@ abstract class _DdlTableColumn extends _DdlTable
         $columnIndex = $this->getIndexOfColumn($columnName);
         // Check if the column index is null or not.
         if ($columnIndex === null){
-            throw new \Exception("Column not found. Please add a column first.");
+            throw new SqlBuilderException("No column was found. Please select a column before proceeding.", 500, ['ddl_table_columnNotFound', 0x5]);
         }
         $this->addToQueryLogDeep('columns', $columnIndex, $attributeName, $attributeValue);
     }

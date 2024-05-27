@@ -2,6 +2,7 @@
 
 namespace NGFramer\NGFramerPHPSQLBuilder\DataDefinition;
 
+use NGFramer\NGFramerPHPException\exception\SqlBuilderException;
 use NGFramer\NGFramerPHPSQLBuilder\DataDefinition\Supportive\_DdlDefault;
 use NGFramer\NGFramerPHPSQLBuilder\DataDefinition\Supportive\_DdlTableColumn;
 
@@ -66,10 +67,10 @@ class CreateTable extends _DdlTableColumn
     public function buildColSql(array $columnDefinition): string
     {
         if (!isset($columnDefinition['column'])) {
-            throw new \Exception('Column name is required');
+            throw new SqlBuilderException('Column name is required', 500, ['ddl_columnName_notDefined', 0x15]);
         }
         if (!isset($columnDefinition['type'])) {
-            throw new \Exception('Column type for ' . $columnDefinition['column'] . ' is required');
+            throw new SqlBuilderException('Column type for ' . $columnDefinition['column'] . ' is required', 500, ['ddl_columnType_notDefined', 0x16]);
         }
         if (!isset($columnDefinition['length'])) {
             $columnDefinition['length'] = _DdlDefault::getLength($columnDefinition['type']);

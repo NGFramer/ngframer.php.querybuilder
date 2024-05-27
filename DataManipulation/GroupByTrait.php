@@ -2,6 +2,8 @@
 
 namespace NGFramer\NGFramerPHPSQLBuilder\DataManipulation;
 
+use NGFramer\NGFramerPHPException\exception\SqlBuilderException;
+
 trait GroupByTrait
 {
     // Abstract function used in the class.
@@ -30,7 +32,7 @@ trait GroupByTrait
             $groupBy = $queryLog['groupBy'];
             return " GROUP BY $groupBy";
         } else {
-            throw new \InvalidArgumentException('Group By attribute must be a string and not empty.');
+            throw new SqlBuilderException('InvalidValueException, Group By attribute must be a string and not empty.', 500, ['dmlGroupBy_invalid_data', 0x22]);
         }
     }
 }
