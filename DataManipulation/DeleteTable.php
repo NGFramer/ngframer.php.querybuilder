@@ -33,6 +33,16 @@ class DeleteTable extends _DmlTable
     // Main builder function for the class.
     public function buildQuery(): string
     {
-        return "";
+        // Get the table name from the query log.
+        $tableName = $this->getQueryLog()['table'];
+        // Initialize the delete query with table name.
+        $query = "DELETE FROM {$tableName}";
+        // Get the where condition clause. And, merge with query.
+        $whereClause = $this->buildWhere();
+        if (!empty($whereClause)) {
+            $query .= "{$whereClause}";
+        }
+        // Return the query.
+        return $query;
     }
 }
