@@ -63,7 +63,7 @@ class InsertTable extends _DmlTable
     }
 
 
-    public function build(): string
+    public function buildQuery(): string
     {
         // Get the query log data
         $queryLog = $this->getQueryLog();

@@ -26,7 +26,7 @@ class CreateView extends _DdlView
 
 
     // Builder function for the class.
-    public function build(): string
+    public function buildQuery(): string
     {
         $queryLog = $this->getQueryLog();
         if ($queryLog[0]['action'] == 'createView') {

@@ -82,4 +82,25 @@ abstract class _DmlStructure extends _Builder
         // Convert special characters to HTML entities
         return htmlspecialchars($escapedValue);
     }
+
+
+    abstract public function buildBindParameters(): array;
+
+
+    public function build(): array
+    {
+        // Get the build Log and build the action.
+        $buildLog = $this->buildLog();
+        $action = $buildLog['action'];
+        // Return the response.
+        return [
+            'success' => true,
+            'status_code' => 200,
+            'response' => [
+                'action' => $action,
+                'query' => $this->buildQuery(),
+                'bindParameters' => $this->buildBindParameters(),
+            ],
+        ];
+    }
 }

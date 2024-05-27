@@ -22,7 +22,7 @@ class RenameTable extends _DdlTable
 
 
     // Function to build the query.
-    public function build(): string
+    public function buildQuery(): string
     {
         // Get query log and then the table name.
         $queryLog = $this->getQueryLog();

@@ -21,7 +21,7 @@ trait GroupByTrait
 
 
     // Builder function for the trait Group By.
-    public function build(): string
+    public function buildQuery(): string
     {
         // Get the queryLog initially to process.
         $queryLog = $this->getQueryLog();

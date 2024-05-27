@@ -21,7 +21,7 @@ class TruncateTable extends _DdlTable
 
 
     // Function to build the query.
-    public function build(): string
+    public function buildQuery(): string
     {
         return "TRUNCATE TABLE " . $this->getTable();
     }

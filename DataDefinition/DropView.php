@@ -21,7 +21,7 @@ class DropView extends _DdlView
 
 
     // Builder function for the class.
-    public function build(): string
+    public function buildQuery(): string
     {
         return "DROP VIEW " . $this->getView();
     }

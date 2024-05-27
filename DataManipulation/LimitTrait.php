@@ -20,7 +20,7 @@ trait LimitTrait
 
 
     // Builder function for the class.
-    public function build(): string
+    public function buildQuery(): string
     {
         // Get the queryLog initially to process.
         $queryLog = $this->getQueryLog();

@@ -181,7 +181,7 @@ trait WhereTrait
 
 
     // The main builder function for the WHERE clause.
-    protected function build(): string
+    protected function buildQuery(): string
     {
         // We'll use the $queryLog variable to process the WHERE conditions.
         $queryLog = $this->getQueryLog();

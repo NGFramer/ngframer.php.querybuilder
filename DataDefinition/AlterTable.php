@@ -213,7 +213,7 @@ class AlterTable extends _DdlTableColumn
     }
 
 
-    public function build(): string
+    public function buildQuery(): string
     {
         // Get the table name and build query initializer.
         $table = $this->getQueryLog()['table'];

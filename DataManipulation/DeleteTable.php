@@ -8,7 +8,7 @@ class DeleteTable extends _DmlTable
 {
     // Use the following trait to access the functions.
     use WhereTrait{
-        WhereTrait::build as buildWhere;
+        WhereTrait::buildQuery as buildWhere;
     }
 
 
@@ -31,7 +31,7 @@ class DeleteTable extends _DmlTable
 
     
     // Main builder function for the class.
-    public function build(): string
+    public function buildQuery(): string
     {
         return "";
     }

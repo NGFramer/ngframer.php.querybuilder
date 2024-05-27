@@ -13,7 +13,7 @@ class UpdateTable extends _DmlTable
 
     // Use the following trait to access the functions.
     use WhereTrait {
-        WhereTrait::build as whereBuild;
+        WhereTrait::buildQuery as whereBuild;
     }
 
 
@@ -67,7 +67,7 @@ class UpdateTable extends _DmlTable
 
 
     // Builder function for the class.
-    public function build(): string
+    public function buildQuery(): string
     {
         // Get the queryLog initially to process.
         $queryLog = $this->getQueryLog();

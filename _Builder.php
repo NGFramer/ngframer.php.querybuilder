@@ -9,7 +9,7 @@ abstract class _Builder
 
 
     // Function relating to the queryLog building, logging, and getting.
-    abstract public function build(): string;
+    abstract public function buildQuery(): string;
 
 
     public function buildLog(): array

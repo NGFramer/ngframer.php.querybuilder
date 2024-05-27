@@ -58,7 +58,7 @@ Trait SortByTrait
 
 
     // Builder function for the trait.
-    public function build(): string
+    public function buildQuery(): string
     {
         // Get the query log.
         $queryLog = $this->getQueryLog();

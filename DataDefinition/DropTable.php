@@ -21,7 +21,7 @@ class DropTable extends _DdlTable
 
 
     // Function to build the query.
-    public function build(): string
+    public function buildQuery(): string
     {
         return "DROP TABLE " . $this->getTable();
     }

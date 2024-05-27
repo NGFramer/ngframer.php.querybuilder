@@ -39,7 +39,7 @@ class CreateTable extends _DdlTableColumn
 
 
     // Builder function for the class.
-    public function build(): string
+    public function buildQuery(): string
     {
         $tableName = $this->getQueryLog()['table'];
         // Initialize the final creation query.
