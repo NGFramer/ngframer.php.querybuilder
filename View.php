@@ -5,6 +5,7 @@ namespace NGFramer\NGFramerPHPSQLBuilder;
 use NGFramer\NGFramerPHPSQLBuilder\DataDefinition\AlterView;
 use NGFramer\NGFramerPHPSQLBuilder\DataDefinition\CreateView;
 use NGFramer\NGFramerPHPSQLBuilder\DataDefinition\DropView;
+use NGFramer\NGFramerPHPSQLBuilder\DataDefinition\RenameView;
 use NGFramer\NGFramerPHPSQLBuilder\DataManipulation\SelectView;
 
 class View
@@ -27,6 +28,12 @@ class View
     public function alter(): AlterView
     {
         return new AlterView($this->viewName);
+    }
+
+
+    public function rename($newViewName): RenameView
+    {
+        return new RenameView($this->viewName, $newViewName);
     }
 
 
