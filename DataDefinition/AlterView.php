@@ -27,9 +27,9 @@ class AlterView extends _DdlView
     // Build function for the class AlterView.
     public function build(): string
     {
+        // Get the queryLog from the class.
         $queryLog = $this->queryLog;
-        $query = "";
-        $query .= "ALTER VIEW {$queryLog['view']} AS {$queryLog['select']}";
-        return $query;
+        // Return the query that has been built.
+        return "ALTER VIEW {$queryLog['view']} AS {$queryLog['select']}";
     }
 }
