@@ -29,7 +29,8 @@ class AlterView extends _DdlView
     {
         // Get the queryLog from the class.
         $queryLog = $this->queryLog;
+        $viewName = $queryLog['view'];
         // Return the query that has been built.
-        return "ALTER VIEW {$queryLog['view']} AS {$queryLog['select']}";
+        return "ALTER VIEW {$viewName} AS {$queryLog['select']}";
     }
 }
