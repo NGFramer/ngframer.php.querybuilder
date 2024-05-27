@@ -84,7 +84,10 @@ abstract class _DmlStructure extends _Builder
     }
 
 
-    abstract public function buildBindParameters(): array;
+    public function buildBindParameters(): array
+    {
+        return $this->bindParameters;
+    }
 
 
     public function build(): array
