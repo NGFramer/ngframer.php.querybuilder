@@ -45,10 +45,10 @@ class CreateTable extends _DdlTableColumn
         // Initialize the final creation query.
         $query = "CREATE TABLE IF NOT EXISTS `$tableName` (";
         // Turn for processing the columns query.
-        $columns = $this->getQueryLog()['columns'];
+        $columns = $this->getQueryLog()['columns'] ?? [];
         // Check if the $column is set or not and empty or not.
         if (empty($columns)) {
-            throw new \Exception('No columns found to create table');
+            throw new SqlBuilderException('No columns found to create table', 500, ['ddlCreateTable_columns_notDefined', 0x20]);
         }
         // Loop through the columns and build the column query.
         foreach ($columns as $column) {
