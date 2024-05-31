@@ -21,6 +21,6 @@
     }
   ],
   "require": {
-    "ngframer/ngframer.php.exception": "dev-main"
+    "ngframer/ngframer.php.exceptions": "dev-main"
   }
 }
