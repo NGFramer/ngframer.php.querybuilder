@@ -1,8 +1,8 @@
 <?php
 namespace MyLibrary;
 
-use NGFramer\NGFramerPHPException\exception\SqlBuilderError;
-use NGFramer\NGFramerPHPException\handler\SqlBuilderExceptionHandler;
+use NGFramer\NGFramerPHPExceptions\exceptions\SqlBuilderError;
+use NGFramer\NGFramerPHPExceptions\handlers\SqlBuilderExceptionHandler;
 
 
 //Convert the error to an exception (SqlBuilderException).
