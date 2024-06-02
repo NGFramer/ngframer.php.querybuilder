@@ -244,7 +244,7 @@ trait WhereTrait
         // If the default condition, bind the parameters execution method.
         if (!$this->isGoDirect()) {
             $bindIndex = $this->getBindIndexStarter();
-            $this->updateBindParameters($column . $bindIndex, $value . $bindIndex);
+            $this->updateBindParameters($column . $bindIndex, $value);
             return "$column $operator :$column$bindIndex";
         } // If the other condition, direct execution method.
         else {
