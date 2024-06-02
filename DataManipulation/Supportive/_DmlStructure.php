@@ -101,8 +101,9 @@ abstract class _DmlStructure extends _Builder
             'status_code' => 200,
             'response' => [
                 'action' => $action,
+                'execution_method' => $this->isGoDirect() ? 'direct' : 'prepare',
                 'query' => $this->buildQuery(),
-                'bindParameters' => $this->buildBindParameters(),
+                'bind_parameters' => $this->buildBindParameters(),
             ],
         ];
     }
