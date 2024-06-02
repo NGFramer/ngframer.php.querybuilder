@@ -105,9 +105,11 @@ abstract class _DmlStructure extends _Builder
                 'query' => $this->buildQuery()
             ],
         ];
-        // Check if the execution method is direct, and count of binding parameters is more than 0, add bind_parameters.
-        if ($this->isGoDirect() && count($this->buildBindParameters()) > 0){
+        // Check if the execution method is direct, if so, add bind_parameters.
+        if ($this->isGoDirect()){
             $resultArray['response']['bind_parameters'] = $this->buildBindParameters();
         }
+        // Return the result array.
+        return $resultArray;
     }
 }
