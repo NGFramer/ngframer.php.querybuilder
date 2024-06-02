@@ -2,7 +2,7 @@
 
 namespace NGFramer\NGFramerPHPSQLBuilder\DataManipulation;
 
-use NGFramer\NGFramerPHPException\exception\SqlBuilderException;
+use NGFramer\NGFramerPHPExceptions\exceptions\SqlBuilderException;
 
 Trait SortByTrait
 {

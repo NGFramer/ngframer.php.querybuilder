@@ -2,7 +2,7 @@
 
 namespace NGFramer\NGFramerPHPSQLBuilder\DataDefinition;
 
-use NGFramer\NGFramerPHPException\exception\SqlBuilderException;
+use NGFramer\NGFramerPHPExceptions\exceptions\SqlBuilderException;
 use NGFramer\NGFramerPHPSQLBuilder\DataDefinition\Supportive\_DdlDefault;
 use NGFramer\NGFramerPHPSQLBuilder\DataDefinition\Supportive\_DdlTableColumn;
 
