@@ -57,12 +57,12 @@ abstract class _DmlStructure extends _Builder
 
 
     // Function to update/add to the bind parameters.
-    protected function updateBindParameters(string $key, string $value): void
+    protected function updateBindParameters(string $column, string $value): void
     {
-        if (array_key_exists($key, $this->bindParameters)){
-            throw new SqlBuilderException("Something unexpected happened. Repeated bindParameters Key.", 500, ['dml_repeatedBindParametersKey', 0x21]);
+        if (array_key_exists($column, $this->bindParameters)){
+            throw new SqlBuilderException("Something unexpected happened. Repeated bindParameters column.", 500, ['dml_repeatedBindParametersKey', 0x21]);
         }else{
-            $this->bindParameters[$key] = $value;
+            $this->bindParameters[$column] = $value;
         }
     }
 
@@ -89,8 +89,8 @@ abstract class _DmlStructure extends _Builder
         // Initialize the bind parameters array.
         $bindParameters = [];
         // Loop through the bind parameters and build the bind parameters array.
-        foreach ($this->bindParameters as $key => $value){
-            $bindParameters[] = ['key' => $key, 'value' => $value];
+        foreach ($this->bindParameters as $column => $value){
+            $bindParameters[] = ['column' => $column, 'value' => $value];
         }
         // Return the bind parameters array.
         return $bindParameters;
