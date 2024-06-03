@@ -2,8 +2,6 @@
 
 namespace NGFramer\NGFramerPHPSQLBuilder;
 
-require 'vendor/autoload.php';
-
 Class Query
 {
     // Function to get and set the tableName and viewName;
