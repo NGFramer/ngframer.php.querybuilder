@@ -86,7 +86,14 @@ abstract class _DmlStructure extends _Builder
 
     public function buildBindParameters(): array
     {
-        return $this->bindParameters;
+        // Initialize the bind parameters array.
+        $bindParameters = [];
+        // Loop through the bind parameters and build the bind parameters array.
+        foreach ($this->bindParameters as $key => $value){
+            $bindParameters[] = ['key' => $key, 'value' => $value];
+        }
+        // Return the bind parameters array.
+        return $bindParameters;
     }
 
 
