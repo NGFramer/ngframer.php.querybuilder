@@ -48,7 +48,7 @@ class UpdateTable extends _DmlTable
                     $this->addToQueryLogDeep('data', $this->counter, 'field', $element[0]);
                     $this->addToQueryLogDeep('data', $this->counter, 'value', $element[1]);
                 } else {
-                    throw new SqlBuilderException('Data must be an array/s.', 500, ['dmlUpdate_invalid_data', 0x31]);
+                    throw new SqlBuilderException('Data must be an array/s.', 0, null, 500, ['error_type'=>'dmlUpdate_invalid_data']);
                 }
                 $this->counter++;
             }
@@ -79,7 +79,7 @@ class UpdateTable extends _DmlTable
 
         // Check if the data is empty.
         if (empty($queryLog['data'])) {
-            throw new SqlBuilderException('InvalidArgumentException, No data to update.', 500, ['dmlUpdate_invalid_data', 0x32]);
+            throw new SqlBuilderException('InvalidArgumentException, No data to update.', 0, null, 500, ['error_type'=>'dmlUpdate_invalid_data']);
         }
 
         // Loop through the data to find the values to update.

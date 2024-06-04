@@ -48,7 +48,7 @@ class CreateTable extends _DdlTableColumn
         $columns = $this->getQueryLog()['columns'] ?? [];
         // Check if the $column is set or not and empty or not.
         if (empty($columns)) {
-            throw new SqlBuilderException('No columns found to create table', 500, ['ddlCreateTable_columns_notDefined', 0x20]);
+            throw new SqlBuilderException('No columns found to create table', 0, null, 500, ['error_type'=>'ddlCreateTable_columns_notDefined']);
         }
         // Loop through the columns and build the column query.
         foreach ($columns as $column) {
@@ -67,10 +67,10 @@ class CreateTable extends _DdlTableColumn
     public function buildColSql(array $columnDefinition): string
     {
         if (!isset($columnDefinition['column'])) {
-            throw new SqlBuilderException('Column name is required', 500, ['ddl_columnName_notDefined', 0x15]);
+            throw new SqlBuilderException('Column name is required', 0, null, 500, ['error_type'=>'ddl_columnName_notDefined']);
         }
         if (!isset($columnDefinition['type'])) {
-            throw new SqlBuilderException('Column type for ' . $columnDefinition['column'] . ' is required', 500, ['ddl_columnType_notDefined', 0x16]);
+            throw new SqlBuilderException('Column type for ' . $columnDefinition['column'] . ' is required', 0, null,500, ['error_type'=>'ddl_columnType_notDefined']);
         }
         if (!isset($columnDefinition['length'])) {
             $columnDefinition['length'] = _DdlDefault::getLength($columnDefinition['type']);

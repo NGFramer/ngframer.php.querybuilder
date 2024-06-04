@@ -70,7 +70,7 @@ class InsertTable extends _DmlTable
 
         // Check if there's data to insert
         if (empty($queryLog['data'])) {
-            throw new SqlBuilderException('InvalidArgumentException, No data to insert.', 500, ['dmlInsert_invalid_data', 0x23]);
+            throw new SqlBuilderException('InvalidArgumentException, No data to insert.', 0, null, 500, ['error_type'=>'dmlInsert_invalid_data']);
         }
 
         // Array to store all generated queries

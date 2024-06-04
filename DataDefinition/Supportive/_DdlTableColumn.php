@@ -24,7 +24,7 @@ abstract class _DdlTableColumn extends _DdlTable
     public function select(string $columnName): self
     {
         if (!$this->getTable()) {
-            throw new SqlBuilderException("No table has been selected. Please select a table before proceeding to select $columnName column.", 500, ['ddl_table_notSelected', 0x3]);
+            throw new SqlBuilderException("No table has been selected. Please select a table before proceeding to select $columnName column.", 0, null, 500, ['error_type'=>'ddl_table_notSelected']);
         }
         $this->selectedColumn = $columnName;
         return $this;
@@ -77,7 +77,7 @@ abstract class _DdlTableColumn extends _DdlTable
     protected function getSelectedColumn(): string
     {
         if (empty($this->selectedColumn)) {
-            throw new SqlBuilderException("No column has been selected. Please select a column before proceeding.", 500, ['ddl_table_columnNotSelected', 0x4]);
+            throw new SqlBuilderException("No column has been selected. Please select a column before proceeding.", 0, null, 500, ['error_type'=>'ddl_table_columnNotSelected']);
         }
         return $this->selectedColumn;
     }
@@ -108,7 +108,7 @@ abstract class _DdlTableColumn extends _DdlTable
         $columnIndex = $this->getIndexOfColumn($columnName);
         // Check if the column index is null or not.
         if ($columnIndex === null){
-            throw new SqlBuilderException("No column was found. Please select a column before proceeding.", 500, ['ddl_table_columnNotFound', 0x5]);
+            throw new SqlBuilderException("No column was found. Please select a column before proceeding.", 0, null, 500, ['error_type'=>'ddl_table_columnNotFound']);
         }
         $this->addToQueryLogDeep('columns', $columnIndex, $attributeName, $attributeValue);
     }

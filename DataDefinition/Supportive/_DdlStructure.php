@@ -13,10 +13,10 @@ abstract class _DdlStructure extends _Builder
     protected function __construct(string $structureType, string $structureValue)
     {
         if (empty($structureType)) {
-            throw new SqlBuilderException('Structure type cannot be empty. Please provide a structure type.', 500, ['ddl_structureType_notDefined', 0x1]);
+            throw new SqlBuilderException('Structure type cannot be empty. Please provide a structure type.', 0, null, 500, ['error_type' => 'ddl_structureType_notDefined']);
         }
         if (empty($structureValue)) {
-            throw new SqlBuilderException("$structureType name cannot be empty. Please provide a structure value.", 500, ['ddl_structureValue_notDefined', 0x2]);
+            throw new SqlBuilderException("$structureType name cannot be empty. Please provide a structure value.", 0, null, 500, ['error_type' => 'ddl_structureValue_notDefined']);
         }
         $this->setStructure($structureType, $structureValue);
     }
@@ -27,7 +27,7 @@ abstract class _DdlStructure extends _Builder
         $this->structure['type'] = $structureType;
         $this->structure['value'] = $structureValue;
     }
-    
+
 
     protected function getStructureValue(): string
     {

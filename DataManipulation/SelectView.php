@@ -30,7 +30,7 @@ class SelectView extends _DmlView
     {
         foreach ($fields as $field) {
             if (!is_string($field)) {
-                throw new SqlBuilderException('InvalidArgumentException, Field names must be string.', 500, ['dmlSelect_invalid_data', 0x25]);
+                throw new SqlBuilderException('InvalidArgumentException, Field names must be string.', 0, null, 500, ['dmlSelect_invalid_data', 0x25]);
             }
             $this->addToQueryLogDeepArray('columns', $field);
         }

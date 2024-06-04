@@ -32,7 +32,7 @@ trait GroupByTrait
             $groupBy = $queryLog['groupBy'];
             return " GROUP BY $groupBy";
         } else {
-            throw new SqlBuilderException('InvalidValueException, Group By attribute must be a string and not empty.', 500, ['dmlGroupBy_invalid_data', 0x22]);
+            throw new SqlBuilderException('InvalidValueException, Group By attribute must be a string and not empty.', 0, null, 500, ['error_type'=>'dmlGroupBy_invalid_data']);
         }
     }
 }

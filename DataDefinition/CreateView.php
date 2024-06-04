@@ -34,10 +34,10 @@ class CreateView extends _DdlView
             if (isset($queryLog[0]['select'])) {
                 $query .= $queryLog[0]['select'];
             } else {
-                throw new SqlBuilderException("SelectTable query has not been passed. Pass an raw select query to create an view.", 500, ['ddlCreateView_selection_notDefined', 0x17]);
+                throw new SqlBuilderException("SelectTable query has not been passed. Pass an raw select query to create an view.", 0, null, 500, ['error_type'=>'ddlCreateView_selection_notDefined']);
             }
         } else {
-            throw new SqlBuilderException("Something went wrong. Please look at the documentation for more information.", 500, ['ddlCreateView_action_invalidOrEmpty', 0x18]);
+            throw new SqlBuilderException("Something went wrong. Please look at the documentation for more information.", 0, null, 500, ['error_type'=>'ddlCreateView_action_invalidOrEmpty']);
         }
         return $query;
     }

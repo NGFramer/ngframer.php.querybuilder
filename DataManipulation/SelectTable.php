@@ -30,7 +30,7 @@ class SelectTable extends _DmlTable
     {
         foreach ($fields as $field) {
             if (!is_string($field)) {
-                throw new SqlBuilderException('InvalidArgumentException, Field names must be string.', 500, ['dmlSelect_invalid_data', 0x24]);
+                throw new SqlBuilderException('InvalidArgumentException, Field names must be string.', 0, null, 500, ['error_type'=>'dmlSelect_invalid_data']);
             }
             $this->addToQueryLogDeepArray('columns', $field);
         }

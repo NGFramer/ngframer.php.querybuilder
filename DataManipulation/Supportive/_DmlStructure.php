@@ -17,10 +17,10 @@ abstract class _DmlStructure extends _Builder
     protected function __construct(string $structureType, string $structureValue)
     {
         if (empty($structureType)) {
-            throw new SqlBuilderException('Structure type cannot be empty. Please provide a structure type.', 500, ['dml_structureType_notDefined', 0x19]);
+            throw new SqlBuilderException('Structure type cannot be empty. Please provide a structure type.', 0, null, 500, ['error_type'=>'dml_structureType_notDefined']);
         }
         if (empty($structureValue)) {
-            throw new \Exception("$structureType name cannot be empty. Please provide a structure value.", 500, ['dml_structureValue_notDefined', 0x20]);
+            throw new SqlBuilderException("$structureType name cannot be empty. Please provide a structure value.", 0, null, 500, ['dml_structureValue_notDefined',]);
         }
         $this->setStructure($structureType, $structureValue);
     }
@@ -60,7 +60,7 @@ abstract class _DmlStructure extends _Builder
     protected function updateBindParameters(string $column, string $value): void
     {
         if (array_key_exists($column, $this->bindParameters)){
-            throw new SqlBuilderException("Something unexpected happened. Repeated bindParameters column.", 500, ['dml_repeatedBindParametersKey', 0x21]);
+            throw new SqlBuilderException("Something unexpected happened. Repeated bindParameters column.", 0, null, 500, ['error_type'=>'dml_repeatedBindParametersKey']);
         }else{
             $this->bindParameters[$column] = $value;
         }
