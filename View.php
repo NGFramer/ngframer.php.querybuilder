@@ -1,12 +1,12 @@
 <?php
 
-namespace NGFramer\NGFramerPHPSQLBuilder;
+namespace NGFramer\NGFramerPHPSQLServices;
 
-use NGFramer\NGFramerPHPSQLBuilder\DataDefinition\AlterView;
-use NGFramer\NGFramerPHPSQLBuilder\DataDefinition\CreateView;
-use NGFramer\NGFramerPHPSQLBuilder\DataDefinition\DropView;
-use NGFramer\NGFramerPHPSQLBuilder\DataDefinition\RenameView;
-use NGFramer\NGFramerPHPSQLBuilder\DataManipulation\SelectView;
+use NGFramer\NGFramerPHPSQLServices\DataDefinition\AlterView;
+use NGFramer\NGFramerPHPSQLServices\DataDefinition\CreateView;
+use NGFramer\NGFramerPHPSQLServices\DataDefinition\DropView;
+use NGFramer\NGFramerPHPSQLServices\DataDefinition\RenameView;
+use NGFramer\NGFramerPHPSQLServices\DataManipulation\SelectView;
 
 class View
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace NGFramer\NGFramerPHPSQLBuilder\DataManipulation\Supportive;
+namespace NGFramer\NGFramerPHPSQLServices\DataManipulation\Supportive;
 
 abstract class _DmlView extends _DmlStructure
 {

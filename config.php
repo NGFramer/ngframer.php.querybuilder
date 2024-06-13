@@ -1,4 +1,4 @@
 <?php
 
-namespace NGFramer\NGFramerPHPSQLBuilder;
+namespace NGFramer\NGFramerPHPSQLServices;
 

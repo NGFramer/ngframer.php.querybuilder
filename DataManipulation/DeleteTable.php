@@ -1,8 +1,8 @@
 <?php
 
-namespace NGFramer\NGFramerPHPSQLBuilder\DataManipulation;
+namespace NGFramer\NGFramerPHPSQLServices\DataManipulation;
 
-use NGFramer\NGFramerPHPSQLBuilder\DataManipulation\Supportive\_DmlTable;
+use NGFramer\NGFramerPHPSQLServices\DataManipulation\Supportive\_DmlTable;
 
 class DeleteTable extends _DmlTable
 {

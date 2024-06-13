@@ -1,9 +1,9 @@
 <?php
 
-namespace NGFramer\NGFramerPHPSQLBuilder\DataManipulation;
+namespace NGFramer\NGFramerPHPSQLServices\DataManipulation;
 
 use NGFramer\NGFramerPHPExceptions\exceptions\SqlBuilderException;
-use NGFramer\NGFramerPHPSQLBuilder\DataManipulation\Supportive\_DmlTable;
+use NGFramer\NGFramerPHPSQLServices\DataManipulation\Supportive\_DmlTable;
 
 class InsertTable extends _DmlTable
 {

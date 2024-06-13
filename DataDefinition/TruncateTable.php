@@ -1,8 +1,8 @@
 <?php
 
-namespace NGFramer\NGFramerPHPSQLBuilder\DataDefinition;
+namespace NGFramer\NGFramerPHPSQLServices\DataDefinition;
 
-use NGFramer\NGFramerPHPSQLBuilder\DataDefinition\Supportive\_DdlTable;
+use NGFramer\NGFramerPHPSQLServices\DataDefinition\Supportive\_DdlTable;
 
 class TruncateTable extends _DdlTable
 {

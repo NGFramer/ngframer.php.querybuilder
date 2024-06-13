@@ -1,10 +1,10 @@
 <?php
 
-namespace NGFramer\NGFramerPHPSQLBuilder\DataDefinition;
+namespace NGFramer\NGFramerPHPSQLServices\DataDefinition;
 
 use NGFramer\NGFramerPHPExceptions\exceptions\SqlBuilderException;
-use NGFramer\NGFramerPHPSQLBuilder\DataDefinition\Supportive\_DdlDefault;
-use NGFramer\NGFramerPHPSQLBuilder\DataDefinition\Supportive\_DdlTableColumn;
+use NGFramer\NGFramerPHPSQLServices\DataDefinition\Supportive\_DdlDefault;
+use NGFramer\NGFramerPHPSQLServices\DataDefinition\Supportive\_DdlTableColumn;
 
 class CreateTable extends _DdlTableColumn
 {

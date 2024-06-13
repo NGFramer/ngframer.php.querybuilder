@@ -1,8 +1,8 @@
 <?php
 
-namespace NGFramer\NGFramerPHPSQLBuilder\DataDefinition;
+namespace NGFramer\NGFramerPHPSQLServices\DataDefinition;
 
-use NGFramer\NGFramerPHPSQLBuilder\DataDefinition\Supportive\_DdlView;
+use NGFramer\NGFramerPHPSQLServices\DataDefinition\Supportive\_DdlView;
 
 class DropView extends _DdlView
 {

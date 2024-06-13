@@ -1,6 +1,6 @@
 <?php
 
-namespace NGFramer\NGFramerPHPSQLBuilder;
+namespace NGFramer\NGFramerPHPSQLServices;
 
 abstract class _Builder
 {

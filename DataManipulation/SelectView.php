@@ -1,9 +1,9 @@
 <?php
 
-namespace NGFramer\NGFramerPHPSQLBuilder\DataManipulation;
+namespace NGFramer\NGFramerPHPSQLServices\DataManipulation;
 
 use NGFramer\NGFramerPHPExceptions\exceptions\SqlBuilderException;
-use NGFramer\NGFramerPHPSQLBuilder\DataManipulation\Supportive\_DmlView;
+use NGFramer\NGFramerPHPSQLServices\DataManipulation\Supportive\_DmlView;
 
 class SelectView extends _DmlView
 {

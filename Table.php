@@ -1,16 +1,16 @@
 <?php
 
-namespace NGFramer\NGFramerPHPSQLBuilder;
+namespace NGFramer\NGFramerPHPSQLServices;
 
-use NGFramer\NGFramerPHPSQLBuilder\DataDefinition\AlterTable;
-use NGFramer\NGFramerPHPSQLBuilder\DataDefinition\CreateTable;
-use NGFramer\NGFramerPHPSQLBuilder\DataDefinition\DropTable;
-use NGFramer\NGFramerPHPSQLBuilder\DataDefinition\RenameTable;
-use NGFramer\NGFramerPHPSQLBuilder\DataDefinition\TruncateTable;
-use NGFramer\NGFramerPHPSQLBuilder\DataManipulation\DeleteTable;
-use NGFramer\NGFramerPHPSQLBuilder\DataManipulation\InsertTable;
-use NGFramer\NGFramerPHPSQLBuilder\DataManipulation\SelectTable;
-use NGFramer\NGFramerPHPSQLBuilder\DataManipulation\UpdateTable;
+use NGFramer\NGFramerPHPSQLServices\DataDefinition\AlterTable;
+use NGFramer\NGFramerPHPSQLServices\DataDefinition\CreateTable;
+use NGFramer\NGFramerPHPSQLServices\DataDefinition\DropTable;
+use NGFramer\NGFramerPHPSQLServices\DataDefinition\RenameTable;
+use NGFramer\NGFramerPHPSQLServices\DataDefinition\TruncateTable;
+use NGFramer\NGFramerPHPSQLServices\DataManipulation\DeleteTable;
+use NGFramer\NGFramerPHPSQLServices\DataManipulation\InsertTable;
+use NGFramer\NGFramerPHPSQLServices\DataManipulation\SelectTable;
+use NGFramer\NGFramerPHPSQLServices\DataManipulation\UpdateTable;
 
 class Table
 {

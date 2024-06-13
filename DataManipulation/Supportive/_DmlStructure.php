@@ -1,9 +1,9 @@
 <?php
 
-namespace NGFramer\NGFramerPHPSQLBuilder\DataManipulation\Supportive;
+namespace NGFramer\NGFramerPHPSQLServices\DataManipulation\Supportive;
 
 use NGFramer\NGFramerPHPExceptions\exceptions\SqlBuilderException;
-use NGFramer\NGFramerPHPSQLBuilder\_Builder;
+use NGFramer\NGFramerPHPSQLServices\_Builder;
 
 abstract class _DmlStructure extends _Builder
 {

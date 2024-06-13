@@ -1,6 +1,6 @@
 <?php
 
-namespace NGFramer\NGFramerPHPSQLBuilder\DataDefinition\Supportive;
+namespace NGFramer\NGFramerPHPSQLServices\DataDefinition\Supportive;
 
 abstract class _DdlView extends _DdlStructure
 {

@@ -1,9 +1,9 @@
 <?php
 
-namespace NGFramer\NGFramerPHPSQLBuilder\DataDefinition\Supportive;
+namespace NGFramer\NGFramerPHPSQLServices\DataDefinition\Supportive;
 
 use NGFramer\NGFramerPHPExceptions\exceptions\SqlBuilderException;
-use NGFramer\NGFramerPHPSQLBuilder\_Builder;
+use NGFramer\NGFramerPHPSQLServices\_Builder;
 
 abstract class _DdlStructure extends _Builder
 {

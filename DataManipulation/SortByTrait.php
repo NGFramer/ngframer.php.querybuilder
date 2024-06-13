@@ -1,6 +1,6 @@
 <?php
 
-namespace NGFramer\NGFramerPHPSQLBuilder\DataManipulation;
+namespace NGFramer\NGFramerPHPSQLServices\DataManipulation;
 
 use NGFramer\NGFramerPHPExceptions\exceptions\SqlBuilderException;
 

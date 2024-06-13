@@ -1,4 +1,5 @@
 <?php
+
 namespace MyLibrary;
 
 use NGFramer\NGFramerPHPExceptions\exceptions\SqlBuilderError;
