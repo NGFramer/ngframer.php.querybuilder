@@ -4,20 +4,64 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9dc18e8f929b2278f6e7c6ab4eb66128",
+    "content-hash": "ed379cdc90608c8ffd965e5d9e500980",
     "packages": [
         {
-            "name": "ngframer/ngframer.php.exceptions",
-            "version": "v1.0.0",
+            "name": "ngframer/ngframer.php.dbservice",
+            "version": "v1.1.2",
             "source": {
                 "type": "git",
-                "url": "https://github.com/ngframer/ngframer.php.exceptions.git",
-                "reference": "70492c7ce841e903db68e3bbe9c1c2af10baab0a"
+                "url": "https://github.com/ngframer/ngframer.php.dbservice.git",
+                "reference": "671fbcc1af573535f02b5fb4ab03b4b377700b02"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ngframer/ngframer.php.exceptions/zipball/70492c7ce841e903db68e3bbe9c1c2af10baab0a",
-                "reference": "70492c7ce841e903db68e3bbe9c1c2af10baab0a",
+                "url": "https://api.github.com/repos/ngframer/ngframer.php.dbservice/zipball/671fbcc1af573535f02b5fb4ab03b4b377700b02",
+                "reference": "671fbcc1af573535f02b5fb4ab03b4b377700b02",
+                "shasum": ""
+            },
+            "require": {
+                "ext-pdo": "*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "NGFramer\\NGFramerPHPDbService\\": "/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "NG Framer",
+                    "homepage": "https://github.com/ngframer"
+                },
+                {
+                    "name": "Kishor Neupane",
+                    "homepage": "https://github.com/neupkishor"
+                }
+            ],
+            "description": "Simple yet powerful database layer for PHP.",
+            "support": {
+                "issues": "https://github.com/ngframer/ngframer.php.dbservice/issues",
+                "source": "https://github.com/ngframer/ngframer.php.dbservice/tree/v1.1.2"
+            },
+            "time": "2024-06-09T17:31:54+00:00"
+        },
+        {
+            "name": "ngframer/ngframer.php.exceptions",
+            "version": "v1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ngframer/ngframer.php.exceptions.git",
+                "reference": "5356804ebdbc79521bcdb819898aab546e069c68"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ngframer/ngframer.php.exceptions/zipball/5356804ebdbc79521bcdb819898aab546e069c68",
+                "reference": "5356804ebdbc79521bcdb819898aab546e069c68",
                 "shasum": ""
             },
             "require": {
@@ -50,9 +94,9 @@
             "description": "Exception and Exception handler for all the NGFramer projects and mostly used Exceptions and Exception handlers.",
             "support": {
                 "issues": "https://github.com/ngframer/ngframer.php.exceptions/issues",
-                "source": "https://github.com/ngframer/ngframer.php.exceptions/tree/v1.0.0"
+                "source": "https://github.com/ngframer/ngframer.php.exceptions/tree/v1.1.0"
             },
-            "time": "2024-06-04T10:29:54+00:00"
+            "time": "2024-06-16T11:13:46+00:00"
         }
     ],
     "packages-dev": [],
