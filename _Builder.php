@@ -2,8 +2,9 @@
 
 namespace NGFramer\NGFramerPHPSQLServices;
 
+use Exception;
 
-trait _Builder
+Trait _Builder
 {
     // Variables required to store data for the classes.
     protected array $queryLog = [];
@@ -26,14 +27,25 @@ trait _Builder
     }
 
 
-    protected function setAction($action): void
+    /**
+     * @throws Exception
+     */
+    protected function setAction($action = null): void
     {
+        // Function can still be overwritten, and no error will be thrown.
+        // When the parent::setAction is called and action is passed as null, the exception will be thrown.
+        if ($action == null) {
+            Throw new Exception("Action for any operations cannot be null.");
+        }
         $this->action = $action;
+
     }
 
 
     protected function getAction(): string
     {
+        if (empty($this->action)) {
+        }
         return $this->action;
     }
 
