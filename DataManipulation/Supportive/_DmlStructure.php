@@ -7,6 +7,10 @@ use NGFramer\NGFramerPHPSQLServices\_Base;
 
 abstract class _DmlStructure extends _Base
 {
+    // Traits used for this class's actions and operations.
+    use _DmlExecutor;
+
+
     // Variable defined here.
     private bool $goDirect = false;
     private array $bindParameters = [];

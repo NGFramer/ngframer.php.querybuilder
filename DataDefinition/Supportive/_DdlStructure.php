@@ -7,6 +7,11 @@ use NGFramer\NGFramerPHPSQLServices\_Base;
 
 abstract class _DdlStructure extends _Base
 {
+    // Use the following traits for this class.
+    use _DdlExecutor;
+
+
+    // Use the following properties for this class.
     private array $structure;
 
 
