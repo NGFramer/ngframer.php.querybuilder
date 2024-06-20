@@ -3,9 +3,9 @@
 namespace NGFramer\NGFramerPHPSQLServices\DataManipulation\Supportive;
 
 use NGFramer\NGFramerPHPExceptions\exceptions\SqlBuilderException;
-use NGFramer\NGFramerPHPSQLServices\_Builder;
+use NGFramer\NGFramerPHPSQLServices\_Base;
 
-abstract class _DmlStructure extends _Builder
+abstract class _DmlStructure extends _Base
 {
     // Variable defined here.
     private bool $goDirect = false;

@@ -4,7 +4,7 @@ namespace NGFramer\NGFramerPHPSQLServices;
 
 use Exception;
 
-class Executor
+Trait _Executor
 {
     // Variables to store query JSON data related to query.
     private static array $queryJson;

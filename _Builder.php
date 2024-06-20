@@ -2,7 +2,8 @@
 
 namespace NGFramer\NGFramerPHPSQLServices;
 
-abstract class _Builder
+
+trait _Builder
 {
     // Variables required to store data for the classes.
     protected array $queryLog = [];
@@ -75,37 +76,9 @@ abstract class _Builder
     }
 
 
-    // Supportive function, to check if the array is associative or not.
-    protected function isAssocArray(array $array): bool
-    {
-        // Check if any keys are non-numerical or not starting from 0
-        foreach ($array as $key => $value) {
-            if (!is_int($key) or $key !== key($array)) {
-                return true; // It's a key-value pair
-            }
-            next($array); // Move to the next key
-        }
-        return false; // It's just a list of values
-    }
-
-
-    // Supportive function, to check if all the elements of an array are arrays.
-    protected function areElementsArray(array $elementContainer): bool
-    {
-        // Loop through the element container elements.
-        foreach ($elementContainer as $element) {
-            if (!is_array($element)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-
     // Get the newer column index.
     protected function getNewColumnIndex($columnName): int
     {
-        //
         return !empty($this->getIndexOfColumn($columnName)) ? $this->getIndexOfColumn($columnName) : $this->columnsCount();
     }
 
@@ -160,6 +133,4 @@ abstract class _Builder
             return 0;
         }
     }
-
-
 }
