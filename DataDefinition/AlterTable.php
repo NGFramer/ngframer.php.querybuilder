@@ -16,11 +16,13 @@ class AlterTable extends _DdlTableColumn
         parent::__construct($tableName);
         // Initialize the query log, add the table name and the action to alterTable.
         $this->addQueryLog('table', $tableName, 'alterTable');
+        // Set the action.
+        $this->setAction();
     }
 
 
     // Set the action for the table.
-    protected function setAction(): void
+    protected function setAction($action = null): void
     {
         parent::setAction("alterTable");
     }

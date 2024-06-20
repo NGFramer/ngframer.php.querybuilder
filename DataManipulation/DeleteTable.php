@@ -12,18 +12,20 @@ class DeleteTable extends _DmlTable
     }
 
 
-    // Set the action for the table.
-    protected function setAction(): void
-    {
-        parent::setAction("deleteData");
-    }
-
-
     // Constructor function for the class.
     public function __construct(string $tableName)
     {
         parent::__construct($tableName);
         $this->addQueryLog('table', $tableName, 'deleteData');
+        // Set the action.
+        $this->setAction();
+    }
+
+
+    // Set the action for the table.
+    protected function setAction($action = null): void
+    {
+        parent::setAction("deleteData");
     }
 
 

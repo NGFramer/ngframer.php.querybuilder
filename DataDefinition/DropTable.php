@@ -13,11 +13,13 @@ class DropTable extends _DdlTable
     {
         parent::__construct($tableName);
         $this->addQueryLog('table',$tableName, 'dropTable');
+        // Set the action.
+        $this->setAction();
     }
 
 
     // Set the action for the table.
-    protected function setAction(): void
+    protected function setAction($action = null): void
     {
         parent::setAction("dropTable");
     }

@@ -14,11 +14,13 @@ class RenameView extends _DdlView
         parent::__construct($viewName);
         $this->addQueryLog('view', $viewName, 'renameView');
         $this->addToQueryLogDeep('value', $newViewName);
+        // Set the action.
+        $this->setAction();
     }
 
 
     // Set the action for the table.
-    protected function setAction(): void
+    protected function setAction($action = null): void
     {
         parent::setAction("renameView");
     }

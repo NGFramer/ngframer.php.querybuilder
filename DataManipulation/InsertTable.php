@@ -16,11 +16,13 @@ class InsertTable extends _DmlTable
         $this->addQueryLog('table', $tableName, 'insertData');
         // Call the insert data function.
         $this->insert(...$data);
+        // Set the action for the class.
+        $this->setAction();
     }
 
 
     // Set the action for the table.
-    protected function setAction(): void
+    protected function setAction($action = null): void
     {
         parent::setAction("insertData");
     }

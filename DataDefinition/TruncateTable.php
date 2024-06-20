@@ -13,13 +13,15 @@ class TruncateTable extends _DdlTable
     {
         parent::__construct($tableName);
         $this->addQueryLog('table', $tableName, 'truncateTable');
+        // Set the action.
+        $this->setAction();
     }
 
 
     // Set the action for the table.
-    protected function setAction(): void
+    protected function setAction($action = null): void
     {
-        parent::setAction("renameTable");
+        parent::setAction("truncateTable");
     }
 
 

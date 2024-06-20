@@ -22,11 +22,13 @@ class SelectView extends _DmlView
         parent::__construct($viewName);
         $this->addQueryLog('view', $viewName, 'selectData');
         $this->select($columns);
+        // Set the action.
+        $this->setAction();
     }
 
 
     // Set the action for the table.
-    protected function setAction(): void
+    protected function setAction($action = null): void
     {
         parent::setAction("selectData");
     }

@@ -26,11 +26,13 @@ class UpdateTable extends _DmlTable
         $this->addQueryLog('table', $tableName, 'updateData');
         // Call the update function.
         $this->update($data);
+        // Set the action.
+        $this->setAction();
     }
 
 
     // Set the action for the table.
-    protected function setAction(): void
+    protected function setAction($action = null): void
     {
         parent::setAction("updateData");
     }

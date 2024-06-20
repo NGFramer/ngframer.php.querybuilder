@@ -22,11 +22,13 @@ class SelectTable extends _DmlTable
         parent::__construct($tableName);
         $this->addQueryLog('table', $tableName, 'selectData');
         $this->select($columns);
+        // Set the action.
+        $this->setAction();
     }
 
 
     // Set the action for the table.
-    protected function setAction(): void
+    protected function setAction($action = null): void
     {
         parent::setAction("selectData");
     }
