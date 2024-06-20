@@ -24,7 +24,7 @@ Trait _Executor
      */
     private function preparedExecution(): int|array|bool
     {
-        // Get all the following details from the queryJson.
+        // Get all the following details queryBuilder and queryBindParameterBuilder.
         $query = $this->query = $this->buildQuery();
         $bindParameters = $this->bindParameters = $this->buildBindParameters();
 
@@ -49,6 +49,9 @@ Trait _Executor
      */
     private function directExecution(): int|array|bool
     {
+        // Get all the following details queryBuilder.
+        $query = $this->query = $this->buildQuery();
+
         // Try initiating the transaction and record its status.
         $beginTransactionStatus = $this->database->beginTransaction();
         if (!$beginTransactionStatus) {
