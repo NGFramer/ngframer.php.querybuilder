@@ -19,6 +19,13 @@ class InsertTable extends _DmlTable
     }
 
 
+    // Set the action for the table.
+    protected function setAction(): void
+    {
+        parent::setAction("insertData");
+    }
+
+
     // Insert data function for the class.
     // Only one row of the data will be allowed for the
     public function insert(array ...$data): self

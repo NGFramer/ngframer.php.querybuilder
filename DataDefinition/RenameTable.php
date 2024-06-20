@@ -17,6 +17,13 @@ class RenameTable extends _DdlTable
     }
 
 
+    // Set the action for the table.
+    protected function setAction(): void
+    {
+        parent::setAction("renameTable");
+    }
+
+
     // Main function for the class rename.
     // Function rename not required, the constructor did everything required.
 

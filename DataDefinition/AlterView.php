@@ -15,6 +15,12 @@ class AlterView extends _DdlView
         $this->addQueryLog('view', $viewName, 'alterView');
     }
 
+    // Set the action for the table.
+    protected function setAction(): void
+    {
+        parent::setAction("alterView");
+    }
+
 
     // Main function for the class AlterView.
     public function select(string $rawSelectQuery): self

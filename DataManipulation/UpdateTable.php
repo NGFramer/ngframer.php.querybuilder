@@ -29,6 +29,13 @@ class UpdateTable extends _DmlTable
     }
 
 
+    // Set the action for the table.
+    protected function setAction(): void
+    {
+        parent::setAction("updateData");
+    }
+
+
     public function update(array $data): void
     {
         // Check if the data is an associative array.

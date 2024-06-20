@@ -25,6 +25,13 @@ class SelectTable extends _DmlTable
     }
 
 
+    // Set the action for the table.
+    protected function setAction(): void
+    {
+        parent::setAction("selectData");
+    }
+
+
     // Main function for the class.
     public function select(array $fields): void
     {

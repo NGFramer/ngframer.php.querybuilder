@@ -19,6 +19,13 @@ class CreateTable extends _DdlTableColumn
     }
 
 
+    // Set the action for the table.
+    protected function setAction(): void
+    {
+        parent::setAction("createTable");
+    }
+
+
     // Function related to the addition of columns.
     // Logic behind the addition of column:
     // 1. Find the index of the column.

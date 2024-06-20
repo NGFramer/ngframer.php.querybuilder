@@ -16,6 +16,13 @@ class TruncateTable extends _DdlTable
     }
 
 
+    // Set the action for the table.
+    protected function setAction(): void
+    {
+        parent::setAction("renameTable");
+    }
+
+
     // Main function for the class drop.
     // Function drop not required, the constructor did everything required.
 

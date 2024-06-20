@@ -17,6 +17,13 @@ class RenameView extends _DdlView
     }
 
 
+    // Set the action for the table.
+    protected function setAction(): void
+    {
+        parent::setAction("renameView");
+    }
+
+
     // Main function for the class rename.
     // Function rename not required, the constructor did everything required.
 

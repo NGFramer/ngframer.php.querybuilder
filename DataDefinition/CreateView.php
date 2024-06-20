@@ -17,6 +17,13 @@ class CreateView extends _DdlView
     }
 
 
+    // Set the action for the table.
+    protected function setAction(): void
+    {
+        parent::setAction("createView");
+    }
+
+
     // Main function for the class AlterView.
     public function select(string $rawSelectQuery): self
     {

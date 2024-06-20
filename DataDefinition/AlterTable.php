@@ -19,6 +19,13 @@ class AlterTable extends _DdlTableColumn
     }
 
 
+    // Set the action for the table.
+    protected function setAction(): void
+    {
+        parent::setAction("alterTable");
+    }
+
+
     // Selection function modification from parent.
     public function select(string $columnName): self
     {

@@ -16,6 +16,13 @@ class DropView extends _DdlView
     }
 
 
+    // Set the action for the table.
+    protected function setAction(): void
+    {
+        parent::setAction("dropView");
+    }
+
+
     // Main function for the class AlterView.
     // Main function drop not required, the constructor did everything required.
 

@@ -7,6 +7,7 @@ trait _Builder
 {
     // Variables required to store data for the classes.
     protected array $queryLog = [];
+    protected string $action;
 
 
     // Function relating to the queryLog building, logging, and getting.
@@ -22,6 +23,18 @@ trait _Builder
     protected function getQueryLog(): array
     {
         return $this->queryLog;
+    }
+
+
+    protected function setAction($action): void
+    {
+        $this->action = $action;
+    }
+
+
+    protected function getAction(): string
+    {
+        return $this->action;
     }
 
 
