@@ -6,7 +6,7 @@ namespace NGFramer\NGFramerPHPSQLServices;
 abstract class _Base
 {
     // Use the following Traits for this class.
-    use _Builder, _Executor, _Utilities;
+    use _Builder, _Utilities;
 
     // No additional functions are required.
     // Every function required are served from the Traits.
