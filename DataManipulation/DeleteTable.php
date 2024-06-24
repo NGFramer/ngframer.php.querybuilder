@@ -9,6 +9,7 @@ class DeleteTable extends _DmlTable
     // Use the following trait to access the functions.
     use WhereTrait{
         WhereTrait::buildQuery as buildWhere;
+        LimitTrait::buildQuery as buildLimit;
     }
 
 
@@ -51,6 +52,7 @@ class DeleteTable extends _DmlTable
         if (!empty($whereClause)) {
             $query .= "{$whereClause}";
         }
+        $query .= $this->buildLimit();
         // Return the query.
         return $query;
     }

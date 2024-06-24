@@ -14,6 +14,7 @@ class UpdateTable extends _DmlTable
     // Use the following trait to access the functions.
     use WhereTrait {
         WhereTrait::buildQuery as whereBuild;
+        LimitTrait::buildQuery as buildLimit;
     }
 
 
@@ -111,6 +112,7 @@ class UpdateTable extends _DmlTable
         $query .= implode(', ', $setData);
         // Add the WHERE clause if present.
         $query .= $this->whereBuild();
+        $query .= $this->buildLimit();
         // Return the query.
         return $query;
     }
