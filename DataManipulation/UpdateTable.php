@@ -12,7 +12,7 @@ class UpdateTable extends _DmlTable
 
 
     // Use the following trait to access the functions.
-    use WhereTrait {
+    use WhereTrait, LimitTrait {
         WhereTrait::buildQuery as whereBuild;
         LimitTrait::buildQuery as buildLimit;
     }
