@@ -21,7 +21,7 @@ abstract class _DmlStructure extends _Base
     protected function __construct(string $structureType, string $structureValue)
     {
         if (empty($structureType)) {
-            throw new SqlBuilderException('Structure type cannot be empty. Please provide a structure type.', 0, null, 500, ['error_type'=>'dml_structureType_notDefined']);
+            throw new SqlBuilderException('Structure type cannot be empty. Please provide a structure type.', 0, null, 500, ['error_type' => 'dml_structureType_notDefined']);
         }
         if (empty($structureValue)) {
             throw new SqlBuilderException("$structureType name cannot be empty. Please provide a structure value.", 0, null, 500, ['dml_structureValue_notDefined',]);
@@ -63,9 +63,9 @@ abstract class _DmlStructure extends _Base
     // Function to update/add to the bind parameters.
     protected function updateBindParameters(string $column, string $value): void
     {
-        if (array_key_exists($column, $this->bindParameters)){
-            throw new SqlBuilderException("Something unexpected happened. Repeated bindParameters column.", 0, null, 500, ['error_type'=>'dml_repeatedBindParametersKey']);
-        }else{
+        if (array_key_exists($column, $this->bindParameters)) {
+            throw new SqlBuilderException("Something unexpected happened. Repeated bindParameters column.", 0, null, 500, ['error_type' => 'dml_repeatedBindParametersKey']);
+        } else {
             $this->bindParameters[$column] = $value;
         }
     }
@@ -75,7 +75,7 @@ abstract class _DmlStructure extends _Base
     protected function getBindIndexStarter(): int
     {
         // Bind parameter will start from 1.
-        return !$this->goDirect ? (count($this->bindParameters)+1):0;
+        return !$this->goDirect ? (count($this->bindParameters) + 1) : 0;
     }
 
 
@@ -90,10 +90,13 @@ abstract class _DmlStructure extends _Base
 
     public function buildBindParameters(): array
     {
-        // Initialize the bind parameters array.
+        // First of all, get the queryLog.
+        $queryBuilt = $this->buildQuery();
+
+        // Then, Initialize the bind parameters array.
         $bindParameters = [];
         // Loop through the bind parameters and build the bind parameters array.
-        foreach ($this->bindParameters as $column => $value){
+        foreach ($this->bindParameters as $column => $value) {
             $bindParameters[] = ['column' => $column, 'value' => $value];
         }
         // Return the bind parameters array.
@@ -101,10 +104,15 @@ abstract class _DmlStructure extends _Base
     }
 
 
+    /**
+     * This uses multiple build functions, and is the function that we use to build the query.
+     * This is the only function other than buildLog() that will be used during the production purposes.
+     * @return array. The query result in the form of API response.
+     */
     public function build(): array
     {
         // Get the build Log and build the action.
-        $buildLog = $this->buildLog();
+        $buildLog = $this->getQueryLog();
         $action = $buildLog['action'];
         // Return the response.
         $resultArray = [
@@ -117,7 +125,7 @@ abstract class _DmlStructure extends _Base
             ],
         ];
         // Check if the execution method is direct, if so, add bind_parameters.
-        if (!$this->isGoDirect()){
+        if (!$this->isGoDirect()) {
             $resultArray['response']['bind_parameters'] = $this->buildBindParameters();
         }
         // Return the result array.
