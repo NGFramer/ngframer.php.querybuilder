@@ -42,7 +42,7 @@ abstract class _DdlStructure extends _Base
     public function build(): array
     {
         // Get the build Log and build the action.
-        $buildLog = $this->buildLog();
+        $buildLog = $this->getQueryLog();
         $action = $buildLog['action'];
         // Return the response.
         return [

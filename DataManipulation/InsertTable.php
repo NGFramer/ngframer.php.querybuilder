@@ -72,6 +72,12 @@ class InsertTable extends _DmlTable
     }
 
 
+    /**
+     * Build query not just builds the query but that can be executed, but also builds the parameters that are to be bound to the query.
+     * This function is required to be run when we're just also building the bindParameters.
+     * @return string
+     * @throws SqlBuilderException
+     */
     public function buildQuery(): string
     {
         // Get the query log data
