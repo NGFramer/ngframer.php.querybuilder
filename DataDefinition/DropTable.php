@@ -38,6 +38,6 @@ class DropTable extends _DdlTable
 
     public function buildLog(): array
     {
-        return $this->getQueryLog();
+        return $this->queryLog;
     }
 }
