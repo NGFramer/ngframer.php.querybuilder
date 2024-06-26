@@ -100,7 +100,7 @@ class UpdateTable extends _DmlTable
             // For the default method, prepared statements.
             if (!$this->isGoDirect()) {
                 $bindIndex = $this->getBindIndexStarter();
-                $this->updateBindParameters($key . $bindIndex, $value);
+                $this->updateBindValues($key . $bindIndex, $value);
                 $setData[] = "$key = :$key$bindIndex";
             } // For the direct method, add the values directly.
             else {

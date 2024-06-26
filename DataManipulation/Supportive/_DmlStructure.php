@@ -13,7 +13,7 @@ abstract class _DmlStructure extends _Base
 
     // Variable defined here.
     private bool $goDirect = false;
-    private array $bindParameters = [];
+    private array $bindValues = [];
     private array $structure;
 
 
@@ -61,12 +61,12 @@ abstract class _DmlStructure extends _Base
 
 
     // Function to update/add to the bind parameters.
-    protected function updateBindParameters(string $column, string $value): void
+    protected function updateBindValues(string $column, string $value): void
     {
-        if (array_key_exists($column, $this->bindParameters)) {
+        if (array_key_exists($column, $this->bindValues)) {
             throw new SqlBuilderException("Something unexpected happened. Repeated bindParameters column.", 0, null, 500, ['error_type' => 'dml_repeatedBindParametersKey']);
         } else {
-            $this->bindParameters[$column] = $value;
+            $this->bindValues[$column] = $value;
         }
     }
 
@@ -75,7 +75,7 @@ abstract class _DmlStructure extends _Base
     protected function getBindIndexStarter(): int
     {
         // Bind parameter will start from 1.
-        return !$this->goDirect ? (count($this->bindParameters) + 1) : 0;
+        return !$this->goDirect ? (count($this->bindValues) + 1) : 0;
     }
 
 
@@ -93,23 +93,23 @@ abstract class _DmlStructure extends _Base
      * Uses the function buildQuery when this function is executed independently and alone.
      * @return array
      */
-    public function buildBindParameters(): array
+    public function buildBindValues(): array
     {
-        // Only if the bindParameters array is empty, then build the query.
-        // Only for the purpose of only building the bindParameters.
+        // Only if the bindValues array is empty, then build the query.
+        // Only for the purpose of only building the bindValues.
         // The parameters to be bound is created only when the query is built.
-        if (empty($this->bindParameters)) {
+        if (empty($this->bindValues)) {
             $queryBuilt = $this->buildQuery();
         }
 
         // Then, Initialize the bind parameters array.
-        $bindParameters = [];
+        $bindValues = [];
         // Loop through the bind parameters and build the bind parameters array.
-        foreach ($this->bindParameters as $columnName => $columnValue) {
-            $bindParameters[] = ['column' => $columnName, 'value' => $columnValue];
+        foreach ($this->bindValues as $columnName => $columnValue) {
+            $bindValues[] = ['column' => $columnName, 'value' => $columnValue];
         }
         // Return the bind parameters array.
-        return $bindParameters;
+        return $bindValues;
     }
 
 
@@ -135,7 +135,7 @@ abstract class _DmlStructure extends _Base
         ];
         // Check if the execution method is direct, if so, add bind_parameters.
         if (!$this->isGoDirect()) {
-            $resultArray['response']['bind_parameters'] = $this->buildBindParameters();
+            $resultArray['response']['bind_values'] = $this->buildBindValues();
         }
         // Return the result array.
         return $resultArray;

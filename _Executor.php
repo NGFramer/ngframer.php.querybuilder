@@ -24,9 +24,9 @@ Trait _Executor
      */
     private function preparedExecution(): int|array|bool
     {
-        // Get all the following details queryBuilder and queryBindParameterBuilder.
+        // Get all the following details queryBuilder and queryBindValueBuilder.
         $query = $this->query = $this->buildQuery();
-        $bindParameters = $this->bindParameters = $this->buildBindParameters();
+        $bindValues = $this->bindValues = $this->buildBindValues();
 
         // Try initiating the transaction and record its status.
         $beginTransactionStatus = $this->database->beginTransaction();
@@ -35,7 +35,7 @@ Trait _Executor
         }
 
         // Prepare the query and bind the parameters.
-        $this->database->prepare($query)->bindParams($bindParameters);
+        $this->database->prepare($query)->bindValues($bindValues);
 
         // Now, based on the action, commit or rollback the transaction.
         return $this->runTransaction();
@@ -104,7 +104,7 @@ Trait _Executor
             // For all the other data definition based actions, return true.
             return true;
         }
-        error_log("Error on the following query " . $this->query . "with parameters " . json_encode($this->bindParameters) . ".");
+        error_log("Error on the following query " . $this->query . "with parameters " . json_encode($this->bindValues) . ".");
         throw new Exception("Invalid action" . $this->getAction() .". Please check the action in the query.");
     }
 

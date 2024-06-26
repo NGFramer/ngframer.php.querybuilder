@@ -118,7 +118,7 @@ class InsertTable extends _DmlTable
                     // If not direct, use bind parameters
                     if (!$this->isGoDirect()) {
                         $values[] = ':' . $column . $bindIndex;
-                        $this->updateBindParameters($column . $bindIndex, $this->sanitizeValue($value));
+                        $this->updateBindValues($column . $bindIndex, $this->sanitizeValue($value));
                     } // If direct, use the value directly
                     else $values[] = "'" . $this->sanitizeValue($value) . "'";
                 } // Execution if the column name was not set
@@ -128,7 +128,7 @@ class InsertTable extends _DmlTable
                     // Execution based on the method of execution.
                     if (!$this->isGoDirect()) {
                         $values[] = ':column' . $bindIndex;
-                        $this->updateBindParameters('column' . $bindIndex, $this->sanitizeValue($value));
+                        $this->updateBindValues('column' . $bindIndex, $this->sanitizeValue($value));
                     } else {
                         $values[] = "'" . $this->sanitizeValue($value) . "'";
                     }
