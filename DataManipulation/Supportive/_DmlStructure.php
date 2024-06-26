@@ -88,16 +88,25 @@ abstract class _DmlStructure extends _Base
     }
 
 
+    /**
+     * Builds the bind parameters array.
+     * Uses the function buildQuery when this function is executed independently and alone.
+     * @return array
+     */
     public function buildBindParameters(): array
     {
-        // First of all, get the queryLog.
-        $queryBuilt = $this->buildQuery();
+        // Only if the bindParameters array is empty, then build the query.
+        // Only for the purpose of only building the bindParameters.
+        // The parameters to be bound is created only when the query is built.
+        if (empty($this->bindParameters)) {
+            $queryBuilt = $this->buildQuery();
+        }
 
         // Then, Initialize the bind parameters array.
         $bindParameters = [];
         // Loop through the bind parameters and build the bind parameters array.
-        foreach ($this->bindParameters as $column => $value) {
-            $bindParameters[] = ['column' => $column, 'value' => $value];
+        foreach ($this->bindParameters as $columnName => $columnValue) {
+            $bindParameters[] = ['column' => $columnName, 'value' => $columnValue];
         }
         // Return the bind parameters array.
         return $bindParameters;
