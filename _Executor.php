@@ -5,38 +5,42 @@ namespace NGFramer\NGFramerPHPSQLServices;
 use Exception;
 use NGFramer\NGFramerPHPDbServices\Database;
 
-Trait _Executor
+trait _Executor
 {
     // Variables to store query JSON data related to query.
-    private ?Database $database;
+    private static ?Database $database = null;
 
 
     // Function to execute the query.
-    public function connect(): void
+    private static function connect(): void
     {
-        // Create a new instance of the Database class for executing the query.
-        $this->database =  Database::getInstance();
+        // Only get the instance again if the instance is empty.
+        if (empty(self::$database)) {
+            // Create a new instance of the Database class for executing the query.
+            self::$database = Database::getInstance();
+        }
     }
 
     // Function to execute the query using prepared statement.
-
     /**
      * @throws Exception
      */
     private function preparedExecution(): int|array|bool
     {
+        // Firstly, connect to the database.
+        $this->connect();
         // Get all the following details queryBuilder and queryBindValueBuilder.
         $query = $this->query = $this->buildQuery();
         $bindValues = $this->bindValues = $this->buildBindValues();
 
         // Try initiating the transaction and record its status.
-        $beginTransactionStatus = $this->database->beginTransaction();
+        $beginTransactionStatus = self::$database->beginTransaction();
         if (!$beginTransactionStatus) {
             throw new Exception("Unable to initiate the transaction.");
         }
 
         // Prepare the query and bind the parameters.
-        $this->database->prepare($query)->bindValues($bindValues);
+        self::$database->prepare($query)->bindValues($bindValues);
 
         // Now, based on the action, commit or rollback the transaction.
         return $this->runTransaction();
@@ -54,7 +58,7 @@ Trait _Executor
         $query = $this->query = $this->buildQuery();
 
         // Try initiating the transaction and record its status.
-        $beginTransactionStatus = $this->database->beginTransaction();
+        $beginTransactionStatus = self::$database->beginTransaction();
         if (!$beginTransactionStatus) {
             throw new Exception("Unable to initiate the transaction.");
         }
@@ -80,35 +84,34 @@ Trait _Executor
             // Execute the query using prepared or direct execution method based on what has been asked.
             // For the prepared execution method, use the already prepared statement, that has already been bind, just execute it.
             if (!$this->isGoDirect()) {
-                $this->database->execute();
+                self::$database->execute();
             } else {
-                $this->database->execute($query);
+                self::$database->execute($query);
             }
-            $this->database->commit();
+            self::$database->commit();
         } catch (Exception $e) {
             error_log($e);
-            $this->database->rollBack();
+            self::$database->rollBack();
             throw new Exception("Error executing the query.");
         }
 
         // Now, based on the action, commit or rollback the transaction.
         if ($action == 'insertData') {
             // Find the last inserted ID.
-            return $this->database->lastInsertId();
+            return self::$database->lastInsertId();
         } elseif ($action == 'updateData' or $action == 'deleteData') {
             // Find the number of rows affected.
-            return $this->database->rowCount();
+            return self::$database->rowCount();
         } elseif ($action == 'selectData') {
             // Fetch all the results.
-            return $this->database->fetchAll();
+            return self::$database->fetchAll();
         } elseif (in_array($action, ['alterTable', 'alterView', 'createTable', 'createView', 'dropTable', 'dropView', 'renameTable', 'renameView', 'truncateTable'])) {
             // For all the other data definition based actions, return true.
             return true;
         }
         error_log("Error on the following query " . $this->query . "with parameters " . json_encode($this->bindValues) . ".");
-        throw new Exception("Invalid action" . $this->getAction() .". Please check the action in the query.");
+        throw new Exception("Invalid action" . $this->getAction() . ". Please check the action in the query.");
     }
-
 
 
 }
