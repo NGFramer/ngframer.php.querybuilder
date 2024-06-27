@@ -3,18 +3,19 @@
 namespace NGFramer\NGFramerPHPSQLServices;
 
 use Exception;
+use NGFramer\NGFramerPHPDbServices\Database;
 
 Trait _Executor
 {
     // Variables to store query JSON data related to query.
-    private ?\NGFramer\NGFramerPHPDbService\Database $database;
+    private ?Database $database;
 
 
     // Function to execute the query.
     public function connect(): void
     {
         // Create a new instance of the Database class for executing the query.
-        $this->database = new \NGFramer\NGFramerPHPDbService\Database();
+        $this->database =  Database::getInstance();
     }
 
     // Function to execute the query using prepared statement.
