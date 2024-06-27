@@ -54,6 +54,9 @@ trait _Executor
      */
     private function directExecution(): int|array|bool
     {
+        // Firstly, connect to the database.
+        $this->connect();
+
         // Get all the following details queryBuilder.
         $query = $this->query = $this->buildQuery();
 
