@@ -169,6 +169,9 @@ abstract class _DmlStructure extends _Base
      */
     public function execute(): array|bool|int
     {
+        // Firstly, run the build function.
+        $this->build();
+        // Now fetch the values.
         $action = $this->queryBuilt['response']['action'];
         $query = $this->queryBuilt['response']['query'];
         $bindValues = $this->queryBuilt['response']['bind_values'];
