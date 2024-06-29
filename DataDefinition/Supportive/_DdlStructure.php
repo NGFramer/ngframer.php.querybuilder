@@ -2,15 +2,21 @@
 
 namespace NGFramer\NGFramerPHPSQLServices\DataDefinition\Supportive;
 
+use Exception;
 use NGFramer\NGFramerPHPExceptions\exceptions\SqlBuilderException;
 use NGFramer\NGFramerPHPSQLServices\_Base;
+use NGFramer\NGFramerPHPSQLServices\_Executor;
 
 abstract class _DdlStructure extends _Base
 {
     // Use the following properties for this class.
     private array $structure;
+    private array $queryBuilt;
 
 
+    /**
+     * @throws SqlBuilderException
+     */
     protected function __construct(string $structureType, string $structureValue)
     {
         if (empty($structureType)) {
@@ -37,17 +43,42 @@ abstract class _DdlStructure extends _Base
 
     public function build(): array
     {
-        // Get the build Log and build the action.
-        $buildLog = $this->getQueryLog();
-        $action = $buildLog['action'];
-        // Return the response.
-        return [
-            'success' => true,
-            'status_code' => 200,
-            'response' => [
-                'action' => $action,
-                'query' => $this->buildQuery()
-            ],
-        ];
+        // Run this only if the query has not been built.
+        if (empty($this->queryBuilt)) {
+            // Get the build Log and build the action.
+            $buildLog = $this->getQueryLog();
+            $action = $buildLog['action'];
+
+            // Return the response.
+            $resultArray = [
+                'success' => true,
+                'status_code' => 200,
+                'response' => [
+                    'action' => $action,
+                    'query' => $this->buildQuery()
+                ],
+            ];
+
+            // Save the result array.
+            $this->queryBuilt = $resultArray;
+        }
+        // Return the result array.
+        return $this->queryBuilt;
     }
+
+
+    /**
+     * Uses the _Executor class for the execution.
+     * Executes the query that has been made using the direct method execution.
+     * @return array|bool|int. Returns nothing but only true.
+     * @throws Exception
+     */
+    public function execute(): array|bool|int
+    {
+        $action = $this->queryBuilt['response']['action'];
+        $query = $this->queryBuilt['response']['query'];
+        // Now pass all the values to the _Executor.
+        return _Executor::getInstance()->execute($action, $query);
+    }
+
 }

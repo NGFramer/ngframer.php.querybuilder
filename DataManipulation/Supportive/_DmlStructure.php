@@ -2,8 +2,10 @@
 
 namespace NGFramer\NGFramerPHPSQLServices\DataManipulation\Supportive;
 
+use Exception;
 use NGFramer\NGFramerPHPExceptions\exceptions\SqlBuilderException;
 use NGFramer\NGFramerPHPSQLServices\_Base;
+use NGFramer\NGFramerPHPSQLServices\_Executor;
 
 abstract class _DmlStructure extends _Base
 {
@@ -11,9 +13,13 @@ abstract class _DmlStructure extends _Base
     private bool $goDirect = false;
     private array $bindValues = [];
     private array $structure;
+    private array $queryBuilt = [];
 
 
-    // Constructor function for the class.
+    /**
+     * Constructor function for the class.
+     * @throws SqlBuilderException
+     */
     protected function __construct(string $structureType, string $structureValue)
     {
         if (empty($structureType)) {
@@ -39,7 +45,10 @@ abstract class _DmlStructure extends _Base
     }
 
 
-    // Functions used for defining the query execution method.
+    /**
+     * Functions used for defining the query execution method.
+     * @return mixed
+     */
     protected function goDirect(): mixed
     {
         // Use this function to set the method of executing the query to direct (not using prepare).
@@ -49,14 +58,20 @@ abstract class _DmlStructure extends _Base
     }
 
 
-    // Function to check if execution method is direct.
+    /**
+     * Function to check if execution method is direct.
+     * @return bool
+     */
     protected function isGoDirect(): bool
     {
         return $this->goDirect;
     }
 
 
-    // Function to update/add to the bind parameters.
+    /**
+     * Function to update/add to the bind values.
+     * @throws SqlBuilderException
+     */
     protected function updateBindValues(string $column, string $value): void
     {
         if (array_key_exists($column, $this->bindValues)) {
@@ -67,7 +82,10 @@ abstract class _DmlStructure extends _Base
     }
 
 
-    // Provides number to use further for the another binding, array starts from 0th position.
+    /**
+     * Provides number to use further for the another binding, array starts from 0th position.
+     * @return int
+     */
     protected function getBindIndexStarter(): int
     {
         // Bind parameter will start from 1.
@@ -116,24 +134,46 @@ abstract class _DmlStructure extends _Base
      */
     public function build(): array
     {
-        // Get the build Log and build the action.
-        $buildLog = $this->getQueryLog();
-        $action = $buildLog['action'];
-        // Return the response.
-        $resultArray = [
-            'success' => true,
-            'status_code' => 200,
-            'response' => [
-                'action' => $action,
-                'execution_method' => $this->isGoDirect() ? 'direct' : 'prepare',
-                'query' => $this->buildQuery()
-            ],
-        ];
-        // Check if the execution method is direct, if so, add bind_parameters.
-        if (!$this->isGoDirect()) {
-            $resultArray['response']['bind_values'] = $this->buildBindValues();
+        // Run this only if the query has not been built.
+        if (empty($this->queryBuilt)) {
+            // Get the build Log and build the action.
+            $buildLog = $this->getQueryLog();
+            $action = $buildLog['action'];
+            // Return the response.
+            $resultArray = [
+                'success' => true,
+                'status_code' => 200,
+                'response' => [
+                    'action' => $action,
+                    'execution_method' => $this->isGoDirect() ? 'direct' : 'prepare',
+                    'query' => $this->buildQuery()
+                ],
+            ];
+            // Check if the execution method is direct, if so, add bind_parameters.
+            if (!$this->isGoDirect()) {
+                $resultArray['response']['bind_values'] = $this->buildBindValues();
+            }
+            // Save the result array.
+            $this->queryBuilt = $resultArray;
         }
         // Return the result array.
-        return $resultArray;
+        return $this->queryBuilt;
+    }
+
+
+    /**
+     * Uses the _Executor class for the execution.
+     * Executes the query that has been made using the selected method of execution.
+     * @return array|bool|int. Returns the most appropriate and suitable response type of data.
+     * @throws Exception
+     */
+    public function execute(): array|bool|int
+    {
+        $action = $this->queryBuilt['response']['action'];
+        $query = $this->queryBuilt['response']['query'];
+        $bindValues = $this->queryBuilt['response']['bind_values'];
+        $goDirect = $this->isGoDirect();
+        // Now pass all the values to the _Executor.
+        return _Executor::getInstance()->execute($action, $query, $bindValues, $goDirect);
     }
 }

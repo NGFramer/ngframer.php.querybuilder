@@ -69,8 +69,6 @@ Class _Executor
     }
 
 
-
-
     /**
      * Function to execute the query using prepared statement.
      * @throws Exception
