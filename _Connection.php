@@ -11,11 +11,8 @@ trait _Connection
     private static function connect(): void
     {
         if (empty(self::$database)) {
-            if (!class_exists(Database::class)) {
-                throw new \Exception("Database class not found!");
-                error_log("Database class not found!");
-            }
             self::$database = Database::getInstance();
         }
+        // Getting instance automatically sets the database connection.
     }
 }
