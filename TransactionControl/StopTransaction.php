@@ -11,9 +11,16 @@ class StopTransaction
     use _Connection;
 
 
-    // Function to commit the transaction.
+    /**
+     * Function to not allow any instance of this class.
+     */
+    private function __construct()
+    {
+    }
+
 
     /**
+     * Function to commit the transaction.
      * @throws Exception
      */
     public static function commit(): void
@@ -30,6 +37,7 @@ class StopTransaction
     }
 
     /**
+     * Function to roll back the transaction.
      * @throws Exception
      */
     public static function rollback(Exception $exception): void

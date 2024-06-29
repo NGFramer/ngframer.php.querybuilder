@@ -10,7 +10,17 @@ class StartTransaction
     use _Connection;
 
 
-    // Function to start the transaction.
+    /**
+     * Don't allow any instantiation to this class.
+     */
+    private function __construct()
+    {
+    }
+
+
+    /**
+     * Function to start the transaction.
+     */
     public static function start(): void
     {
         // Connect to the database.
