@@ -11,15 +11,20 @@ Class _Executor
 
 
     // Properties to store values for this class.
+    private string $action;
     private string $query;
-    private array $bindValues = [];
+    private array $bindValues;
 
 
     // Making this a singleton class.
     private static ?self $instance = null;
 
 
-    // Function to create a single instance of this class.
+    /**
+     * Part of the singleton pattern.
+     * Function to create a single instance of this class.
+     * @return self
+     */
     public static function getInstance(): self
     {
         if (!isset(self::$instance)) {
@@ -28,104 +33,79 @@ Class _Executor
         return self::$instance;
     }
 
-
-    // Function to make it allow no instance of this class directly.
+    /**
+     * Part of the singleton pattern.
+     * Function to make it allow no instance of this class directly.
+     */
     private function __construct()
     {
     }
 
 
     /**
+     * This function is the main function for the class.
+     * Gets the action, query and bindValues and runs the function to execute the query based on the method of execution asked.
      * @throws Exception
      */
-    private function execute(): void
+    public function execute(string $action, string $query, array $bindValues = [], bool $goDirect = false): int|array|bool
     {
+        // Fetch all the data required for the execution.
+        $this->action = $action;
+        $this->query = $query;
+        $this->bindValues = $bindValues;
+
+        // Go direct used only in this function.
+
         // We will need connection for everything, this is only for executing without starting transaction.
         // Connection will be automatically made is the transaction has started.
         self::connect();
 
         // Check and implement if we need to execute using prepared statement or not.
-        if ($this->isGoDirect()) {
-            $this->directExecution();
+        if ($goDirect) {
+            return $this->directExecution();
         } else {
-            $this->preparedExecution();
+            return $this->preparedExecution();
         }
     }
 
 
 
-    // Function to execute the query using prepared statement.
 
     /**
+     * Function to execute the query using prepared statement.
      * @throws Exception
      */
     private function preparedExecution(): int|array|bool
     {
-        // Get all the following details queryBuilder and queryBindValueBuilder.
-        $query = $this->query = $this->buildQuery();
-        $bindValues = $this->bindValues = $this->buildBindValues();
-
-        // Try initiating the transaction and record its status.
-        $beginTransactionStatus = self::$database->beginTransaction();
-        if (!$beginTransactionStatus) {
-            throw new Exception("Unable to initiate the transaction.");
-        }
-
         // Prepare the query and bind the parameters.
-        self::$database->prepare($query)->bindValues($bindValues);
+        self::$database->prepare($this->query)->bindValues($this->bindValues);
 
-        // Now, based on the action, commit or rollback the transaction.
-        return $this->runTransaction();
-    }
-
-
-    // Function to execute the query using direct statement.
-
-    /**
-     * @throws Exception
-     */
-    private function directExecution(): int|array|bool
-    {
-        // Get all the following details queryBuilder.
-        $query = $this->query = $this->buildQuery();
-
-        // Try initiating the transaction and record its status.
-        $beginTransactionStatus = self::$database->beginTransaction();
-        if (!$beginTransactionStatus) {
-            throw new Exception("Unable to initiate the transaction.");
-        }
-
-        // Now, based on the action, commit or rollback the transaction.
-        return $this->runTransaction();
-    }
-
-
-    // Function to run the transaction based on the action.
-
-    /**
-     * @throws Exception
-     */
-    private function runTransaction(): int|array|bool
-    {
-        // Get the query.
-        $query = $this->query;
-
-        // Execute the query using prepared or direct execution method based on what has been asked.
-        // For the prepared execution method, use the already prepared statement, that has already been bind, just execute it.
-        if (!$this->isGoDirect()) {
-            self::$database->execute();
-        } else {
-            self::$database->execute($query);
-        }
-
-        // Now fetch the outputs.
+        // Now, execute the transaction and then fetch the output.
+        self::$database->execute();
         return $this->fetchOutput();
     }
 
 
-    private function fetchOutput(): array|bool|int
+    /**
+     * Function to execute the query using direct statement.
+     * @throws Exception
+     */
+    private function directExecution(): int|array|bool
     {
-        // Get the action.
+        // Just execute the transaction and then fetch the output.
+        self::$database->execute($this->query);
+        return $this->fetchOutput();
+
+    }
+
+
+    /**
+     * This function returns the most important type of output based on the action.
+     * @return int|array|bool. Value most significant for further execution.
+     */
+    private function fetchOutput(): int|array|bool
+    {
+        // Get the action from the class.
         $action = $this->action;
 
         // Now, based on the action, commit or rollback the transaction.
