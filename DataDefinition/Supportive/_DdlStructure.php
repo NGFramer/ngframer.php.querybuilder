@@ -75,6 +75,9 @@ abstract class _DdlStructure extends _Base
      */
     public function execute(): array|bool|int
     {
+        // Firstly, run the build function.
+        $this->build();
+        // Now fetch the values.
         $action = $this->queryBuilt['response']['action'];
         $query = $this->queryBuilt['response']['query'];
         // Now pass all the values to the _Executor.
