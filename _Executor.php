@@ -4,10 +4,35 @@ namespace NGFramer\NGFramerPHPSQLServices;
 
 use Exception;
 
-trait _Executor
+Class _Executor
 {
     // Use the connection trait.
     use _Connection;
+
+
+    // Properties to store values for this class.
+    private string $query;
+    private array $bindValues = [];
+
+
+    // Making this a singleton class.
+    private static ?self $instance = null;
+
+
+    // Function to create a single instance of this class.
+    public static function getInstance(): self
+    {
+        if (!isset(self::$instance)) {
+            self::$instance = new self();
+        }
+        return self::$instance;
+    }
+
+
+    // Function to make it allow no instance of this class directly.
+    private function __construct()
+    {
+    }
 
 
     /**
@@ -98,7 +123,7 @@ trait _Executor
     }
 
 
-    private function fetchOutput(): array|bool|int|string
+    private function fetchOutput(): array|bool|int
     {
         // Get the action.
         $action = $this->action;
