@@ -10,9 +10,13 @@ trait _Executor
     use _Connection;
 
 
+    /**
+     * @throws Exception
+     */
     private function execute(): void
     {
-        // We will need connection for everything.
+        // We will need connection for everything, this is only for executing without starting transaction.
+        // Connection will be automatically made is the transaction has started.
         self::connect();
 
         // Check and implement if we need to execute using prepared statement or not.
@@ -81,21 +85,12 @@ trait _Executor
         // Get the query.
         $query = $this->query;
 
-        // Now, execute the query, and check, if the execution is successful, commit it, else rollback the transaction.
-        try {
-            // Execute the query using prepared or direct execution method based on what has been asked.
-            // For the prepared execution method, use the already prepared statement, that has already been bind, just execute it.
-            if (!$this->isGoDirect()) {
-                self::$database->execute();
-            } else {
-                self::$database->execute($query);
-            }
-            self::$database->commit();
-
-        } catch (Exception $e) {
-            error_log($e);
-            self::$database->rollBack();
-            throw new Exception("Error executing the query.");
+        // Execute the query using prepared or direct execution method based on what has been asked.
+        // For the prepared execution method, use the already prepared statement, that has already been bind, just execute it.
+        if (!$this->isGoDirect()) {
+            self::$database->execute();
+        } else {
+            self::$database->execute($query);
         }
 
         // Now fetch the outputs.
