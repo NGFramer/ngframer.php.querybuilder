@@ -3,12 +3,13 @@
 namespace NGFramer\NGFramerPHPSQLServices\TransactionControl;
 
 use Exception;
+use NGFramer\NGFramerPHPDbServices\Database;
 use NGFramer\NGFramerPHPSQLServices\_Connection;
 
 class StopTransaction
 {
-    // Use the following traits.
-    use _Connection;
+    // Property relating to connection to the database.
+    private static ?Database $database = null;
 
 
     /**
@@ -20,20 +21,32 @@ class StopTransaction
 
 
     /**
+     * Function to create a single database instance.
+     * @return void
+     */
+    private static function connect(): void
+    {
+        if (empty(self::$database)) {
+            self::$database = Database::getInstance();
+        }
+        // Getting instance automatically sets the database connection.
+    }
+
+
+    /**
      * Function to commit the transaction.
      * @throws Exception
      */
     public static function commit(): void
     {
-        // Check if the database connection is set.
-        if (!empty(self::$database)) {
-            // Commit the transaction.
-            self::$database->commit();
-            self::$database->close();
+        // If the database connection is not defined.
+        if (empty(self::$database)) {
+            self::connect();
         }
-        else {
-            throw new Exception("Error, No connection for commit.");
-        }
+
+        // Commit the transaction.
+        self::$database->commit();
+
     }
 
     /**
@@ -43,16 +56,13 @@ class StopTransaction
     public static function rollback(Exception $exception): void
     {
         // Check if the database connection is set.
-        if (!empty(self::$database)) {
-            // Rollback the transaction.
-            self::$database->rollback();
-            self::$database->close();
-            // Finally throw the exception.
-            throw $exception;
+        if (empty(self::$database)) {
+            self::connect();
         }
-        else {
-            throw new Exception("Error, No connection for rollback.");
-        }
+        // Rollback the transaction.
+        self::$database->rollback();
+        // Finally throw the exception.
+        throw $exception;
     }
 
 }

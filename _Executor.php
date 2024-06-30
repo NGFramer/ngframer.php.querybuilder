@@ -3,21 +3,33 @@
 namespace NGFramer\NGFramerPHPSQLServices;
 
 use Exception;
+use NGFramer\NGFramerPHPDbServices\Database;
 
 Class _Executor
 {
-    // Use the connection trait.
-    use _Connection;
-
+    // Property relating to connection to the database.
+    private static ?Database $database = null;
 
     // Properties to store values for this class.
     private string $action;
     private string $query;
     private array $bindValues;
 
-
-    // Making this a singleton class.
+    // Properties to make this a singleton class.
     private static ?self $instance = null;
+
+
+    /**
+     * Function to create a single database instance.
+     * @return void
+     */
+    private static function connect(): void
+    {
+        if (empty(self::$database)) {
+            self::$database = Database::getInstance();
+        }
+        // Getting instance automatically sets the database connection.
+    }
 
 
     /**
