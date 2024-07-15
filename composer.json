@@ -22,7 +22,7 @@
   ],
   "require": {
     "ngframer/ngframer.php.exceptions": "~v1.1.2",
-    "ngframer/ngframer.php.dbservices": "~v1.3.0",
+    "ngframer/ngframer.php.dbservices": "~v1.3.2",
     "ext-pdo": "*"
   }
 }
