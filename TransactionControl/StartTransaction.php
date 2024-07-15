@@ -2,6 +2,7 @@
 
 namespace NGFramer\NGFramerPHPSQLServices\TransactionControl;
 
+use Exception;
 use NGFramer\NGFramerPHPDbServices\Database;
 
 class StartTransaction
@@ -21,6 +22,7 @@ class StartTransaction
     /**
      * Function to create a single database instance.
      * @return void
+     * @throws Exception
      */
     private static function connect(): void
     {
@@ -33,6 +35,7 @@ class StartTransaction
 
     /**
      * Function to start the transaction.
+     * @throws Exception
      */
     public static function start(): void
     {
