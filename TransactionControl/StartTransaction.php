@@ -41,8 +41,12 @@ class StartTransaction
     {
         // Connect to the database.
         self::connect();
-        // Now start the transaction.
-        self::$database->beginTransaction();
+        // Only start the transaction if there is no active transaction.
+        if (!self::$database->hasActiveTransactions()) {
+            // Now start the transaction.
+            self::$database->beginTransaction();
+        }
+        // Else do nothing.
     }
 }
 
