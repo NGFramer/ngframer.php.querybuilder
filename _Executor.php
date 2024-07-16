@@ -87,8 +87,14 @@ Class _Executor
      */
     private function preparedExecution(): int|array|bool
     {
-        // Prepare the query and bind the parameters.
-        self::$database->prepare($this->query)->bindValues($this->bindValues);
+        // Before binding the value, check if the preparedExecution has values to bind or not.
+        if (empty($this->bindValues)) {
+            // Just prepare the query.
+            self::$database->prepare($this->query);
+        } else {
+            // Prepare the query and bind the parameters.
+            self::$database->prepare($this->query, $this->bindValues);
+        }
 
         // Now, execute the transaction and then fetch the output.
         self::$database->execute();
