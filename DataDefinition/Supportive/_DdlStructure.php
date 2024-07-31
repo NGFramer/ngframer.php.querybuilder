@@ -3,7 +3,7 @@
 namespace NGFramer\NGFramerPHPSQLServices\DataDefinition\Supportive;
 
 use Exception;
-use NGFramer\NGFramerPHPExceptions\exceptions\SqlBuilderException;
+use NGFramer\NGFramerPHPSQLServices\exceptions\SqlBuilderException;
 use NGFramer\NGFramerPHPSQLServices\_Base;
 use NGFramer\NGFramerPHPSQLServices\_Executor;
 

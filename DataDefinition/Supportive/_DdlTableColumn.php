@@ -2,7 +2,7 @@
 
 namespace NGFramer\NGFramerPHPSQLServices\DataDefinition\Supportive;
 
-use NGFramer\NGFramerPHPExceptions\exceptions\SqlBuilderException;
+use NGFramer\NGFramerPHPSQLServices\exceptions\SqlBuilderException;
 
 abstract class _DdlTableColumn extends _DdlTable
 {
