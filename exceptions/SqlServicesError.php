@@ -12,7 +12,7 @@ class SqlServicesError extends _BaseError
      */
     public function convertToException($code, $message, string $file, int $line, array $context = []): void
     {
-        // Throw the exception (DbServicesException).
-        throw new \NGFramer\NGFramerPHPSQLServices\exceptions\SqlServicesException($message, $code, null, 500, []);
+        // Throw the exception (SqlServicesException).
+        throw new SqlServicesException($message, $code, null, 500, []);
     }
 }
