@@ -3,14 +3,25 @@
 namespace NGFramer\NGFramerPHPSQLServices;
 
 use Exception;
-use NGFramer\NGFramerPHPSQLServices\TransactionControl\StartTransaction;
-use NGFramer\NGFramerPHPSQLServices\TransactionControl\StopTransaction;
+use NGFramer\NGFramerPHPSQLServices\Actions\TableActions;
+use NGFramer\NGFramerPHPSQLServices\Actions\ViewActions;
+use NGFramer\NGFramerPHPSQLServices\Actions\TransactionControl\StartTransaction;
+use NGFramer\NGFramerPHPSQLServices\Actions\TransactionControl\StopTransaction;
 
-Class Query
+final class Query
 {
+    /**
+     * Private constructor so it can't be instantiated.
+     */
+    private function __construct()
+    {
+    }
+
+
     /**
      * Function to start the database transaction.
      * @return void
+     * @throws Exception
      */
     public static function start(): void
     {
@@ -21,22 +32,22 @@ Class Query
     /**
      * Function to operate on the table.
      * @param string $tableName
-     * @return Table
+     * @return TableActions
      */
-    public static function table(string $tableName): Table
+    public static function table(string $tableName): TableActions
     {
-        return new Table($tableName);
+        return new TableActions($tableName);
     }
 
 
     /**
      * Function to operate on the view.
      * @param string $viewName
-     * @return View
+     * @return ViewActions
      */
-    public static function view(string $viewName): View
+    public static function view(string $viewName): ViewActions
     {
-        return new View($viewName);
+        return new ViewActions($viewName);
     }
 
 

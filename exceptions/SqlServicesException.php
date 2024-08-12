@@ -1,6 +1,6 @@
 <?php
 
-namespace NGFramer\NGFramerPHPSQLServices\exceptions;
+namespace NGFramer\NGFramerPHPSQLServices\Exceptions;
 
 use Throwable;
 use NGFramer\NGFramerPHPExceptions\exceptions\supportive\_BaseException;
