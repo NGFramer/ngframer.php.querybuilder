@@ -5,7 +5,8 @@ namespace NGFramer\NGFramerPHPSQLServices\Processes\BuildQuery\DataDefinition;
 use Exception;
 
 /**
- * Let's say this is the duplicate of the class DropTable.
+ * This will only work for MySQL Server.
+ * TODO: Make it work for PostgreSQL, SQL Server, Oracle, and other servers too.
  */
 
 class RenameTable
