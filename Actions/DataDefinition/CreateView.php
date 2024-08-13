@@ -18,4 +18,15 @@ final class CreateView extends StructureView
         $this->setAction('createView');
         return $this;
     }
+
+    /**
+     * This sets the source of the view.
+     * Source means the select query that will be used to create the view.
+     * @throws Exception
+     */
+    public function source(string $sourceQuery): CreateView
+    {
+        $this->addToActionLog('source', $sourceQuery);
+        return $this;
+    }
 }
