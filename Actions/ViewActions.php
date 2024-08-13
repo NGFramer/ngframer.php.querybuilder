@@ -51,18 +51,6 @@ final class ViewActions
 
 
     /**
-     * This function returns an instance of the class RenameView, with functions to rename view.
-     * @param $newViewName
-     * @return RenameView
-     * @throws Exception
-     */
-    public function rename($newViewName): RenameView
-    {
-        return new RenameView($this->view, $newViewName);
-    }
-
-
-    /**
      * This function returns an instance of the class DropView, with functions to drop view.
      * @throws Exception
      * @return DropView
@@ -77,6 +65,7 @@ final class ViewActions
      * This function returns an instance of the class SelectView, with functions to select view.
      * @param string ...$fields
      * @return SelectView
+     * @throws Exception
      */
     public function select(string ...$fields): SelectView
     {
