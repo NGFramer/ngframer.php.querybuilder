@@ -2,7 +2,10 @@
 
 namespace NGFramer\NGFramerPHPSQLServices\Actions;
 
-use NGFramer\NGFramerPHPSQLServices\Processes\BuildQuery;
+use Exception;
+use NGFramer\NGFramerPHPSQLServices\Processes\BuildQuery\BuildQuery;
+use NGFramer\NGFramerPHPSQLServices\Processes\ExecuteAction;
+use NGFramer\NGFramerPHPSQLServices\Processes\LogAction;
 
 abstract class LogBase
 {
@@ -11,6 +14,7 @@ abstract class LogBase
      */
     use UtilityTrait;
 
+
     /**
      * The only variable which will be used in all the action classes.
      */
@@ -18,34 +22,36 @@ abstract class LogBase
 
 
     /**
-     * This will call the LogAction class's constructor.
-     * @return array
+     * This will call the LogAction class's constructor & log function.
+     * @return bool
      */
-    protected function log(): array
+    protected function log(): bool
     {
-        (new BuildQuery())->_construct($this->actionLog);
-        return $this->actionLog; //sth
+        $logAction = new LogAction($this->actionLog);
+        return $logAction->log();
     }
 
 
     /**
-     * This will call the BuildQuery class's constructor.
+     * This will call the BuildQuery class's constructor & build function.
      * @return array
+     * @throws Exception
      */
     protected function build(): array
     {
-        (new BuildQuery())->_construct($this->actionLog);
-        return $this->actionLog; //sth
+        $buildAction = new BuildQuery($this->actionLog);
+        return $buildAction->build();
     }
 
 
     /**
-     * This will call the ExecuteQuery class's constructor.
+     * This will call the ExecuteQuery class's constructor & execute function.
      * @return array
+     * @throws Exception
      */
     protected function execute(): array
     {
-        (new BuildQuery())->_construct($this->actionLog);
-        return $this->actionLog; //sth
+        $executeAction = new ExecuteAction($this->actionLog);
+        return $executeAction->execute();
     }
 }
