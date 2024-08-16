@@ -8,7 +8,16 @@ use InvalidArgumentException;
 
 class ValueSanitizer
 {
-    public function sanitizeString(string $value): string
+
+    /**
+     * Private constructor so it can't be instantiated.
+     */
+    private function __construct()
+    {
+    }
+
+
+    public static function sanitizeString(string $value): string
     {
         // Escape special characters in the string to prevent SQL injection.
         $escapedValue = addslashes($value);
@@ -16,9 +25,9 @@ class ValueSanitizer
         return htmlspecialchars($escapedValue);
     }
 
-    public function sanitizeInteger(int $value): int
+    public static function sanitizeInteger(int $value): int
     {
-        // Ensure the input is an integer using intval.
+        // Ensure the input is an integer.
         return intval($value);
     }
 
@@ -29,7 +38,7 @@ class ValueSanitizer
      * @return string The escaped LIKE pattern string
      * @throws Exception if no escape character is defined for the database
      */
-    public function escapeLikePattern(string $value): string
+    public static function escapeLikePattern(string $value): string
     {
         // TODO: Define the database-specific escape character
         $escapeChar = '\\'; // Example: MySQL uses backslash
@@ -52,7 +61,7 @@ class ValueSanitizer
      * @return string The sanitized date/time string
      * @throws InvalidArgumentException If the date/time string is invalid
      */
-    public function sanitizeDateTime(string $value, string $format = 'Y-m-d H:i:s'): string
+    public static function sanitizeDateTime(string $value, string $format = 'Y-m-d H:i:s'): string
     {
         // Create a DateTime object from the input string and format
         $dateTime = DateTime::createFromFormat($format, $value);
@@ -74,14 +83,14 @@ class ValueSanitizer
      * @return array The sanitized array of values
      * @throws Exception if an unsupported data type is provided
      */
-    public function sanitizeArray(array $values, string $dataType): array
+    public static function sanitizeArray(array $values, string $dataType): array
     {
         $sanitizedValues = [];
         foreach ($values as $value) {
             $sanitizedValues[] = match ($dataType) {
-                'string' => $this->sanitizeString($value),
-                'integer' => $this->sanitizeInteger($value),
-                'datetime' => $this->sanitizeDateTime($value),
+                'string' => self::sanitizeString($value),
+                'integer' => self::sanitizeInteger($value),
+                'datetime' => self::sanitizeDateTime($value),
                 // ... add support for other data types as needed
                 default => throw new InvalidArgumentException("Unsupported data type: $dataType"),
             };
