@@ -2,7 +2,6 @@
 
 namespace NGFramer\NGFramerPHPSQLServices\Processes\BuildQuery\DataManipulation;
 
-use Cassandra\Value;
 use Exception;
 use NGFramer\NGFramerPHPSQLServices\Utilities\ArrayTools;
 use NGFramer\NGFramerPHPSQLServices\Utilities\ValueSanitizer;
