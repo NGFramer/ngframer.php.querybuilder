@@ -2,8 +2,16 @@
 
 namespace NGFramer\NGFramerPHPSQLServices\Processes\BuildQuery\DataManipulation;
 
+use Exception;
+
 class DeleteTable
 {
+    /**
+     * Use the following traits.
+     */
+    use WhereTrait;
+
+
     /**
      * Variable to store the actionLog.
      * @var array|null
@@ -24,6 +32,7 @@ class DeleteTable
     /**
      * This function builds the applicable query from the actionLog.
      * @return string
+     * @throws Exception
      */
     public function build(): string
     {
@@ -33,6 +42,11 @@ class DeleteTable
 
         // Prepare the initial query.
         $query = "DELETE FROM $table";
+
+        // Add the where clause.
+        if (isset($actionLog['where'])) {
+            $query .= $this->where($actionLog['where']);
+        }
 
         // Return the query built.
         return $query;

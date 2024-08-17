@@ -7,6 +7,11 @@ use Exception;
 class UpdateTable
 {
     /**
+     * Use the following traits.
+     */
+    use WhereTrait;
+
+    /**
      * Variable to store actionLog.
      * @var array
      */
@@ -50,6 +55,11 @@ class UpdateTable
 
         // Remove the last comma and space.
         $updateQuery = substr($updateQuery, 0, -2);
+
+        // Add the where clause.
+        if (isset($actionLog['where'])) {
+            $updateQuery .= $this->where($actionLog['where']);
+        }
 
         // Return the query.
         return $updateQuery;

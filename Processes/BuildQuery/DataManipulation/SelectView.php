@@ -2,12 +2,20 @@
 
 namespace NGFramer\NGFramerPHPSQLServices\Processes\BuildQuery\DataManipulation;
 
+use Exception;
+
 /**
  * Clone class of the class SelectTable.
  */
 
 class SelectView
 {
+    /***
+     * Use the following traits.
+     */
+    use WhereTrait;
+
+
     /**
      * Array to store the actionLog.
      * @var array|null
@@ -30,6 +38,7 @@ class SelectView
     /**
      * This function builds the select query from the actionLog.
      * @return string[]
+     * @throws Exception
      */
     public function build(): array
     {
@@ -43,7 +52,12 @@ class SelectView
         // Start building the query.
         $query = 'SELECT ' . implode(', ', $columns) . ' FROM ' . $view;
 
-        // TODO: Add logic to build the limit, where, sortBy, groupBy, etc.
+        // Add the where clause.
+        if (isset($actionLog['where'])) {
+            $query .= $this->where($actionLog['where']);
+        }
+
+        // TODO: Add logic to build the limit, sortBy, groupBy, etc.
 
         // Return query.
         return ['query' => $query];
