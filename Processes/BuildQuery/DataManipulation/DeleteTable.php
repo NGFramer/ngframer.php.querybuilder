@@ -10,6 +10,7 @@ class DeleteTable
      * Use the following traits.
      */
     use WhereTrait;
+    use LimitTrait;
 
 
     /**
@@ -46,6 +47,11 @@ class DeleteTable
         // Add the where clause.
         if (isset($actionLog['where'])) {
             $query .= $this->where($actionLog['where']);
+        }
+
+        // Add the limit clause.
+        if (isset($actionLog['limit'])) {
+            $query .= $this->limit($actionLog['limit']);
         }
 
         // Return the query built.

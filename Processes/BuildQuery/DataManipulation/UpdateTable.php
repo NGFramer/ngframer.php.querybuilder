@@ -10,6 +10,7 @@ class UpdateTable
      * Use the following traits.
      */
     use WhereTrait;
+    use LimitTrait;
 
     /**
      * Variable to store actionLog.
@@ -59,6 +60,11 @@ class UpdateTable
         // Add the where clause.
         if (isset($actionLog['where'])) {
             $updateQuery .= $this->where($actionLog['where']);
+        }
+
+        // Add the limit clause.
+        if (isset($actionLog['limit'])) {
+            $updateQuery .= $this->limit($actionLog['limit']);
         }
 
         // Return the query.

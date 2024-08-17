@@ -17,6 +17,7 @@ class SelectView
     use SortByTrait;
     use GroupByTrait;
     use OffsetTrait;
+    use LimitTrait;
 
 
     /**
@@ -68,6 +69,11 @@ class SelectView
         // Add the groupBy clause.
         if (isset($actionLog['groupBy'])) {
             $query .= $this->groupBy($actionLog['groupBy']);
+        }
+
+        // Add the limit clause.
+        if (isset($actionLog['limit'])) {
+            $query .= $this->limit($actionLog['limit']);
         }
 
         // TODO: Add logic to build the limit, etc.

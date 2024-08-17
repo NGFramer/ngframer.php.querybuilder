@@ -13,7 +13,7 @@ class SelectTable
     use SortByTrait;
     use GroupByTrait;
     use OffsetTrait;
-
+    use LimitTrait;
 
     /**
      * Array to store the actionLog.
@@ -71,7 +71,10 @@ class SelectTable
             $query .= $this->offset($actionLog['offset']);
         }
 
-        // TODO: Add logic to build the limit, etc.
+        // Add the limit clause.
+        if (isset($actionLog['limit'])) {
+            $query .= $this->limit($actionLog['limit']);
+        }
 
         // Return query.
         return ['query' => $query];
