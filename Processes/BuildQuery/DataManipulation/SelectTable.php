@@ -10,6 +10,7 @@ class SelectTable
      * Use the following traits.
      */
     use WhereTrait;
+    use SortByTrait;
 
 
     /**
@@ -53,7 +54,12 @@ class SelectTable
             $query .= $this->where($actionLog['where']);
         }
 
-        // TODO: Add logic to build the limit, sortBy, groupBy, etc.
+        // Add the sortBy clause.
+        if (isset($actionLog['sortBy'])) {
+            $query .= $this->sortBy($actionLog['sortBy']);
+        }
+
+        // TODO: Add logic to build the limit, groupBy, etc.
 
         // Return query.
         return ['query' => $query];
