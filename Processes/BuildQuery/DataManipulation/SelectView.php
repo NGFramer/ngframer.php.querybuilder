@@ -15,6 +15,7 @@ class SelectView
      */
     use WhereTrait;
     use SortByTrait;
+    use GroupByTrait;
 
 
     /**
@@ -63,7 +64,12 @@ class SelectView
             $query .= $this->sortBy($actionLog['sortBy']);
         }
 
-        // TODO: Add logic to build the limit, groupBy, etc.
+        // Add the groupBy clause.
+        if (isset($actionLog['groupBy'])) {
+            $query .= $this->groupBy($actionLog['groupBy']);
+        }
+
+        // TODO: Add logic to build the limit, etc.
 
         // Return query.
         return ['query' => $query];
