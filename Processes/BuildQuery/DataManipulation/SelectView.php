@@ -16,6 +16,7 @@ class SelectView
     use WhereTrait;
     use SortByTrait;
     use GroupByTrait;
+    use OffsetTrait;
 
 
     /**

@@ -12,6 +12,7 @@ class SelectTable
     use WhereTrait;
     use SortByTrait;
     use GroupByTrait;
+    use OffsetTrait;
 
 
     /**
@@ -63,6 +64,11 @@ class SelectTable
         // Add the groupBy clause.
         if (isset($actionLog['groupBy'])) {
             $query .= $this->groupBy($actionLog['groupBy']);
+        }
+
+        // Add the offset clause.
+        if (isset($actionLog['offset'])) {
+            $query .= $this->offset($actionLog['offset']);
         }
 
         // TODO: Add logic to build the limit, etc.
