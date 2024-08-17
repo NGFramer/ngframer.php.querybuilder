@@ -171,4 +171,28 @@ class ArrayTools
         }
         unset($array);
     }
+
+
+    /**
+     * Checks if all the elements of the array are also arrays.
+     * @param mixed $array
+     * @return bool
+     */
+    public static function areAllArray(mixed $array): bool
+    {
+        if (self::isAssociative($array)) {
+            foreach ($array as $key => $value) {
+                if (!is_array($value)) {
+                    return false;
+                }
+            }
+        } else {
+            foreach ($array as $value) {
+                if (!is_array($value)) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
 }
