@@ -44,7 +44,7 @@ class SelectTable
         // Get the actionLog.
         $actionLog = $this->actionLog;
         // Get the fields to capture (select).
-        $columns = $actionLog['columns'];
+        $columns = $actionLog['select'];
         // Get the table to select from.
         $table = $actionLog['table'];
 
