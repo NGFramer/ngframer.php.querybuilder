@@ -31,7 +31,7 @@ final class InsertTable extends StructureTable
     {
         // Check if the insertData is on the following formats.
         // method01 = insert(['column', 'value', 'type'], ['column', 'value', 'type'], ['column', 'value', 'type'], ...);
-        // method02 = insert('column' => ['value', 'type'] 'column' => ['value', 'type'], 'column' => ['value', 'type'], ...);
+        // method02 = insert(['column' => ['value', 'type']], ['column' => ['value', 'type']], ['column' => ['value', 'type']], ...);
         // method03 = insert(['column' => 'value', 'column' => 'value', 'column' => 'value', ...])
         // method04 = insert('value', 'value', 'value', ...)
 
