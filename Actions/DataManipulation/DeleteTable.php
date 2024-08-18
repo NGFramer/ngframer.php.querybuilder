@@ -18,5 +18,4 @@ final class DeleteTable extends StructureTable
         $this->setAction('deleteTable');
         return $this;
     }
-
 }
