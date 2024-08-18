@@ -37,7 +37,7 @@ class UpdateTable
         // Get the actionLog, table, and data.
         $actionLog = $this->actionLog;
         $table = $actionLog['table'];
-        $data = $actionLog['data'];
+        $data = $actionLog['update'];
 
         // For the initial part of updateQuery.
         $updateQuery = "UPDATE `" . $table . "` SET ";
