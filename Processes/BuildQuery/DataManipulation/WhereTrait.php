@@ -19,6 +19,7 @@ trait WhereTrait
         // Build the WHERE clause using the provided conditions.
         $whereClause = $this->buildWhereConditions($whereConditions);
 
+        // Return the where clause.
         return " WHERE " . $whereClause;
     }
 
@@ -49,7 +50,12 @@ trait WhereTrait
                 $column = $element['column'] ?? throw new Exception('Column not found in whereConditions.');
                 $value = $element['value'] ?? throw new Exception('Value not found in whereConditions.');
                 $operator = $element['operator'] ?? '=';
+                // We shall have bindings in a query statement instead of value.
+                $binding = $column.$this->getBindingIndex();
+                $this->addBinding($binding, $value);
 
+                /**
+                // TODO: To be checked before using this anywhere.
                 // If the value is an array, treat it as an IN clause or similar.
                 if (is_array($value)) {
                     $value = '(' . implode(',', array_map(fn($val) => "'$val'", $value)) . ')';
@@ -57,9 +63,10 @@ trait WhereTrait
                 } else {
                     $value = "'$value'";
                 }
+                 **/
 
                 // Build the SQL fragment for this condition.
-                $clauses[] = "`$column` $operator $value";
+                $clauses[] = "`$column` $operator $binding";
             }
         }
 

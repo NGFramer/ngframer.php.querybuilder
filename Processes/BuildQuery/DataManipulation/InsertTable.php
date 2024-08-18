@@ -3,16 +3,30 @@
 namespace NGFramer\NGFramerPHPSQLServices\Processes\BuildQuery\DataManipulation;
 
 use Exception;
+use NGFramer\NGFramerPHPSQLServices\Processes\BuildQuery\DataManipulation\Supportive\Bindings;
 use NGFramer\NGFramerPHPSQLServices\Utilities\ArrayTools;
 use NGFramer\NGFramerPHPSQLServices\Utilities\ValueSanitizer;
 
 class InsertTable
 {
     /**
+     * Use the following for binding functions.
+     */
+    use Bindings;
+
+
+    /**
      * Variable to store actionLog.
      * @var array
      */
     private array $actionLog;
+
+
+    /**
+     * Variable to store the formulated query and bindings.
+     * @var array|null
+     */
+    private ?array $queryLog;
 
 
     /**
@@ -28,7 +42,7 @@ class InsertTable
     /**
      * @throws Exception
      */
-    public function build(): string
+    public function build(): array
     {
         // Get the actionLog, table, and data.
         $actionLog = $this->actionLog;
@@ -60,7 +74,11 @@ class InsertTable
                         throw new Exception('The column name must be string.');
                     }
                     $columnNames[] = ValueSanitizer::sanitizeString($columnName);
-                    $columnValues[] = ValueSanitizer::sanitizeString($columnValue);
+                    // Create binding name, and bind the value.
+                    $bindingName = $columnName . '_' . $this->getBindingIndex();
+                    $this->addBinding($bindingName, $columnValue);
+                    // Use the bind name in the query.
+                    $columnValues[] = $bindingName;
                 }
                 // Now, build the remaining part of the query.
                 if (count($columnNames) > 1) {
@@ -69,11 +87,21 @@ class InsertTable
                     $query .= '(' . implode('', $columnNames) . ') VALUES (' . implode('', $columnValues) . ')';
                 }
             } else {
+                // Define binding names to save binding values.
+                $bindingNames = [];
+                // Loop through the insertDatum to get data from single column.
+                foreach ($insertDatum as $columnValue) {
+                    // Create binding name, and bind the value.
+                    $bindingName = $this->getBindingIndex();
+                    $this->addBinding($bindingName, $columnValue);
+                    // Use the bind name in the query.
+                    $bindingNames[] = $bindingName;
+                }
                 // If the insertData is not an associative array, then it is an array of values.
-                if (count($insertDatum) > 1) {
-                    $query .= ' VALUES (' . implode(', ', $insertDatum) . ')';
+                if (count($bindingNames) > 1) {
+                    $query .= ' VALUES (' . implode(', ', $bindingNames) . ')';
                 } else {
-                    $query .= ' VALUES (' . implode('', $insertDatum) . ')';
+                    $query .= ' VALUES (' . implode('', $bindingNames) . ')';
                 }
             }
 
@@ -84,8 +112,9 @@ class InsertTable
         // Count the number of queries.
         $count = count($insertQueries);
 
-        // Return the query built.
-        return $count > 1 ? implode('; ', $insertQueries) : $insertQueries[0];
+        // Build the query and return the query built.
+        $this->queryLog['query'] =  $count > 1 ? implode('; ', $insertQueries) : $insertQueries[0];
+        return $this->queryLog;
     }
 
 }

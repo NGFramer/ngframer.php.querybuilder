@@ -3,20 +3,35 @@
 namespace NGFramer\NGFramerPHPSQLServices\Processes\BuildQuery\DataManipulation;
 
 use Exception;
+use NGFramer\NGFramerPHPSQLServices\Processes\BuildQuery\DataManipulation\Supportive\Bindings;
 
 class UpdateTable
 {
     /**
-     * Use the following traits.
+     * Use the following traits for query building.
      */
     use WhereTrait;
     use LimitTrait;
+
+
+    /**
+     * Use the following for binding functions.
+     */
+    use Bindings;
+
 
     /**
      * Variable to store actionLog.
      * @var array
      */
     private array $actionLog;
+
+
+    /**
+     * Variable to store the formulated query and bindings.
+     * @var array|null
+     */
+    private ?array $queryLog;
 
 
     /**
@@ -30,9 +45,11 @@ class UpdateTable
 
 
     /**
+     * Builds the update query from the actionLog.
+     * @return array
      * @throws Exception
      */
-    public function build(): string
+    public function build(): array
     {
         // Get the actionLog, table, and data.
         $actionLog = $this->actionLog;
@@ -51,7 +68,11 @@ class UpdateTable
         foreach ($data as $datum) {
             $column = $datum['column'] ?? throw new Exception('Column must be defined for updating.');
             $value = $datum['value'] ?? throw new Exception('Value must be defined for updating.');
-            $updateQuery .= "`" . $column . "` = '" . $value . "', ";
+            // Create binding name, and bind the value.
+            $bindingName = $column . '_' . $this->getBindingIndex();
+            $this->addBinding($bindingName, $value);
+            // Use the bind name in the query.
+            $updateQuery .= "`" . $column . "` = '" . $bindingName . "', ";
         }
 
         // Remove the last comma and space.
@@ -68,7 +89,8 @@ class UpdateTable
         }
 
         // Return the query.
-        return $updateQuery;
+        $this->queryLog['query'] = $updateQuery;
+        return $this->queryLog;
     }
 
 }

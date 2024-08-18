@@ -3,6 +3,7 @@
 namespace NGFramer\NGFramerPHPSQLServices\Processes\BuildQuery\DataManipulation;
 
 use Exception;
+use NGFramer\NGFramerPHPSQLServices\Processes\BuildQuery\DataManipulation\Supportive\Bindings;
 
 /**
  * Clone class of the class SelectTable.
@@ -10,8 +11,8 @@ use Exception;
 
 class SelectView
 {
-    /***
-     * Use the following traits.
+    /**
+     * Use the following traits for query building.
      */
     use WhereTrait;
     use SortByTrait;
@@ -21,10 +22,23 @@ class SelectView
 
 
     /**
+     * Use the following for binding functions.
+     */
+    use Bindings;
+
+
+    /**
      * Array to store the actionLog.
      * @var array|null
      */
     private ?array $actionLog;
+
+
+    /**
+     * Variable to store the formulated query and bindings.
+     * @var array|null
+     */
+    private ?array $queryLog;
 
 
     /**
@@ -79,6 +93,7 @@ class SelectView
         // TODO: Add logic to build the limit, etc.
 
         // Return query.
-        return ['query' => $query];
+        $this->queryLog['query'] = $query;
+        return $this->queryLog;
     }
 }
