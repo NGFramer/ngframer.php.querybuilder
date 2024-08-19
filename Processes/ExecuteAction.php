@@ -2,6 +2,9 @@
 
 namespace NGFramer\NGFramerPHPSQLServices\Processes;
 
+use Exception;
+use NGFramer\NGFramerPHPDbServices\Database;
+
 final class ExecuteAction
 {
     /**
@@ -21,16 +24,31 @@ final class ExecuteAction
     }
 
 
-    public function execute(): mixed
+    /**
+     * @throws Exception
+     */
+    public function execute(): Database
     {
         // Get the actionLog.
-        $actionLog = $this->queryLog;
+        $queryLog = $this->queryLog;
 
-        // Implement the execute method.
-        // TODO: Implement execute() method.
+        // Check if the queryLog is empty.
+        if (empty($queryLog)) {
+            throw new Exception('Empty queryLog passed, modify the query to continue.');
+        }
 
-        // Return the execution result.
-        // TODO: Change the return type if applicable.
-        return [];
+        // Prepare the query. Everything will be executed under prepared method.
+        if (empty($queryLog['query'])) {
+            throw new Exception('Empty query passed, modify the query to continue.');
+        }
+        Database::getInstance()->prepare($queryLog['query']);
+
+        // Only if the bindings are available.
+        if (!empty($queryLog['bindings'])) {
+            Database::getInstance()->bindValues($queryLog['bindings']);
+        }
+
+        // Now execute the query.
+        return Database::getInstance()->execute();
     }
 }
