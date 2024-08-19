@@ -8,23 +8,23 @@ final class ExecuteAction
      * Variable to store the actionLog.
      * @var array|null
      */
-    private ?array $actionLog;
+    private ?array $queryLog;
 
 
     /**
-     * @param array $actionLog
+     * @param array $queryLog
      * @return void
      */
-    public function __construct(array $actionLog)
+    public function __construct(array $queryLog)
     {
-        $this->actionLog = $actionLog;
+        $this->queryLog = $queryLog;
     }
 
 
     public function execute(): mixed
     {
         // Get the actionLog.
-        $actionLog = $this->actionLog;
+        $actionLog = $this->queryLog;
 
         // Implement the execute method.
         // TODO: Implement execute() method.
