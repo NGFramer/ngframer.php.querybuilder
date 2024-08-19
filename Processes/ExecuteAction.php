@@ -5,7 +5,7 @@ namespace NGFramer\NGFramerPHPSQLServices\Processes;
 final class ExecuteAction
 {
     /**
-     * Variable to store the actionLog.
+     * Variable to store the queryLog.
      * @var array|null
      */
     private ?array $queryLog;
