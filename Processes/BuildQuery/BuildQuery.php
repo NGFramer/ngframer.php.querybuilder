@@ -19,7 +19,7 @@ final class BuildQuery
      * @return void
      * @throws Exception
      */
-    public function _construct(array $actionLog): void
+    public function __construct(array $actionLog)
     {
         $this->actionLog = $actionLog;
     }
