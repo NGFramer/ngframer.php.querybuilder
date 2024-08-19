@@ -39,6 +39,7 @@ abstract class LogBase
      */
     protected function build(): array
     {
+        // Step 1. Build the queryLog.
         $buildAction = new BuildQuery($this->actionLog);
         return $buildAction->build();
     }
@@ -51,7 +52,11 @@ abstract class LogBase
      */
     protected function execute(): array
     {
-        $executeAction = new ExecuteAction($this->actionLog);
+        // Step 1. Build the queryLog.
+        $buildAction = new BuildQuery($this->actionLog);
+        $queryLog = $buildAction->build();
+        // Step 2. Execute the queryLog.
+        $executeAction = new ExecuteAction($this->$queryLog);
         return $executeAction->execute();
     }
 }
