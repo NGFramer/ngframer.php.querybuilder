@@ -3,6 +3,7 @@
 namespace NGFramer\NGFramerPHPSQLServices\Actions;
 
 use Exception;
+use NGFramer\NGFramerPHPDbServices\Database;
 use NGFramer\NGFramerPHPSQLServices\Processes\BuildQuery\BuildQuery;
 use NGFramer\NGFramerPHPSQLServices\Processes\ExecuteAction;
 use NGFramer\NGFramerPHPSQLServices\Processes\LogAction;
@@ -47,10 +48,10 @@ abstract class LogBase
 
     /**
      * This will call the ExecuteQuery class's constructor & execute function.
-     * @return array
+     * @return Database
      * @throws Exception
      */
-    protected function execute(): array
+    protected function execute(): Database
     {
         // Step 1. Build the queryLog.
         $buildAction = new BuildQuery($this->actionLog);
