@@ -24,10 +24,10 @@ final class UpdateTable extends StructureTable
     /**
      * This will add the updating data to the actionLog.
      * @param array $updateData .
-     * @return void .
+     * @return UpdateTable .
      * @throws SqlServicesException
      */
-    public function update(array $updateData): void
+    public function update(array $updateData): self
     {
         // Check if the updateData is on the following formats.
         // method01 = update(['column', 'value', 'type'], ['column', 'value', 'type'], ['column', 'value', 'type'], ...);
@@ -74,5 +74,7 @@ final class UpdateTable extends StructureTable
             }
             throw new SqlServicesException('Invalid $updateData passed in update function');
         }
+
+        return $this;
     }
 }

@@ -24,10 +24,10 @@ final class InsertTable extends StructureTable
     /**
      * This will add insertData to the actionLog.
      * @param array $insertData . Single row data. Use multiple row data to insert multiple rows.
-     * @return void
+     * @return InsertTable
      * @throws SqlServicesException
      */
-    public function insert(mixed ...$insertData): void
+    public function insert(mixed ...$insertData): self
     {
         // Check if the insertData is on the following formats.
         // method01 = insert(['column', 'value', 'type'], ['column', 'value', 'type'], ['column', 'value', 'type'], ...);
@@ -80,5 +80,6 @@ final class InsertTable extends StructureTable
                 }
             }
         }
+        return $this;
     }
 }
