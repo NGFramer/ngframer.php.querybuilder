@@ -2,14 +2,14 @@
 
 namespace NGFramer\NGFramerPHPSQLServices\Actions\_Structure;
 
-use Exception;
+use NGFramer\NGFramerPHPSQLServices\Exceptions\SqlServicesException;
 
 abstract class StructureView extends Structure
 {
     /**
      * This class extends on the structure class.
      * @param string $view
-     * @throws Exception
+     * @throws SqlServicesException
      */
     public function __construct(string $view)
     {

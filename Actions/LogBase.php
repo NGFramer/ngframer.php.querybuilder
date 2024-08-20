@@ -2,7 +2,7 @@
 
 namespace NGFramer\NGFramerPHPSQLServices\Actions;
 
-use Exception;
+use NGFramer\NGFramerPHPSQLServices\Exceptions\SqlServicesException;
 use NGFramer\NGFramerPHPDbServices\Database;
 use NGFramer\NGFramerPHPSQLServices\Processes\BuildQuery\BuildQuery;
 use NGFramer\NGFramerPHPSQLServices\Processes\ExecuteAction;
@@ -36,7 +36,7 @@ abstract class LogBase
     /**
      * This will call the BuildQuery class's constructor & build function.
      * @return array
-     * @throws Exception
+     * @throws SqlServicesException
      */
     protected function build(): array
     {
@@ -49,7 +49,7 @@ abstract class LogBase
     /**
      * This will call the ExecuteQuery class's constructor & execute function.
      * @return Database
-     * @throws Exception
+     * @throws SqlServicesException
      */
     protected function execute(): Database
     {

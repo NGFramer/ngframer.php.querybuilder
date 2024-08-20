@@ -2,11 +2,10 @@
 
 namespace NGFramer\NGFramerPHPSQLServices\Actions;
 
-use Exception;
+use NGFramer\NGFramerPHPSQLServices\Exceptions\SqlServicesException;
 use NGFramer\NGFramerPHPSQLServices\Actions\DataDefinition\AlterView;
 use NGFramer\NGFramerPHPSQLServices\Actions\DataDefinition\CreateView;
 use NGFramer\NGFramerPHPSQLServices\Actions\DataDefinition\DropView;
-use NGFramer\NGFramerPHPSQLServices\Actions\DataDefinition\RenameView;
 use NGFramer\NGFramerPHPSQLServices\Actions\DataManipulation\SelectView;
 
 final class ViewActions
@@ -31,7 +30,7 @@ final class ViewActions
     /**
      * This function returns an instance of the class CreateView, with functions to create view.
      * @return CreateView
-     * @throws Exception
+     * @throws SqlServicesException
      */
     public function create(): CreateView
     {
@@ -41,7 +40,7 @@ final class ViewActions
 
     /**
      * This function returns an instance of the class AlterView, with functions to alter view.
-     * @throws Exception
+     * @throws SqlServicesException
      * @return AlterView
      */
     public function alter(): AlterView
@@ -52,7 +51,7 @@ final class ViewActions
 
     /**
      * This function returns an instance of the class DropView, with functions to drop view.
-     * @throws Exception
+     * @throws SqlServicesException
      * @return DropView
      */
     public function drop(): DropView
@@ -65,7 +64,7 @@ final class ViewActions
      * This function returns an instance of the class SelectView, with functions to select view.
      * @param string ...$fields
      * @return SelectView
-     * @throws Exception
+     * @throws SqlServicesException
      */
     public function select(string ...$fields): SelectView
     {

@@ -2,7 +2,7 @@
 
 namespace NGFramer\NGFramerPHPSQLServices\Actions\DataManipulation;
 
-use Exception;
+use NGFramer\NGFramerPHPSQLServices\Exceptions\SqlServicesException;
 
 Trait SortByTrait
 {
@@ -12,13 +12,13 @@ Trait SortByTrait
      * No validation is done on the sorting instructions.
      * @param mixed ...$sortInstructions
      * @return SelectView|SelectTable|SortByTrait
-     * @throws Exception
+     * @throws SqlServicesException
      */
     public function sortBy(mixed ...$sortInstructions): self
     {
         // If the sorting instructions have not been passed.
         if (empty($sortInstructions)) {
-            throw new Exception('At least one sorting instruction must be provided.');
+            throw new SqlServicesException('At least one sorting instruction must be provided.', 5002005);
         }
 
         // If the sorting instructions are passed as two strings.
@@ -36,12 +36,12 @@ Trait SortByTrait
             }
             // Sort Instruction is not array.
             else {
-                throw new Exception('Invalid sorting instruction format. Expected 2 arguments.');
+                throw new SqlServicesException('Invalid sorting instruction format. Expected 2 arguments.', 5002006);
             }
         }
 
         // If anything reaches to this point, throw an exception.
-        throw new Exception('Something went wrong, please check the format of sorting instructions and run the function again.');
+        throw new SqlServicesException('Something went wrong, please check the format of sorting instructions and run the function again.', 5002007);
     }
 
 

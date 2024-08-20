@@ -2,7 +2,7 @@
 
 namespace NGFramer\NGFramerPHPSQLServices\Processes\BuildQuery\DataManipulation;
 
-use Exception;
+use NGFramer\NGFramerPHPSQLServices\Exceptions\SqlServicesException;
 use NGFramer\NGFramerPHPSQLServices\Processes\BuildQuery\DataManipulation\Supportive\Bindings;
 
 class UpdateTable
@@ -47,7 +47,7 @@ class UpdateTable
     /**
      * Builds the update query from the actionLog.
      * @return array
-     * @throws Exception
+     * @throws SqlServicesException
      */
     public function build(): array
     {
@@ -61,13 +61,13 @@ class UpdateTable
 
         // Now look for the data to update.
         if (empty($data)) {
-            throw new Exception('No data passed to update.');
+            throw new SqlServicesException('No data passed to update.', 5003013);
         }
 
         // Loop and update the query.
         foreach ($data as $datum) {
-            $column = $datum['column'] ?? throw new Exception('Column must be defined for updating.');
-            $value = $datum['value'] ?? throw new Exception('Value must be defined for updating.');
+            $column = $datum['column'] ?? throw new SqlServicesException('Column must be defined for updating.', 5001004);
+            $value = $datum['value'] ?? throw new SqlServicesException('Value must be defined for updating.', 5001005);
             // Create binding name, and bind the value.
             $bindingName = $column . '_' . $this->getBindingIndex();
             $this->addBinding($bindingName, $value);

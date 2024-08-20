@@ -2,7 +2,7 @@
 
 namespace NGFramer\NGFramerPHPSQLServices\Processes\BuildQuery\DataDefinition;
 
-use Exception;
+use NGFramer\NGFramerPHPSQLServices\Exceptions\SqlServicesException;
 
 /**
  * Let's say this is the duplicate of the class DropTable.
@@ -30,7 +30,7 @@ class DropView
     /**
      * This function builds the query from the action log.
      * @return array
-     * @throws Exception
+     * @throws SqlServicesException
      */
     public function build(): array
     {

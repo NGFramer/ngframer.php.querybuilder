@@ -2,7 +2,7 @@
 
 namespace NGFramer\NGFramerPHPSQLServices\Actions;
 
-use Exception;
+use NGFramer\NGFramerPHPSQLServices\Exceptions\SqlServicesException;
 use NGFramer\NGFramerPHPSQLServices\Actions\DataDefinition\CreateTable;
 use NGFramer\NGFramerPHPSQLServices\Actions\DataDefinition\AlterTable;
 use NGFramer\NGFramerPHPSQLServices\Actions\DataDefinition\RenameTable;
@@ -32,7 +32,7 @@ final class TableActions
     /**
      * This function returns an instance of the class CreateTable, with functions to create table.
      * @return CreateTable
-     * @throws Exception
+     * @throws SqlServicesException
      */
 
 
@@ -45,7 +45,7 @@ final class TableActions
     /**
      * This function returns an instance of the class with functions to alter the table.
      * @return AlterTable
-     * @throws Exception
+     * @throws SqlServicesException
      */
     public function alter(): AlterTable
     {
@@ -56,7 +56,7 @@ final class TableActions
     /**
      * This function returns an instance of the class with functions to rename the table.
      * @return RenameTable
-     * @throws Exception
+     * @throws SqlServicesException
      */
     public function rename(): RenameTable
     {
@@ -67,7 +67,7 @@ final class TableActions
     /**
      * This function returns an instance of the class with functions to truncate the table.
      * @return TruncateTable
-     * @throws Exception
+     * @throws SqlServicesException
      */
     public function truncate(): TruncateTable
     {
@@ -78,7 +78,7 @@ final class TableActions
     /**
      * This function returns an instance of the class with functions to drop the table.
      * @return DropTable
-     * @throws Exception
+     * @throws SqlServicesException
      */
     public function drop(): DropTable
     {

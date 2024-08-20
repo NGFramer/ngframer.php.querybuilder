@@ -2,7 +2,7 @@
 
 namespace NGFramer\NGFramerPHPSQLServices\Actions\DataManipulation;
 
-use Exception;
+use NGFramer\NGFramerPHPSQLServices\Exceptions\SqlServicesException;
 
 Trait LimitTrait
 {
@@ -10,7 +10,7 @@ Trait LimitTrait
      * This function will add the limit details to the actionLog.
      * @param int $limit
      * @return SelectTable|LimitTrait|SelectView
-     * @throws Exception
+     * @throws SqlServicesException
      */
     public function limit(int $limit): self
     {

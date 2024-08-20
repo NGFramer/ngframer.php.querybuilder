@@ -3,8 +3,7 @@
 namespace NGFramer\NGFramerPHPSQLServices\Utilities;
 
 use DateTime;
-use Exception;
-use InvalidArgumentException;
+use NGFramer\NGFramerPHPSQLServices\Exceptions\SqlServicesException;
 
 class ValueSanitizer
 {
@@ -36,7 +35,7 @@ class ValueSanitizer
      *
      * @param string $value The LIKE pattern string to escape
      * @return string The escaped LIKE pattern string
-     * @throws Exception if no escape character is defined for the database
+     * @throws SqlServicesException if no escape character is defined for the database
      */
     public static function escapeLikePattern(string $value): string
     {
@@ -59,7 +58,7 @@ class ValueSanitizer
      * @param string $value The date/time string to sanitize
      * @param string $format The expected date/time format
      * @return string The sanitized date/time string
-     * @throws InvalidArgumentException If the date/time string is invalid
+     * @throws SqlServicesException If the date/time string is invalid
      */
     public static function sanitizeDateTime(string $value, string $format = 'Y-m-d H:i:s'): string
     {
@@ -68,7 +67,7 @@ class ValueSanitizer
 
         // Validate the DateTime object
         if (!$dateTime || $dateTime->format($format) !== $value) {
-            throw new InvalidArgumentException("Invalid date/time format. Expected format: $format");
+            throw new SqlServicesException("Invalid date/time format. Expected format: $format", 5005001);
         }
 
         // Return the sanitized date/time string in the specified format
@@ -81,7 +80,7 @@ class ValueSanitizer
      * @param array $values The array of values to sanitize
      * @param string $dataType The data type of the values ('string', 'integer', 'datetime', etc.)
      * @return array The sanitized array of values
-     * @throws Exception if an unsupported data type is provided
+     * @throws SqlServicesException if an unsupported data type is provided
      */
     public static function sanitizeArray(array $values, string $dataType): array
     {
@@ -92,7 +91,7 @@ class ValueSanitizer
                 'integer' => self::sanitizeInteger($value),
                 'datetime' => self::sanitizeDateTime($value),
                 // ... add support for other data types as needed
-                default => throw new InvalidArgumentException("Unsupported data type: $dataType"),
+                default => throw new SqlServicesException("Unsupported data type: $dataType", 5005001),
             };
         }
         return $sanitizedValues;

@@ -2,7 +2,7 @@
 
 namespace NGFramer\NGFramerPHPSQLServices\Actions\DataDefinition;
 
-use Exception;
+use NGFramer\NGFramerPHPSQLServices\Exceptions\SqlServicesException;
 use NGFramer\NGFramerPHPSQLServices\Actions\_Structure\StructureTable;
 
 /**
@@ -16,7 +16,7 @@ final class AlterView extends StructureTable
     /**
      * This just sets the action and viewName to alter view.
      * @param string $view
-     * @throws Exception
+     * @throws SqlServicesException
      */
     public function __construct(string $view)
     {
@@ -29,7 +29,7 @@ final class AlterView extends StructureTable
     /**
      * This sets the source of the view.
      * Source means the new select query that will be used to alter the view from the previous view.
-     * @throws Exception
+     * @throws SqlServicesException
      */
     public function source(string $newSourceQuery): AlterView
     {

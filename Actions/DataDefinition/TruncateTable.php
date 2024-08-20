@@ -2,7 +2,7 @@
 
 namespace NGFramer\NGFramerPHPSQLServices\Actions\DataDefinition;
 
-use Exception;
+use NGFramer\NGFramerPHPSQLServices\Exceptions\SqlServicesException;
 use NGFramer\NGFramerPHPSQLServices\Actions\_Structure\StructureTable;
 
 final class TruncateTable extends StructureTable
@@ -10,7 +10,7 @@ final class TruncateTable extends StructureTable
     /**
      * This will add the action (truncateTable) and tableName to the actionLog.
      * @param string $table
-     * @throws Exception
+     * @throws SqlServicesException
      */
     public function __construct(string $table)
     {

@@ -2,7 +2,7 @@
 
 namespace NGFramer\NGFramerPHPSQLServices\Processes\BuildQuery;
 
-use Exception;
+use NGFramer\NGFramerPHPSQLServices\Exceptions\SqlServicesException;
 
 final class BuildQuery
 {
@@ -17,7 +17,6 @@ final class BuildQuery
      * Constructor function.
      * @param array $actionLog
      * @return void
-     * @throws Exception
      */
     public function __construct(array $actionLog)
     {
@@ -27,7 +26,7 @@ final class BuildQuery
 
     /**
      * This function will teleport the actionLog to the respective class for building the query.
-     * @throws Exception
+     * @throws SqlServicesException
      */
     public function build(): mixed
     {
@@ -43,7 +42,7 @@ final class BuildQuery
         } elseif (in_array($action, ['selectTable', 'selectView', 'insertTable', 'updateTable', 'deleteTable'])) {
             $class = '\\NGFramer\\NGFramerPHPSQLServices\\Processes\\BuildQuery\\DataManipulation\\' . ucfirst($action);
         } else {
-            throw new Exception('Invalid action log. Check actionLog documentation and error_log for more.');
+            throw new SqlServicesException('Invalid action log. Check actionLog documentation and error_log for more.', 5000001);
         }
 
         // Instantiate the class.

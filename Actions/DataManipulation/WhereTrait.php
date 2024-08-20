@@ -2,13 +2,13 @@
 
 namespace NGFramer\NGFramerPHPSQLServices\Actions\DataManipulation;
 
-use Exception;
+use NGFramer\NGFramerPHPSQLServices\Exceptions\SqlServicesException;
 use NGFramer\NGFramerPHPSQLServices\Utilities\ArrayTools;
 
 Trait WhereTrait
 {
     /**
-     * @throws Exception
+     * @throws SqlServicesException
      */
     public function where(mixed ...$arguments): self
     {
@@ -19,7 +19,7 @@ Trait WhereTrait
         // Format for passing the arguments is (column, value) condition.
         if (!is_array($arguments[0])) {
             if (count($arguments) > 3 or count($arguments) < 2) {
-                throw new Exception('InvalidArgumentException, Invalid where condition format. Expected 2 or 3 arguments.');
+                throw new SqlServicesException('InvalidArgumentException, Invalid where condition format. Expected 2 or 3 arguments.', 5002001);
             }
             // If the argument is not an array, it is a simple "column, value" condition.
             $where['elements'][] = $this->processWhereOne($arguments[0], $arguments[1], $arguments[2] ?? '=');
@@ -29,13 +29,13 @@ Trait WhereTrait
             foreach ($arguments as $argument) {
                 // If the argument is not an array, throw an exception.
                 if (!is_array($argument)) {
-                    throw new Exception('Invalid where condition: Invalid argument type.');
+                    throw new SqlServicesException('Invalid where condition: Invalid argument type.', 5002002);
                 }
 
                 // If the argument is an indexed array, it is a simple "column, value, operator" condition.
                 if (!ArrayTools::isAssociative($argument)) {
                     if (count($argument) > 3 or count($argument) < 2) {
-                        throw new Exception('Invalid where condition format. Expected 2 or 3 arguments.');
+                        throw new SqlServicesException('Invalid where condition format. Expected 2 or 3 arguments.', 5002003);
                     }
                     $where['elements'][] = $this->processWhereOne($argument[0], $argument[1], $argument[2] ?? '=');
                 } // If the argument is an indexed array, it is a simple "column, value" condition.
@@ -57,7 +57,7 @@ Trait WhereTrait
                     $where['elements'][] = $nestedWhere;
                 } // If the argument is an associative array, it is a nexted WHERE condition.
                 else {
-                    throw new Exception('Invalid where condition structure.');
+                    throw new SqlServicesException('Invalid where condition structure.', 5002004);
                 }
             }
         }
@@ -70,7 +70,7 @@ Trait WhereTrait
 
 
     /**
-     * @throws Exception
+     * @throws SqlServicesException
      */
     private function whereOne(string $column, string|array $value, string $operator = '=', string $type = null): self
     {
@@ -91,7 +91,7 @@ Trait WhereTrait
     }
 
     /**
-     * @throws Exception
+     * @throws SqlServicesException
      */
     public function whereAnd(array ...$arguments): self
     {
@@ -108,7 +108,7 @@ Trait WhereTrait
 
 
     /**
-     * @throws Exception
+     * @throws SqlServicesException
      */
     public function whereOr(array ...$arguments): self
     {
@@ -124,7 +124,7 @@ Trait WhereTrait
     }
 
     /**
-     * @throws Exception
+     * @throws SqlServicesException
      */
     public function whereNot(string $column, string $value, string $operator = '='): self
     {
@@ -134,7 +134,7 @@ Trait WhereTrait
     }
 
     /**
-     * @throws Exception
+     * @throws SqlServicesException
      */
     public function whereNull(string $column): self
     {
@@ -144,7 +144,7 @@ Trait WhereTrait
     }
 
     /**
-     * @throws Exception
+     * @throws SqlServicesException
      */
     public function whereNotNull(string $column): self
     {
@@ -154,7 +154,7 @@ Trait WhereTrait
     }
 
     /**
-     * @throws Exception
+     * @throws SqlServicesException
      */
     public function whereBetween(string $column, string $value1, string $value2): self
     {
@@ -164,7 +164,7 @@ Trait WhereTrait
     }
 
     /**
-     * @throws Exception
+     * @throws SqlServicesException
      */
     public function whereNotBetween(string $column, string $value1, string $value2): self
     {
@@ -174,7 +174,7 @@ Trait WhereTrait
     }
 
     /**
-     * @throws Exception
+     * @throws SqlServicesException
      */
     public function whereLike(string $column, string $valuePattern): self
     {
@@ -184,7 +184,7 @@ Trait WhereTrait
     }
 
     /**
-     * @throws Exception
+     * @throws SqlServicesException
      */
     public function whereNotLike($column, $valuePattern): self
     {

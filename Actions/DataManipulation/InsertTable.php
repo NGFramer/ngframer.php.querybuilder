@@ -2,8 +2,8 @@
 
 namespace NGFramer\NGFramerPHPSQLServices\Actions\DataManipulation;
 
-use Exception;
 use NGFramer\NGFramerPHPSQLServices\Actions\_Structure\StructureTable;
+use NGFramer\NGFramerPHPSQLServices\Exceptions\SqlServicesException;
 use NGFramer\NGFramerPHPSQLServices\Utilities\ArrayTools;
 
 final class InsertTable extends StructureTable
@@ -11,7 +11,7 @@ final class InsertTable extends StructureTable
     /**
      * This sets the tableName and the action to the actionLog.
      * @param string $table
-     * @throws Exception
+     * @throws SqlServicesException
      */
     public function __construct(string $table)
     {
@@ -25,7 +25,7 @@ final class InsertTable extends StructureTable
      * This will add insertData to the actionLog.
      * @param array $insertData . Single row data. Use multiple row data to insert multiple rows.
      * @return void
-     * @throws Exception
+     * @throws SqlServicesException
      */
     public function insert(mixed ...$insertData): void
     {
@@ -42,8 +42,8 @@ final class InsertTable extends StructureTable
                 // Loop through the columns.
                 foreach ($insertData as $insertColumn) {
                     $this->actionLog['insert'][] = [
-                        'column' => $insertColumn['column'] ?? $insertColumn[0] ?? throw new Exception('Column must be defined for inserting.'),
-                        'value' => $insertColumn['value'] ?? $insertColumn[1] ?? throw new Exception('Value must be defined for inserting.'),
+                        'column' => $insertColumn['column'] ?? $insertColumn[0] ?? throw new SqlServicesException('Column must be defined for inserting.', 5001001),
+                        'value' => $insertColumn['value'] ?? $insertColumn[1] ?? throw new SqlServicesException('Value must be defined for inserting.', 5001002),
                         'type' => $insertColumn['type'] ?? $insertColumn[2] ?? 'string'
                     ];
                 }
@@ -61,23 +61,23 @@ final class InsertTable extends StructureTable
             }
         } else {
             foreach ($insertData as $key => $value) {
-                 if (is_array($value)) {
-                     // Method02 starts.
-                     $this->actionLog['insert'][] = [
-                         'column' => $key,
-                         'value' => $value['value'] ?? $value[0] ?? throw new Exception('Value must be defined for inserting.'),
-                         'type' => $value['type'] ?? $value[1] ?? 'string'
-                     ];
-                     // Method02 ends.
-                 } else {
-                     // Method03 starts.
-                     $this->actionLog['insert'][] = [
-                         'column' => $key,
-                         'value' => $value,
-                         'type' => 'string'
-                     ];
-                     // Method03 ends.
-                 }
+                if (is_array($value)) {
+                    // Method02 starts.
+                    $this->actionLog['insert'][] = [
+                        'column' => $key,
+                        'value' => $value['value'] ?? $value[0] ?? throw new SqlServicesException('Value must be defined for inserting.', 5001003),
+                        'type' => $value['type'] ?? $value[1] ?? 'string'
+                    ];
+                    // Method02 ends.
+                } else {
+                    // Method03 starts.
+                    $this->actionLog['insert'][] = [
+                        'column' => $key,
+                        'value' => $value,
+                        'type' => 'string'
+                    ];
+                    // Method03 ends.
+                }
             }
         }
     }

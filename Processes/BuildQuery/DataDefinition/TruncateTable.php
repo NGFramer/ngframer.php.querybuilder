@@ -2,7 +2,7 @@
 
 namespace NGFramer\NGFramerPHPSQLServices\Processes\BuildQuery\DataDefinition;
 
-use Exception;
+use NGFramer\NGFramerPHPSQLServices\Exceptions\SqlServicesException;
 
 class TruncateTable
 {
@@ -26,7 +26,7 @@ class TruncateTable
     /**
      * This function builds the query from the action log.
      * @return array
-     * @throws Exception
+     * @throws SqlServicesException
      */
     public function build(): array
     {

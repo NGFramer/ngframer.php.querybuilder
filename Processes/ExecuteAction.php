@@ -3,6 +3,7 @@
 namespace NGFramer\NGFramerPHPSQLServices\Processes;
 
 use Exception;
+use NGFramer\NGFramerPHPSQLServices\Exceptions\SqlServicesException;
 use NGFramer\NGFramerPHPDbServices\Database;
 
 final class ExecuteAction
@@ -25,7 +26,7 @@ final class ExecuteAction
 
 
     /**
-     * @throws Exception
+     * @throws SqlServicesException
      */
     public function execute(): Database
     {
@@ -34,21 +35,27 @@ final class ExecuteAction
 
         // Check if the queryLog is empty.
         if (empty($queryLog)) {
-            throw new Exception('Empty queryLog passed, modify the query to continue.');
+            throw new SqlServicesException('Empty queryLog passed, modify the query to continue.', 5007001);
         }
 
         // Prepare the query. Everything will be executed under prepared method.
         if (empty($queryLog['query'])) {
-            throw new Exception('Empty query passed, modify the query to continue.');
-        }
-        Database::getInstance()->prepare($queryLog['query']);
-
-        // Only if the bindings are available.
-        if (!empty($queryLog['bindings'])) {
-            Database::getInstance()->bindValues($queryLog['bindings']);
+            throw new SqlServicesException('Empty query passed, modify the query to continue.', 5007002);
         }
 
-        // Now execute the query.
-        return Database::getInstance()->execute();
+        // Convert the exception to SqlServicesException.
+        try {
+            Database::getInstance()->prepare($queryLog['query']);
+
+            // Only if the bindings are available.
+            if (!empty($queryLog['bindings'])) {
+                Database::getInstance()->bindValues($queryLog['bindings']);
+            }
+
+            // Now execute the query.
+            return Database::getInstance()->execute();
+        } catch (Exception $exception) {
+            throw new SqlServicesException($exception->getMessage(), $exception->getCode());
+        }
     }
 }

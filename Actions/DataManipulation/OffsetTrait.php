@@ -2,7 +2,7 @@
 
 namespace NGFramer\NGFramerPHPSQLServices\Actions\DataManipulation;
 
-use Exception;
+use NGFramer\NGFramerPHPSQLServices\Exceptions\SqlServicesException;
 
 Trait OffsetTrait
 {
@@ -10,7 +10,7 @@ Trait OffsetTrait
      * This function adds the offset details to the actionLog.
      * @param int $offset
      * @return OffsetTrait
-     * @throws Exception
+     * @throws SqlServicesException
      */
     public function offset(int $offset = 0): static
     {

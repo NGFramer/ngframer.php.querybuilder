@@ -2,7 +2,7 @@
 
 namespace NGFramer\NGFramerPHPSQLServices\Actions\DataDefinition\Common;
 
-use Exception;
+use NGFramer\NGFramerPHPSQLServices\Exceptions\SqlServicesException;
 
 Trait TableColumn
 {
@@ -30,12 +30,12 @@ Trait TableColumn
     /**
      * This unselects the column attribute after modification or creation.
      * @return $this
-     * @throws Exception
+     * @throws SqlServicesException
      */
     protected function unselect(): static
     {
         if ($this->selectedColumn == null){
-            throw new Exception('You must select a column before unselecting it.');
+            throw new SqlServicesException('You must select a column before unselecting it.', 5003001);
         }
         $this->selectedColumn = null;
         return $this;
@@ -56,7 +56,7 @@ Trait TableColumn
 
 
     /**
-     * @throws Exception
+     * @throws SqlServicesException
      */
     protected function getColumnActionLog(string $column): array
     {
@@ -65,7 +65,7 @@ Trait TableColumn
             $columnIndex = $this->getIndexOfColumn($column);
             return $this->actionLog['columns'][$columnIndex];
         } else {
-            throw new Exception("The column $column does not exists in actionLog.");
+            throw new SqlServicesException("The column $column does not exist in actionLog.", 5003003);
         }
     }
 
@@ -90,13 +90,13 @@ Trait TableColumn
     /**
      * This function will get the index of the column in the list.
      * @return int . Returns the index of the column in the actionLog.
-     * @throws Exception
+     * @throws SqlServicesException
      */
     protected function getIndexOfColumn(string $column): int
     {
         // Check column existence.
         if (!$this->checkColumnExistence($column)) {
-            throw new Exception('The column does not exists to get it\'s index.');
+            throw new SqlServicesException('The column does not exist to get its index.', 5003002);
         }
         // Get the list of columns.
         $columnList = $this->getColumns();

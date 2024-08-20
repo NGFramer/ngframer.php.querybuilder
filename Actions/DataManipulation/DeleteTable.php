@@ -2,7 +2,7 @@
 
 namespace NGFramer\NGFramerPHPSQLServices\Actions\DataManipulation;
 
-use Exception;
+use NGFramer\NGFramerPHPSQLServices\Exceptions\SqlServicesException;
 use NGFramer\NGFramerPHPSQLServices\Actions\_Structure\StructureTable;
 
 final class DeleteTable extends StructureTable
@@ -10,7 +10,7 @@ final class DeleteTable extends StructureTable
     /**
      * This sets the tableName and the action to the actionLog.
      * @param string $table
-     * @throws Exception
+     * @throws SqlServicesException
      */
     public function __construct(string $table)
     {

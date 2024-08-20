@@ -2,7 +2,7 @@
 
 namespace NGFramer\NGFramerPHPSQLServices\Processes\BuildQuery\DataManipulation;
 
-use Exception;
+use NGFramer\NGFramerPHPSQLServices\Exceptions\SqlServicesException;
 use NGFramer\NGFramerPHPSQLServices\Processes\BuildQuery\DataManipulation\Supportive\Bindings;
 
 class DeleteTable
@@ -47,7 +47,7 @@ class DeleteTable
     /**
      * This function builds the applicable query from the actionLog.
      * @return array
-     * @throws Exception
+     * @throws SqlServicesException
      */
     public function build(): array
     {

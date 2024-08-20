@@ -2,7 +2,7 @@
 
 namespace NGFramer\NGFramerPHPSQLServices\Actions\TransactionControl;
 
-use Exception;
+use NGFramer\NGFramerPHPSQLServices\Exceptions\SqlServicesException;
 use NGFramer\NGFramerPHPDbServices\Database;
 
 class StopTransaction
@@ -25,7 +25,7 @@ class StopTransaction
     /**
      * Function to create a single database instance.
      * @return void
-     * @throws Exception
+     * @throws SqlServicesException
      */
     private static function connect(): void
     {
@@ -38,7 +38,7 @@ class StopTransaction
 
     /**
      * Function to commit the transaction.
-     * @throws Exception
+     * @throws SqlServicesException
      */
     public static function commit(): void
     {
@@ -54,9 +54,9 @@ class StopTransaction
 
     /**
      * Function to roll back the transaction.
-     * @throws Exception
+     * @throws SqlServicesException
      */
-    public static function rollback(Exception $exception): void
+    public static function rollback(SqlServicesException $exception): void
     {
         // Check if the database connection is set.
         if (empty(self::$database)) {

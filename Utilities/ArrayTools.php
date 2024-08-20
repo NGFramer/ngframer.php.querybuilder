@@ -2,7 +2,7 @@
 
 namespace NGFramer\NGFramerPHPSQLServices\Utilities;
 
-use Exception;
+use NGFramer\NGFramerPHPSQLServices\Exceptions\SqlServicesException;
 
 class ArrayTools
 {
@@ -71,13 +71,13 @@ class ArrayTools
      * This function will add key value pairs at deeper levels from the array surface.
      * @param array $array . The array to which the value will be added.
      * @param mixed ...$arguments . The arguments to (n-1)th position are keys, and nth argument is value.
-     * @throws Exception
+     * @throws SqlServicesException
      */
     public static function addToArrayDeep(array &$array, mixed ...$arguments): void
     {
         // Check for the arguments.
         if (count($arguments) < 2) {
-            throw new Exception("At least two arguments required: a key and a value.");
+            throw new SqlServicesException("At least two arguments required: a key and a value.", 5004001);
         }
 
         // Get the value. And, the key is now array's arguments.
@@ -104,13 +104,13 @@ class ArrayTools
      * This function will add key value-making arrays at deeper levels in the array surface.
      * @param array $array . The array to which the value will be added.
      * @param mixed ...$arguments . The arguments to (n-1)th position are keys, and nth argument is value.
-     * @throws Exception
+     * @throws SqlServicesException
      */
     public static function addInArrayDeep(array &$array, mixed ...$arguments): void
     {
         // Check for the arguments.
         if (count($arguments) < 2) {
-            throw new Exception("At least two arguments required: a key and a value.");
+            throw new SqlServicesException("At least two arguments required: a key and a value.", 5004002);
         }
 
         // Get the value to be added to the array.
@@ -138,7 +138,7 @@ class ArrayTools
      * @param array $array . The array from which the value needs to be dropped.
      * @param mixed $value . The value that needs to be dropped from the array.
      * @return void . Returns void, Updates the array passed in function.
-     * @throws Exception
+     * @throws SqlServicesException
      */
     public static function dropFromArray(array &$array, mixed $value): void
     {
@@ -151,7 +151,7 @@ class ArrayTools
             }
         }
         if (!$valueExists) {
-            throw new Exception("Value not found in the array passed.");
+            throw new SqlServicesException("Value not found in the array passed.", 5004003);
         }
         // Reindex array to have consecutive keys
         $array = array_values($array);
@@ -162,12 +162,12 @@ class ArrayTools
      * This function removes the specified key from the array. Can also unset the entire array, so use carefully.
      * @param array $array . The array to drop. Pass in a key along an array to drop.
      * @return void
-     * @throws Exception
+     * @throws SqlServicesException
      */
     public static function dropArray(array &$array): void
     {
         if (count($array) == 0) {
-            throw new Exception("Empty array, drop is not possible.");
+            throw new SqlServicesException("Empty array, drop is not possible.", 5004004);
         }
         unset($array);
     }

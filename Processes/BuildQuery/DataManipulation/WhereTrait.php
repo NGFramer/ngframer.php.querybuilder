@@ -2,18 +2,18 @@
 
 namespace NGFramer\NGFramerPHPSQLServices\Processes\BuildQuery\DataManipulation;
 
-use Exception;
+use NGFramer\NGFramerPHPSQLServices\Exceptions\SqlServicesException;
 
 trait WhereTrait
 {
     /**
-     * @throws Exception
+     * @throws SqlServicesException
      */
     public function where(array $whereConditions): string
     {
         // If there are no WHERE conditions, throw an exception.
         if (empty($whereConditions)) {
-            throw new Exception('Empty whereConditions asked, modify the query to continue.');
+            throw new SqlServicesException('Empty whereConditions asked, modify the query to continue.', 5003014);
         }
 
         // Build the WHERE clause using the provided conditions.
@@ -28,14 +28,14 @@ trait WhereTrait
      *
      * @param array $conditions . Array of conditions and subConditions.
      * @return string . The resulting SQL WHERE clause.
-     * @throws Exception . If required, keys are missing in the condition arrays.
+     * @throws SqlServicesException . If required, keys are missing in the condition arrays.
      */
     private function buildWhereConditions(array $conditions): string
     {
         // Determine the logical link (AND/OR) for the condition group. Default is 'AND'.
         $link = strtoupper($conditions['link'] ?? 'AND');
         // Get the elements' array, which contains condition blocks or nested groups.
-        $elements = $conditions['elements'] ?? throw new Exception('Elements not found in whereConditions.');
+        $elements = $conditions['elements'] ?? throw new SqlServicesException('Elements not found in whereConditions.', 5001011);
 
         // Initialize an array to hold individual WHERE clauses.
         $clauses = [];
@@ -47,23 +47,12 @@ trait WhereTrait
                 $clauses[] = '(' . $this->buildWhereConditions($element) . ')';
             } else {
                 // Handle a single condition block.
-                $column = $element['column'] ?? throw new Exception('Column not found in whereConditions.');
-                $value = $element['value'] ?? throw new Exception('Value not found in whereConditions.');
+                $column = $element['column'] ?? throw new SqlServicesException('Column not found in whereConditions.', 5001012);
+                $value = $element['value'] ?? throw new SqlServicesException('Value not found in whereConditions.', 5001013);
                 $operator = $element['operator'] ?? '=';
                 // We shall have bindings in a query statement instead of value.
                 $binding = $column.$this->getBindingIndex();
                 $this->addBinding($binding, $value);
-
-                /**
-                // TODO: To be checked before using this anywhere.
-                // If the value is an array, treat it as an IN clause or similar.
-                if (is_array($value)) {
-                    $value = '(' . implode(',', array_map(fn($val) => "'$val'", $value)) . ')';
-                    $operator = strtoupper($operator) === 'IN' ? 'IN' : $operator;
-                } else {
-                    $value = "'$value'";
-                }
-                 **/
 
                 // Build the SQL fragment for this condition.
                 $clauses[] = "`$column` $operator $binding";

@@ -2,8 +2,8 @@
 
 namespace NGFramer\NGFramerPHPSQLServices\Actions\DataManipulation;
 
-use Exception;
 use NGFramer\NGFramerPHPSQLServices\Actions\_Structure\StructureTable;
+use NGFramer\NGFramerPHPSQLServices\Exceptions\SqlServicesException;
 use NGFramer\NGFramerPHPSQLServices\Utilities\ArrayTools;
 
 final class UpdateTable extends StructureTable
@@ -11,7 +11,7 @@ final class UpdateTable extends StructureTable
     /**
      * This sets the tableName and the action to the actionLog.
      * @param string $table
-     * @throws Exception
+     * @throws SqlServicesException
      */
     public function __construct(string $table)
     {
@@ -25,7 +25,7 @@ final class UpdateTable extends StructureTable
      * This will add the updating data to the actionLog.
      * @param array $updateData .
      * @return void .
-     * @throws Exception
+     * @throws SqlServicesException
      */
     public function update(array $updateData): void
     {
@@ -36,7 +36,7 @@ final class UpdateTable extends StructureTable
 
         // Check if updateData is empty.
         if (empty($updateData)) {
-            throw new Exception('No data passed to update.');
+            throw new SqlServicesException('No data passed to update.', 5003013);
         }
 
         // Check if the updateData is an associative array.
@@ -47,7 +47,7 @@ final class UpdateTable extends StructureTable
                     // Method02 starts.
                     $this->actionLog['update'][] = [
                         'column' => $column,
-                        'value' => $value['value'] ?? $value[0] ?? throw new Exception('Value must be defined for updating.'),
+                        'value' => $value['value'] ?? $value[0] ?? throw new SqlServicesException('Value must be defined for updating.', 5001005),
                         'type' => $value['type'] ?? $value[1] ?? 'string'
                     ];
                     // Method02 ends.
@@ -66,13 +66,13 @@ final class UpdateTable extends StructureTable
             foreach ($updateData as $column) {
                 // Method01 starts.
                 $this->actionLog['update'][] = [
-                    'column' => $column['column'] ?? $column[0] ?? throw new Exception('Column must be defined for updating.'),
-                    'value' => $column['value'] ?? $column[1] ?? throw new Exception('Value must be defined for updating.'),
+                    'column' => $column['column'] ?? $column[0] ?? throw new SqlServicesException('Column must be defined for updating.', 5001004),
+                    'value' => $column['value'] ?? $column[1] ?? throw new SqlServicesException('Value must be defined for updating.', 5001005),
                     'type' => $column['type'] ?? $column[2] ?? 'string'
                 ];
                 // Method01 ends.
             }
-            throw new Exception('Invalid $updateData passed in update function');
+            throw new SqlServicesException('Invalid $updateData passed in update function');
         }
     }
 }

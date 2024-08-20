@@ -2,7 +2,7 @@
 
 namespace NGFramer\NGFramerPHPSQLServices\Actions\DataDefinition\Common;
 
-use Exception;
+use NGFramer\NGFramerPHPSQLServices\Exceptions\SqlServicesException;
 
 trait DropColumnAttribute
 {
@@ -10,7 +10,7 @@ trait DropColumnAttribute
 
 
     /**
-     * @throws Exception
+     * @throws SqlServicesException
      */
     public function dropPrimary(): void
     {
@@ -19,7 +19,7 @@ trait DropColumnAttribute
 
 
     /**
-     * @throws Exception
+     * @throws SqlServicesException
      */
     public function changeType(string $type): void
     {
@@ -28,7 +28,7 @@ trait DropColumnAttribute
 
 
     /**
-     * @throws Exception
+     * @throws SqlServicesException
      */
     public function changeLength(int $length): void
     {
@@ -37,7 +37,7 @@ trait DropColumnAttribute
 
 
     /**
-     * @throws Exception
+     * @throws SqlServicesException
      */
     public function dropNullable(): void
     {
@@ -46,7 +46,7 @@ trait DropColumnAttribute
 
 
     /**
-     * @throws Exception
+     * @throws SqlServicesException
      */
     public function dropUnique(): void
     {
@@ -55,7 +55,7 @@ trait DropColumnAttribute
 
 
     /**
-     * @throws Exception
+     * @throws SqlServicesException
      */
     public function dropAutoIncrement(): void
     {
@@ -64,7 +64,7 @@ trait DropColumnAttribute
 
 
     /**
-     * @throws Exception
+     * @throws SqlServicesException
      */
     public function dropForeignKey(string $table, string $column): void
     {

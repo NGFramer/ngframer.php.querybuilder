@@ -2,7 +2,7 @@
 
 namespace NGFramer\NGFramerPHPSQLServices\Actions;
 
-use Exception;
+use NGFramer\NGFramerPHPSQLServices\Exceptions\SqlServicesException;
 use NGFramer\NGFramerPHPSQLServices\Utilities\ArrayTools;
 
 trait UtilityTrait
@@ -19,7 +19,7 @@ trait UtilityTrait
 
     /**
      * This function will assign value to the key in the action log.
-     * @throws Exception
+     * @throws SqlServicesException
      */
     public function addToActionLog(mixed ...$args): void
     {
@@ -29,7 +29,7 @@ trait UtilityTrait
     /**
      * This function will assign an array to the key in the action log.
      * If further executed, will add more values on a single key (array).
-     * @throws Exception
+     * @throws SqlServicesException
      */
     public function addInActionLog(mixed ...$args): void
     {

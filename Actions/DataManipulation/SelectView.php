@@ -2,7 +2,7 @@
 
 namespace NGFramer\NGFramerPHPSQLServices\Actions\DataManipulation;
 
-use Exception;
+use NGFramer\NGFramerPHPSQLServices\Exceptions\SqlServicesException;
 use NGFramer\NGFramerPHPSQLServices\Actions\_Structure\StructureView;
 
 final class SelectView extends StructureView
@@ -19,7 +19,7 @@ final class SelectView extends StructureView
     /**
      * This sets the tableName and the action to the actionLog.
      * @param string $table
-     * @throws Exception
+     * @throws SqlServicesException
      */
     public function __construct(string $table)
     {
@@ -33,7 +33,7 @@ final class SelectView extends StructureView
      * This will add fields to the actionLog.
      * @param string ...$fields
      * @return SelectView
-     * @throws Exception
+     * @throws SqlServicesException
      */
     public function select(string ...$fields): self
     {

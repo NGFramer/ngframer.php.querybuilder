@@ -2,7 +2,7 @@
 
 namespace NGFramer\NGFramerPHPSQLServices\Actions\DataDefinition;
 
-use Exception;
+use NGFramer\NGFramerPHPSQLServices\Exceptions\SqlServicesException;
 use NGFramer\NGFramerPHPSQLServices\Actions\_Structure\StructureTable;
 
 final class DropTable extends StructureTable
@@ -10,7 +10,7 @@ final class DropTable extends StructureTable
     /**
      * This will add action and viewName to the actionLog.
      * @param string $view
-     * @throws Exception
+     * @throws SqlServicesException
      */
     public function __construct(string $view)
     {

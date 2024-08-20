@@ -2,7 +2,7 @@
 
 namespace NGFramer\NGFramerPHPSQLServices\Actions\_Structure;
 
-use Exception;
+use NGFramer\NGFramerPHPSQLServices\Exceptions\SqlServicesException;
 use NGFramer\NGFramerPHPSQLServices\Actions\LogBase;
 
 abstract class Structure extends LogBase
@@ -13,18 +13,18 @@ abstract class Structure extends LogBase
      * This function sets the structure type and value for the structure.
      * @param string $structureType
      * @param string $structureValue
-     * @throws Exception
+     * @throws SqlServicesException
      */
     public function __construct(string $structureType, string $structureValue)
     {
         // Check if the structure type is view or table.
         if (!$structureType == 'view' && !$structureType == 'table') {
-            throw new Exception("Structure type must be 'view' or 'table'");
+            throw new SqlServicesException("Structure type must be 'view' or 'table'", 5006001);
         }
 
         // Check if the structure value is empty.
         if (empty($structureValue)) {
-            throw new Exception("$structureType name cannot be empty");
+            throw new SqlServicesException("$structureType name cannot be empty", 5006002);
         }
 
         // Update the structure type and structure value to the action log.

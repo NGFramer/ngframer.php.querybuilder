@@ -2,7 +2,7 @@
 
 namespace NGFramer\NGFramerPHPSQLServices\Actions\DataManipulation;
 
-use Exception;
+use NGFramer\NGFramerPHPSQLServices\Exceptions\SqlServicesException;
 
 Trait GroupByTrait
 {
@@ -10,7 +10,7 @@ Trait GroupByTrait
      * This function adds groupBy details to the actionLog.
      * @param string $columnName
      * @return GroupByTrait|SelectTable|SelectView
-     * @throws Exception
+     * @throws SqlServicesException
      */
     public function groupBy(string $columnName): self
     {

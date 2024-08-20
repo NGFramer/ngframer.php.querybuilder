@@ -2,7 +2,7 @@
 
 namespace NGFramer\NGFramerPHPSQLServices\Processes\BuildQuery\DataManipulation;
 
-use Exception;
+use NGFramer\NGFramerPHPSQLServices\Exceptions\SqlServicesException;
 use NGFramer\NGFramerPHPSQLServices\Processes\BuildQuery\DataManipulation\Supportive\Bindings;
 use NGFramer\NGFramerPHPSQLServices\Utilities\ArrayTools;
 use NGFramer\NGFramerPHPSQLServices\Utilities\ValueSanitizer;
@@ -40,7 +40,7 @@ class InsertTable
 
 
     /**
-     * @throws Exception
+     * @throws SqlServicesException
      */
     public function build(): array
     {
@@ -59,7 +59,7 @@ class InsertTable
 
             // Check if the insertDatum is an array or not.
             if (!is_array($insertDatum)) {
-                throw new Exception('The data you\'re trying to insert must be array.');
+                throw new SqlServicesException('The data you\'re trying to insert must be array.', 5002009);
             }
 
             // Now check if the insertData is an associative array or not.
@@ -71,7 +71,7 @@ class InsertTable
                 foreach ($insertDatum as $columnName => $columnValue) {
                     // Check if the columnName is a string, and column value is also string.
                     if (!is_string($columnName)) {
-                        throw new Exception('The column name must be string.');
+                        throw new SqlServicesException('The column name must be string.', 5002010);
                     }
                     $columnNames[] = ValueSanitizer::sanitizeString($columnName);
                     // Create binding name, and bind the value.

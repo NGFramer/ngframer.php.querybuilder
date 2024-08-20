@@ -2,7 +2,7 @@
 
 namespace NGFramer\NGFramerPHPSQLServices\Processes\BuildQuery\DataManipulation;
 
-use Exception;
+use NGFramer\NGFramerPHPSQLServices\Exceptions\SqlServicesException;
 use NGFramer\NGFramerPHPSQLServices\Processes\BuildQuery\DataManipulation\Supportive\Bindings;
 
 class SelectTable
@@ -52,7 +52,7 @@ class SelectTable
     /**
      * This function builds the select query from the actionLog.
      * @return string[]
-     * @throws Exception
+     * @throws SqlServicesException
      */
     public function build(): array
     {

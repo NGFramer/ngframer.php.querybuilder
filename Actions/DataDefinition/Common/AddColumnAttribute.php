@@ -2,14 +2,14 @@
 
 namespace NGFramer\NGFramerPHPSQLServices\Actions\DataDefinition\Common;
 
-use Exception;
+use NGFramer\NGFramerPHPSQLServices\Exceptions\SqlServicesException;
 
 Trait AddColumnAttribute
 {
     private abstract function addColumnAttribute(string $attributeName, mixed $attributeValue): void;
 
     /**
-     * @throws Exception
+     * @throws SqlServicesException
      */
     public function addPrimary(): void
     {
@@ -17,7 +17,7 @@ Trait AddColumnAttribute
     }
 
     /**
-     * @throws Exception
+     * @throws SqlServicesException
      */
     public function addType(string $type): void
     {
@@ -25,7 +25,7 @@ Trait AddColumnAttribute
     }
 
     /**
-     * @throws Exception
+     * @throws SqlServicesException
      */
     public function addNullable(): void
     {
@@ -33,7 +33,7 @@ Trait AddColumnAttribute
     }
 
     /**
-     * @throws Exception
+     * @throws SqlServicesException
      */
     public function addUnique(): void
     {
@@ -41,7 +41,7 @@ Trait AddColumnAttribute
     }
 
     /**
-     * @throws Exception
+     * @throws SqlServicesException
      */
     public function addAutoIncrement(): void
     {
@@ -49,7 +49,7 @@ Trait AddColumnAttribute
     }
 
     /**
-     * @throws Exception
+     * @throws SqlServicesException
      */
     public function addForeignKey(string $table, string $column): void
     {
