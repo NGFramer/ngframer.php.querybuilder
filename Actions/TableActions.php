@@ -2,6 +2,10 @@
 
 namespace NGFramer\NGFramerPHPSQLServices\Actions;
 
+use NGFramer\NGFramerPHPSQLServices\Actions\DataManipulation\DeleteTable;
+use NGFramer\NGFramerPHPSQLServices\Actions\DataManipulation\InsertTable;
+use NGFramer\NGFramerPHPSQLServices\Actions\DataManipulation\SelectTable;
+use NGFramer\NGFramerPHPSQLServices\Actions\DataManipulation\UpdateTable;
 use NGFramer\NGFramerPHPSQLServices\Exceptions\SqlServicesException;
 use NGFramer\NGFramerPHPSQLServices\Actions\DataDefinition\CreateTable;
 use NGFramer\NGFramerPHPSQLServices\Actions\DataDefinition\AlterTable;
@@ -84,4 +88,49 @@ final class TableActions
     {
         return new DropTable($this->table);
     }
+
+
+    /**
+     * This function returns an instance of the class with functions to select the table.
+     * @throws SqlServicesException
+     */
+    public function select(string ...$fields): SelectTable
+    {
+        return (new SelectTable($this->table))->select(...$fields);
+    }
+
+    /**
+     * This function returns an instance of the class with functions to insert into the table.
+     * @param mixed ...$insertData
+     * @return InsertTable
+     * @throws SqlServicesException
+     */
+    public function insert(mixed ...$insertData): InsertTable
+    {
+        return (new InsertTable($this->table))->insert(...$insertData);
+    }
+
+
+    /**
+     * This function returns an instance of the class with functions to update the table.
+     * @param array $updateData
+     * @return UpdateTable
+     * @throws SqlServicesException
+     */
+    public function update(array $updateData): UpdateTable
+    {
+        return (new UpdateTable($this->table))->update($updateData);
+    }
+
+
+    /**
+     * This function returns an instance of the class with functions to delete from the table.
+     * @return DeleteTable
+     * @throws SqlServicesException
+     */
+    public function delete(): DeleteTable
+    {
+        return new DeleteTable($this->table);
+    }
+
 }
