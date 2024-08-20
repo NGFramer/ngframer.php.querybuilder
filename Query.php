@@ -7,6 +7,7 @@ use NGFramer\NGFramerPHPSQLServices\Actions\TableActions;
 use NGFramer\NGFramerPHPSQLServices\Actions\ViewActions;
 use NGFramer\NGFramerPHPSQLServices\Actions\TransactionControl\StartTransaction;
 use NGFramer\NGFramerPHPSQLServices\Actions\TransactionControl\StopTransaction;
+use NGFramer\NGFramerPHPSQLServices\Exceptions\SqlServicesException;
 
 final class Query
 {
@@ -21,7 +22,7 @@ final class Query
     /**
      * Function to start the database transaction.
      * @return void
-     * @throws Exception
+     * @throws SqlServicesException
      */
     public static function start(): void
     {
@@ -53,7 +54,7 @@ final class Query
 
     /**
      * Function to commit the database transaction.
-     * @throws Exception
+     * @throws SqlServicesException
      */
     public static function commit(): void
     {
@@ -63,7 +64,7 @@ final class Query
 
     /**
      * Function to roll back the database transaction.
-     * @throws Exception
+     * @throws SqlServicesException
      */
     public static function rollback(Exception $exception): void
     {

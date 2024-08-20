@@ -2,6 +2,7 @@
 
 namespace NGFramer\NGFramerPHPSQLServices\Actions\TransactionControl;
 
+use Exception;
 use NGFramer\NGFramerPHPSQLServices\Exceptions\SqlServicesException;
 use NGFramer\NGFramerPHPDbServices\Database;
 
@@ -30,7 +31,11 @@ class StartTransaction
     private static function connect(): void
     {
         if (empty(self::$database)) {
-            self::$database = Database::getInstance();
+            try {
+                self::$database = Database::getInstance();
+            } catch (Exception $exception) {
+                throw new SqlServicesException($exception->getMessage(), $exception->getCode());
+            }
         }
         // Getting instance automatically sets the database connection.
     }
@@ -44,10 +49,21 @@ class StartTransaction
     {
         // Connect to the database.
         self::connect();
+
         // Only start the transaction if there is no active transaction.
-        if (!self::$database->hasActiveTransactions()) {
+        try {
+            $hasActiveTransactions = self::$database->hasActiveTransactions();
+        } catch (Exception $exception) {
+            throw new SqlServicesException($exception->getMessage(), $exception->getCode());
+        }
+
+        if (!$hasActiveTransactions) {
             // Now start the transaction.
-            self::$database->beginTransaction();
+            try {
+                self::$database->beginTransaction();
+            } catch (Exception $exception) {
+                throw new SqlServicesException($exception->getMessage(), $exception->getCode());
+            }
         }
         // Else do nothing.
     }

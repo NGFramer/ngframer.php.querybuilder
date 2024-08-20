@@ -2,6 +2,7 @@
 
 namespace NGFramer\NGFramerPHPSQLServices\Actions\TransactionControl;
 
+use Exception;
 use NGFramer\NGFramerPHPSQLServices\Exceptions\SqlServicesException;
 use NGFramer\NGFramerPHPDbServices\Database;
 
@@ -30,7 +31,11 @@ class StopTransaction
     private static function connect(): void
     {
         if (empty(self::$database)) {
-            self::$database = Database::getInstance();
+            try {
+                self::$database = Database::getInstance();
+            } catch (Exception $exception) {
+                throw new SqlServicesException($exception->getMessage(), $exception->getCode());
+            }
         }
         // Getting instance automatically sets the database connection.
     }
@@ -48,24 +53,31 @@ class StopTransaction
         }
 
         // Commit the transaction.
-        self::$database->commit();
-
+        try {
+            self::$database->commit();
+        } catch (Exception $exception) {
+            // Finally, throw the exception.
+            throw new SqlServicesException($exception->getMessage(), $exception->getCode());
+        }
     }
 
     /**
      * Function to roll back the transaction.
      * @throws SqlServicesException
      */
-    public static function rollback(SqlServicesException $exception): void
+    public static function rollback(Exception $exception): void
     {
         // Check if the database connection is set.
         if (empty(self::$database)) {
             self::connect();
         }
         // Rollback the transaction.
-        self::$database->rollback();
-        // Finally, throw the exception.
-        throw $exception;
+        try {
+            self::$database->rollback();
+        } catch (Exception $exception) {
+            // Finally, throw the exception.
+            throw new SqlServicesException($exception->getMessage(), $exception->getCode());
+        }
     }
 
 }
