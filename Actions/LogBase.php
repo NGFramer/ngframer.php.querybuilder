@@ -26,7 +26,7 @@ abstract class LogBase
      * This will call the LogAction class's constructor & log function.
      * @return bool
      */
-    protected function log(): bool
+    public function log(): bool
     {
         $logAction = new LogAction($this->actionLog);
         return $logAction->log();
@@ -38,7 +38,7 @@ abstract class LogBase
      * @return array
      * @throws SqlServicesException
      */
-    protected function build(): array
+    public function build(): array
     {
         // Step 1. Build the queryLog.
         $buildAction = new BuildQuery($this->actionLog);
@@ -51,7 +51,7 @@ abstract class LogBase
      * @return Database
      * @throws SqlServicesException
      */
-    protected function execute(): Database
+    public function execute(): Database
     {
         // Step 1. Build the queryLog.
         $buildAction = new BuildQuery($this->actionLog);
