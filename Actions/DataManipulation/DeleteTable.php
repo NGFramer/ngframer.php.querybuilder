@@ -8,6 +8,14 @@ use NGFramer\NGFramerPHPSQLServices\Actions\_Structure\StructureTable;
 final class DeleteTable extends StructureTable
 {
     /**
+     * Use the following traits in this class.
+     */
+    use LimitTrait;
+    use OffsetTrait;
+    use WhereTrait;
+
+
+    /**
      * This sets the tableName and the action to the actionLog.
      * @param string $table
      * @throws SqlServicesException
