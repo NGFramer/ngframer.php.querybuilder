@@ -6,7 +6,7 @@ use Exception;
 
 trait DropColumnAttribute
 {
-    private abstract function changeColumnAttribute(string $attributeName, mixed $attributeValue): void;
+    private abstract function updateColumnAttribute(string $attributeName, mixed $attributeValue): void;
 
 
     /**
@@ -14,7 +14,7 @@ trait DropColumnAttribute
      */
     public function dropPrimary(): void
     {
-        $this->changeColumnAttribute('primary', false);
+        $this->updateColumnAttribute('primary', false);
     }
 
 
@@ -23,7 +23,7 @@ trait DropColumnAttribute
      */
     public function changeType(string $type): void
     {
-        $this->changeColumnAttribute('type', $type);
+        $this->updateColumnAttribute('type', $type);
     }
 
 
@@ -32,7 +32,7 @@ trait DropColumnAttribute
      */
     public function changeLength(int $length): void
     {
-        $this->changeColumnAttribute('length', $length);
+        $this->updateColumnAttribute('length', $length);
     }
 
 
@@ -41,7 +41,7 @@ trait DropColumnAttribute
      */
     public function dropNullable(): void
     {
-        $this->changeColumnAttribute('nullable', false);
+        $this->updateColumnAttribute('nullable', false);
     }
 
 
@@ -50,7 +50,7 @@ trait DropColumnAttribute
      */
     public function dropUnique(): void
     {
-        $this->changeColumnAttribute('unique', false);
+        $this->updateColumnAttribute('unique', false);
     }
 
 
@@ -59,7 +59,7 @@ trait DropColumnAttribute
      */
     public function dropAutoIncrement(): void
     {
-        $this->changeColumnAttribute('auto_increment', false);
+        $this->updateColumnAttribute('auto_increment', false);
     }
 
 
@@ -68,6 +68,6 @@ trait DropColumnAttribute
      */
     public function dropForeignKey(string $table, string $column): void
     {
-        $this->changeColumnAttribute('foreign_key', false);
+        $this->updateColumnAttribute('foreign_key', false);
     }
 }
