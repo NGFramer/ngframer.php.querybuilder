@@ -9,6 +9,12 @@ use NGFramer\NGFramerPHPSQLServices\Utilities\ArrayTools;
 final class UpdateTable extends StructureTable
 {
     /**
+     * Use the following traits.
+     */
+    use WhereTrait;
+
+
+    /**
      * This sets the tableName and the action to the actionLog.
      * @param string $table
      * @throws SqlServicesException
