@@ -34,7 +34,7 @@ class StartTransaction
             try {
                 self::$database = Database::getInstance();
             } catch (Exception $exception) {
-                throw new SqlServicesException($exception->getMessage(), $exception->getCode());
+                throw new SqlServicesException($exception->getMessage(), $exception->getCode(), $exception);
             }
         }
         // Getting instance automatically sets the database connection.
@@ -54,7 +54,7 @@ class StartTransaction
         try {
             $hasActiveTransactions = self::$database->hasActiveTransactions();
         } catch (Exception $exception) {
-            throw new SqlServicesException($exception->getMessage(), $exception->getCode());
+            throw new SqlServicesException($exception->getMessage(), $exception->getCode(), $exception);
         }
 
         if (!$hasActiveTransactions) {
@@ -62,7 +62,7 @@ class StartTransaction
             try {
                 self::$database->beginTransaction();
             } catch (Exception $exception) {
-                throw new SqlServicesException($exception->getMessage(), $exception->getCode());
+                throw new SqlServicesException($exception->getMessage(), $exception->getCode(), $exception);
             }
         }
         // Else do nothing.

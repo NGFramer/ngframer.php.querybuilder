@@ -34,7 +34,7 @@ class StopTransaction
             try {
                 self::$database = Database::getInstance();
             } catch (Exception $exception) {
-                throw new SqlServicesException($exception->getMessage(), $exception->getCode());
+                throw new SqlServicesException($exception->getMessage(), $exception->getCode(), $exception);
             }
         }
         // Getting instance automatically sets the database connection.
@@ -57,7 +57,7 @@ class StopTransaction
             self::$database->commit();
         } catch (Exception $exception) {
             // Finally, throw the exception.
-            throw new SqlServicesException($exception->getMessage(), $exception->getCode());
+            throw new SqlServicesException($exception->getMessage(), $exception->getCode(), $exception);
         }
     }
 
@@ -76,7 +76,7 @@ class StopTransaction
             self::$database->rollback();
         } catch (Exception $exception) {
             // Finally, throw the exception.
-            throw new SqlServicesException($exception->getMessage(), $exception->getCode());
+            throw new SqlServicesException($exception->getMessage(), $exception->getCode(), $exception);
         }
     }
 

@@ -55,7 +55,7 @@ final class ExecuteAction
             // Now execute the query.
             return Database::getInstance()->execute();
         } catch (Exception $exception) {
-            throw new SqlServicesException($exception->getMessage(), $exception->getCode());
+            throw new SqlServicesException($exception->getMessage(), $exception->getCode(), $exception);
         }
     }
 }
