@@ -49,72 +49,81 @@ class InsertTable
         $table = $actionLog['table'];
         $insertData = $actionLog['insert'];
 
-        // For conditions when insert is not one but many.
-        $insertQueries = [];
+        // Prepare the initial query
+        $query = "INSERT INTO $table ";
 
-        // Loop through the insertData to get data from single row.
-        foreach ($insertData as $insertDatum) {
-            // Prepare the initial query
-            $query = "INSERT INTO $table ";
+        // Store the column names and their values on variables.
+        $columnNames = [];
+        $columnValues = [];
+        $valueTypes = [];
 
-            // Check if the insertDatum is an array or not.
-            if (!is_array($insertDatum)) {
-                throw new SqlServicesException('The data you\'re trying to insert must be array.', 5002009);
+        // Check if first entry has column name or not.
+        if (isset($insertData[0]) and isset($insertData[0]['column'])) {
+
+            // Loop through the insertData to get data from single row.
+            foreach ($insertData as $insertDatum) {
+
+                // Check if the insertDatum is an array or not.
+                if (!is_array($insertDatum) or !ArrayTools::isAssociative($insertDatum)) {
+                    throw new SqlServicesException('Invalid format of data passed to insert.', 5002009);
+                }
+
+                // Get the column name, column value, and value type.
+                $columnName = $insertDatum['column'] ?? throw new SqlServicesException('Column must be defined for inserting.', 5002010);
+                $columnValue = $insertDatum['value'] ?? throw new SqlServicesException('Value must be defined for inserting.', 5002011);
+                $valueType = $insertDatum['type'] ?? 'string';
+
+                // Check if the columnName is a string, and column value is also string.
+                if (!is_string($columnName)) {
+                    throw new SqlServicesException('The column name must be string.', 5002010);
+                }
+
+                // Sanitize the column name.
+                $columnNames[] = ValueSanitizer::sanitizeString($columnName);
+
+                // Create binding name, and bind the value.
+                $bindingName = $columnName . '_' . $this->getBindingIndex();
+                $this->addBinding($bindingName, $columnValue);
+
+                // Use the bind name in the query.
+                $columnValues[] = ':' . $bindingName;
             }
 
-            // Now check if the insertData is an associative array or not.
-            if (ArrayTools::isAssociative($insertDatum)) {
-                // For simplicity, let's store the data on a variable.
-                $columnNames = [];
-                $columnValues = [];
-                // Now, loop through the insertDatum to get data from single column.
-                foreach ($insertDatum as $columnName => $columnValue) {
-                    // Check if the columnName is a string, and column value is also string.
-                    if (!is_string($columnName)) {
-                        throw new SqlServicesException('The column name must be string.', 5002010);
-                    }
-                    $columnNames[] = ValueSanitizer::sanitizeString($columnName);
-                    // Create binding name, and bind the value.
-                    $bindingName = $columnName . '_' . $this->getBindingIndex();
-                    $this->addBinding($bindingName, $columnValue);
-                    // Use the bind name in the query.
-                    $columnValues[] = $bindingName;
-                }
-                // Now, build the remaining part of the query.
-                if (count($columnNames) > 1) {
-                    $query .= '(' . implode(', ', $columnNames) . ') VALUES (' . implode(', ', $columnValues) . ')';
-                } else {
-                    $query .= '(' . implode('', $columnNames) . ') VALUES (' . implode('', $columnValues) . ')';
-                }
+            // Now, build the remaining part of the query.
+            if (count($columnNames) > 1) {
+                $query .= '(`' . implode('`, ', $columnNames) . '`) VALUES (' . implode(', ', $columnValues) . ')';
             } else {
-                // Define binding names to save binding values.
-                $bindingNames = [];
-                // Loop through the insertDatum to get data from single column.
-                foreach ($insertDatum as $columnValue) {
-                    // Create binding name, and bind the value.
-                    $bindingName = $this->getBindingIndex();
-                    $this->addBinding($bindingName, $columnValue);
-                    // Use the bind name in the query.
-                    $bindingNames[] = $bindingName;
-                }
-                // If the insertData is not an associative array, then it is an array of values.
-                if (count($bindingNames) > 1) {
-                    $query .= ' VALUES (' . implode(', ', $bindingNames) . ')';
-                } else {
-                    $query .= ' VALUES (' . implode('', $bindingNames) . ')';
-                }
+                $query .= '(`' . implode(' ', $columnNames) . '`) VALUES (' . implode('', $columnValues) . ')';
+            }
+        } else {
+            // Check if the insertDatum is an array or not.
+            if (!is_array($insertDatum) or !ArrayTools::isAssociative($insertDatum)) {
+                throw new SqlServicesException('Invalid format of data passed to insert.', 5002009);
             }
 
-            // Add the query to the array.
-            $insertQueries[] = $query;
+            // Get the column value and value type.
+            $columnValue = $insertDatum['value'] ?? throw new SqlServicesException('Value must be defined for inserting.', 5002011);
+            $valueType = $insertDatum['type'] ?? 'string';
+
+            // Create binding name, and bind the value.
+            $bindingName = 'column' . '_' . $this->getBindingIndex();
+            $this->addBinding($bindingName, $columnValue);
+
+            // Use the bind name in the query.
+            $columnValues[] = ':' . $bindingName;
+
+            // Now, build the remaining part of the query.
+            if (count($columnNames) > 1) {
+                $query .= 'VALUES (' . implode(', ', $columnValues) . ');';
+            } else {
+                $query .= 'VALUES (' . implode('', $columnValues) . ');';
+            }
         }
 
-        // Count the number of queries.
-        $count = count($insertQueries);
+        error_log($query);
 
         // Build the query and return the query built.
-        $this->queryLog['query'] =  $count > 1 ? implode('; ', $insertQueries) : $insertQueries[0];
+        $this->queryLog['query'] = $query;
         return $this->queryLog;
     }
-
 }
