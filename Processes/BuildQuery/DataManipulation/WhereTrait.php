@@ -51,7 +51,7 @@ trait WhereTrait
                 $value = $element['value'] ?? throw new SqlServicesException('Value not found in whereConditions.', 5001013);
                 $operator = $element['operator'] ?? '=';
                 // We shall have bindings in a query statement instead of value.
-                $binding = $column.$this->getBindingIndex();
+                $binding = ':' . $column. '_' . $this->getBindingIndex();
                 $this->addBinding($binding, $value);
 
                 // Build the SQL fragment for this condition.
