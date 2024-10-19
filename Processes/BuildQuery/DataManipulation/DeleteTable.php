@@ -12,6 +12,7 @@ class DeleteTable
      */
     use WhereTrait;
     use LimitTrait;
+    use OffsetTrait;
 
 
     /**

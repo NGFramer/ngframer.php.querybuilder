@@ -14,6 +14,7 @@ final class SelectView extends StructureView
     use LimitTrait;
     use GroupByTrait;
     use OffsetTrait;
+    use WhereTrait;
 
 
     /**
