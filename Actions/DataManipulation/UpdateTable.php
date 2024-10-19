@@ -12,6 +12,7 @@ final class UpdateTable extends StructureTable
      * Use the following traits.
      */
     use WhereTrait;
+    use LimitTrait;
 
 
     /**
