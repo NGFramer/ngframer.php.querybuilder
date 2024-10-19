@@ -91,9 +91,9 @@ class InsertTable
 
             // Now, build the remaining part of the query.
             if (count($columnNames) > 1) {
-                $query .= '(`' . implode('`, ', $columnNames) . '`) VALUES (' . implode(', ', $columnValues) . ')';
+                $query .= '(`' . implode('`, `', $columnNames) . '`) VALUES (' . implode(', ', $columnValues) . ')';
             } else {
-                $query .= '(`' . implode(' ', $columnNames) . '`) VALUES (' . implode('', $columnValues) . ')';
+                $query .= '(`' . implode('`, `', $columnNames) . '`) VALUES (' . implode('', $columnValues) . ')';
             }
         } else {
             // Check if the insertDatum is an array or not.
