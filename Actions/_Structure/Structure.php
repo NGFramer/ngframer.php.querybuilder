@@ -32,5 +32,10 @@ abstract class Structure extends LogBase
             'type' => $structureType,
             'value' => $structureValue
         ];
+
+        // Add the structure details to the action log.
+        $structureType = $this->structure['type'];
+        $structureValue = $this->structure['value'];
+        $this->addToActionLog($structureType, $structureValue);
     }
 }
