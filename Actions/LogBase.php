@@ -57,7 +57,7 @@ abstract class LogBase
         $buildAction = new BuildQuery($this->actionLog);
         $queryLog = $buildAction->build();
         // Step 2. Execute the queryLog.
-        $executeAction = new ExecuteAction($this->$queryLog);
+        $executeAction = new ExecuteAction($queryLog);
         return $executeAction->execute();
     }
 }
