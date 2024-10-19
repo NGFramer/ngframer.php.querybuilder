@@ -27,13 +27,13 @@ final class InsertTable extends StructureTable
      * @return InsertTable
      * @throws SqlServicesException
      */
-    public function insert(mixed ...$insertData): self
+    public function insert(array $insertData): self
     {
         // Check if the insertData is on the following formats.
         // method01 = insert(['column', 'value', 'type'], ['column', 'value', 'type'], ['column', 'value', 'type'], ...);
         // method02 = insert(['column' => ['value', 'type']], ['column' => ['value', 'type']], ['column' => ['value', 'type']], ...);
         // method03 = insert(['column' => 'value', 'column' => 'value', 'column' => 'value', ...])
-        // method04 = insert('value', 'value', 'value', ...)
+        // method04 = insert(['value', 'value', 'value', ...]);
 
         // Check for insertData.
         if (ArrayTools::isIndexed($insertData)) {

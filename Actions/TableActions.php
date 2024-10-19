@@ -105,9 +105,9 @@ final class TableActions
      * @return InsertTable
      * @throws SqlServicesException
      */
-    public function insert(mixed ...$insertData): InsertTable
+    public function insert(array $insertData): InsertTable
     {
-        return (new InsertTable($this->table))->insert(...$insertData);
+        return (new InsertTable($this->table))->insert($insertData);
     }
 
 
