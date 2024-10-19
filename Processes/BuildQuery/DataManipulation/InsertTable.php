@@ -119,9 +119,7 @@ class InsertTable
                 $query .= 'VALUES (' . implode('', $columnValues) . ');';
             }
         }
-
-        error_log($query);
-
+        
         // Build the query and return the query built.
         $this->queryLog['query'] = $query;
         return $this->queryLog;
