@@ -69,10 +69,10 @@ class UpdateTable
             $column = $datum['column'] ?? throw new SqlServicesException('Column must be defined for updating.', 5001004);
             $value = $datum['value'] ?? throw new SqlServicesException('Value must be defined for updating.', 5001005);
             // Create binding name, and bind the value.
-            $bindingName = $column . '_' . $this->getBindingIndex();
+            $bindingName = ':' . $column . '_' . $this->getBindingIndex();
             $this->addBinding($bindingName, $value);
             // Use the bind name in the query.
-            $updateQuery .= "`" . $column . "` = '" . $bindingName . "', ";
+            $updateQuery .= "`" . $column . "` = " . $bindingName . ", ";
         }
 
         // Remove the last comma and space.
