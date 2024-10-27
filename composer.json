@@ -18,8 +18,8 @@
     }
   ],
   "require": {
-    "ngframer/ngframer.php.exceptions": "~v2.0.0",
-    "ngframer/ngframer.php.dbservices": "~v1.5.0",
+    "ngframer/ngframer.php.exceptions": "^v2.0.3",
+    "ngframer/ngframer.php.dbservices": "^v1.5.2",
     "ext-pdo": "*"
   }
 }

@@ -57,12 +57,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ngframer/ngframer.php.exceptions.git",
-                "reference": "97aa0ef8d8473a98d9b7c74fa592668b49a1c3af"
+                "reference": "1519f2aa0b89ddaae30252fd52262594f0a8217f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ngframer/ngframer.php.exceptions/zipball/97aa0ef8d8473a98d9b7c74fa592668b49a1c3af",
-                "reference": "97aa0ef8d8473a98d9b7c74fa592668b49a1c3af",
+                "url": "https://api.github.com/repos/ngframer/ngframer.php.exceptions/zipball/1519f2aa0b89ddaae30252fd52262594f0a8217f",
+                "reference": "1519f2aa0b89ddaae30252fd52262594f0a8217f",
                 "shasum": ""
             },
             "require": {
@@ -97,7 +97,7 @@
                 "issues": "https://github.com/ngframer/ngframer.php.exceptions/issues",
                 "source": "https://github.com/ngframer/ngframer.php.exceptions/tree/v2.0.3"
             },
-            "time": "2024-10-27T05:10:52+00:00"
+            "time": "2024-10-27T10:09:19+00:00"
         }
     ],
     "packages-dev": [],
