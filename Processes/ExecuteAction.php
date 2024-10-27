@@ -3,7 +3,7 @@
 namespace NGFramer\NGFramerPHPSQLServices\Processes;
 
 use Exception;
-use NGFramer\NGFramerPHPSQLServices\Exceptions\AppException;
+use NGFramer\NGFramerPHPExceptions\exceptions\BaseException;
 use NGFramer\NGFramerPHPSQLServices\Exceptions\SqlServicesException;
 use NGFramer\NGFramerPHPDbServices\Database;
 
@@ -55,7 +55,7 @@ final class ExecuteAction
 
             // Now execute the query.
             return Database::getInstance()->execute();
-        } catch (AppException $exception) {
+        } catch (BaseException $exception) {
             throw new SqlServicesException($exception->getMessage(), $exception->getCode(), $exception->getLabel(), $exception);
         }
     }

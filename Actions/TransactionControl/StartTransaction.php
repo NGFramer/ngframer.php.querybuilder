@@ -2,10 +2,7 @@
 
 namespace NGFramer\NGFramerPHPSQLServices\Actions\TransactionControl;
 
-use Exception;
-use NGFramer\NGFramerPHPDbServices\Exceptions\DbServicesException;
-use NGFramer\NGFramerPHPSQLServices\Exceptions\_BaseException;
-use NGFramer\NGFramerPHPSQLServices\Exceptions\AppException;
+use NGFramer\NGFramerPHPExceptions\exceptions\BaseException;
 use NGFramer\NGFramerPHPSQLServices\Exceptions\SqlServicesException;
 use NGFramer\NGFramerPHPDbServices\Database;
 
@@ -36,7 +33,7 @@ class StartTransaction
         if (empty(self::$database)) {
             try {
                 self::$database = Database::getInstance();
-            } catch (AppException $exception) {
+            } catch (BaseException $exception) {
                 throw new SqlServicesException($exception->getMessage(), $exception->getCode(), $exception->getLabel(), $exception);
             }
         }
@@ -56,7 +53,7 @@ class StartTransaction
         // Only start the transaction if there is no active transaction.
         try {
             $hasActiveTransactions = self::$database->hasActiveTransactions();
-        } catch (AppException $exception) {
+        } catch (BaseException $exception) {
             throw new SqlServicesException($exception->getMessage(), $exception->getCode(), $exception->getLabel(), $exception);
         }
 
@@ -64,7 +61,7 @@ class StartTransaction
             // Now start the transaction.
             try {
                 self::$database->beginTransaction();
-            } catch (AppException $exception) {
+            } catch (BaseException $exception) {
                 throw new SqlServicesException($exception->getMessage(), $exception->getCode(), $exception->getLabel(), $exception);
             }
         }
