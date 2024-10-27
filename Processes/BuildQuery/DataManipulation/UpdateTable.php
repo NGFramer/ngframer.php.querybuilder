@@ -61,13 +61,13 @@ class UpdateTable
 
         // Now look for the data to update.
         if (empty($data)) {
-            throw new SqlServicesException('No data passed to update.', 5003013);
+            throw new SqlServicesException('No data passed to update.', 5003013, 'sqlservices.noDataToUpdate');
         }
 
         // Loop and update the query.
         foreach ($data as $datum) {
-            $column = $datum['column'] ?? throw new SqlServicesException('Column must be defined for updating.', 5001004);
-            $value = $datum['value'] ?? throw new SqlServicesException('Value must be defined for updating.', 5001005);
+            $column = $datum['column'] ?? throw new SqlServicesException('Column must be defined for updating.', 5001004, 'sqlservices.columnNotDefined');
+            $value = $datum['value'] ?? throw new SqlServicesException('Value must be defined for updating.', 5001005, 'sqlservices.valueNotDefined');
             // Create binding name, and bind the value.
             $bindingName = ':' . $column . '_' . $this->getBindingIndex();
             $this->addBinding($bindingName, $value);

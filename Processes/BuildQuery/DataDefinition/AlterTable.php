@@ -54,7 +54,7 @@ class AlterTable
             } elseif ($column['action'] == 'dropColumn') {
                 $columnDrops[] = $this->buildColumnDrop($column);
             } else {
-                throw new SqlServicesException('Invalid action for the column.', 5003011);
+                throw new SqlServicesException('Invalid action for the column.', 5003011, 'sqlservices.invalidColumnAction');
             }
         }
 
@@ -76,7 +76,7 @@ class AlterTable
     {
         // Check for type and column name.
         if (!isset($column['column']) || !isset($column['type'])) {
-            throw new SqlServicesException('Column must have column and type attributes.', 5001006);
+            throw new SqlServicesException('Column must have column and type attributes.', 5001006, 'sqlservices.columnAttributesNotDefined');
         }
         $columnDefinition = 'ADD COLUMN `' . $column['column'] . '` ' . $column['type'];
 
@@ -107,7 +107,7 @@ class AlterTable
                 // TODO: Check if it is not null.
                 $columnDefinition .= ' AUTO_INCREMENT';
             } else {
-                throw new SqlServicesException('Dropping of auto increment not available while adding column.', 5003005);
+                throw new SqlServicesException('Dropping of auto increment not available while adding column.', 5003005, 'sqlservices.autoIncrementDropNotAllowed');
             }
         }
 
@@ -116,7 +116,7 @@ class AlterTable
             if ($column['unique']) {
                 $columnDefinition .= ', ADD UNIQUE (`' .$column['column']. '`)';
             } else {
-                throw new SqlServicesException('Dropping Unique attribute not available while adding column.', 5003006);
+                throw new SqlServicesException('Dropping Unique attribute not available while adding column.', 5003006, 'sqlservices.uniqueDropNotAllowed');
             }
         }
 
@@ -125,7 +125,7 @@ class AlterTable
             if ($column['primary']) {
                 $columnDefinition .= ", ADD PRIMARY KEY (`" . $column['column'] . "`)";
             } else {
-                throw new SqlServicesException('Dropping primary key not available when adding column.', 5003007);
+                throw new SqlServicesException('Dropping primary key not available when adding column.', 5003007, 'sqlservices.primaryDropNotAllowed');
             }
         }
 
@@ -136,7 +136,7 @@ class AlterTable
                 $foreignColumn = $column['foreign']['column'];
                 $columnDefinition .= ", FOREIGN KEY (`" . $column['column'] . "`) REFERENCES `" . $foreignTable . "`(`" . $foreignColumn . "`)";
             } else {
-                throw new SqlServicesException('Please pass the table and column name to define foreign key.', 5003008);
+                throw new SqlServicesException('Please pass the table and column name to define foreign key.', 5003008, 'sqlservices.foreignKeyNotDefined');
             }
         }
 
@@ -145,7 +145,7 @@ class AlterTable
             if ($column['index']) {
                 $columnDefinition .= ', ADD INDEX (`' . $column['column'].  '`)';
             } else {
-                throw new SqlServicesException('Dropping index key not available when adding column.', 5003009);
+                throw new SqlServicesException('Dropping index key not available when adding column.', 5003009, 'sqlservices.indexDropNotAllowed');
             }
         }
 
@@ -163,7 +163,7 @@ class AlterTable
     {
         // Check for the column attribute.
         if (!isset($column['column'])) {
-            throw new SqlServicesException('Column must be defined for updating the column.', 5001007);
+            throw new SqlServicesException('Column must be defined for updating the column.', 5001007, 'sqlservices.columnNotDefined');
         }
         $columnDefinition = "MODIFY COLUMN `" . $column['column'] . "`";
 
@@ -174,7 +174,7 @@ class AlterTable
             if (isset($column['length'])) {
                 $columnDefinition .= '(' . $column['length'] . ')';
             } else {
-                throw new SqlServicesException('Column length must be defined for changed column data type.', 5001008);
+                throw new SqlServicesException('Column length must be defined for changed column data type.', 5001008, 'sqlservices.columnLengthNotDefined');
             }
         }
 
@@ -209,7 +209,7 @@ class AlterTable
                 $foreignColumn = $column['foreign']['column'];
                 $columnDefinition .= ", ADD FOREIGN KEY (`" . $column['column'] . "`) REFERENCES `" . $foreignTable . "`(`" . $foreignColumn . "`)";
             } else {
-                throw new SqlServicesException('Please pass the table and column name to define foreign key.', 5003010);
+                throw new SqlServicesException('Please pass the table and column name to define foreign key.', 5003010, 'sqlservices.foreignKeyNotDefined');
             }
             // TODO: Add a way to drop foreign constraint.
         }

@@ -19,12 +19,12 @@ abstract class Structure extends LogBase
     {
         // Check if the structure type is view or table.
         if (!$structureType == 'view' && !$structureType == 'table') {
-            throw new SqlServicesException("Structure type must be 'view' or 'table'", 5006001);
+            throw new SqlServicesException("Structure type must be 'view' or 'table'", 5006001, 'sqlservices.invalidStructureType');
         }
 
         // Check if the structure value is empty.
         if (empty($structureValue)) {
-            throw new SqlServicesException("$structureType name cannot be empty", 5006002);
+            throw new SqlServicesException("$structureType name cannot be empty", 5006002, 'sqlservices.emptyStructureValue');
         }
 
         // Update the structure type and structure value to the action log.

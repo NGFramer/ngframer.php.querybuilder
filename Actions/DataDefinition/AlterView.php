@@ -14,7 +14,7 @@ use NGFramer\NGFramerPHPSQLServices\Actions\_Structure\StructureTable;
 final class AlterView extends StructureTable
 {
     /**
-     * This just sets the action and viewName to alter view.
+     * This just sets the action and viewName to alter the view.
      * @param string $view
      * @throws SqlServicesException
      */

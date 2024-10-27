@@ -43,7 +43,7 @@ final class AlterTable extends StructureTable
         if (in_array($column, $this->getColumns())) {
             throw new SqlServicesException("Column $column already exists", 5006009);
         }
-        // Get the column index for new column.
+        // Get the column index for the new column.
         $columnIndex = $this->getIndexForNewColumn();
 
         // If the column does not exist in the list, add it to the list.
@@ -53,7 +53,7 @@ final class AlterTable extends StructureTable
 
 
     /**
-     * This will initialize the column in the actionLog[columns], and select for further operations.
+     * This will initialize the column in the actionLog[columns] and select for further operations.
      * @param string $column
      * @return void
      * @throws SqlServicesException
@@ -83,7 +83,7 @@ final class AlterTable extends StructureTable
     {
         // Check if the column already exists in the list.
         if ($this->checkColumnExistence($column)) {
-            throw new SqlServicesException('You can\'t drop a column that is being updated in this transaction.', 5006003);
+            throw new SqlServicesException('You can\'t drop a column that is being updated in this transaction.', 5006003, 'sqlservices.dropDropUpdatingColumn');
         } else {
             $columnIndex = $this->getIndexForNewColumn();
 
@@ -107,7 +107,7 @@ final class AlterTable extends StructureTable
         // Check if a column has been selected or not.
         $column = $this->getSelectedColumn();
         if ($column == null) {
-            throw new SqlServicesException('Please select a column before adding an attribute to the column/field.', 5003004);
+            throw new SqlServicesException('Please select a column before adding an attribute to the column/field.', 5003004, 'sqlservices.addAttributeOnNull');
         }
 
         // Check if the column already exists in the list.
@@ -120,12 +120,12 @@ final class AlterTable extends StructureTable
         // Check if the column is being dropped.
         $columnActionLog = $this->getColumnActionLog($column);
         if ($columnActionLog['action'] == 'dropColumn') {
-            throw new SqlServicesException('You can\'t add an attribute to a column that is being dropped.', 5006004);
+            throw new SqlServicesException('You can\'t add an attribute to a column that is being dropped.', 5006004, 'sqlservices.addAttributeOnDropping');
         }
 
         // Check if the attribute has been updated in this transaction.
         if (isset($columnActionLog[$attributeName])) {
-            throw new SqlServicesException("The column is updating the $attributeName value already.", 5006005);
+            throw new SqlServicesException("The column is updating the $attributeName value already.", 5006005, 'sqlservices.addAttributeOnUpdating');
         }
 
         // If the column does not exist in the list, add it to the list.
@@ -146,7 +146,7 @@ final class AlterTable extends StructureTable
         // Check if a column has been selected or not.
         $column = $this->getSelectedColumn();
         if ($column == null) {
-            throw new SqlServicesException('You must select a column before changing attribute on it', 5006006);
+            throw new SqlServicesException('You must select a column before changing attribute on it', 5006006, 'sqlservices.updateAttributeOnNull');
         }
 
         // Check if the column already exists in the list.
@@ -159,12 +159,12 @@ final class AlterTable extends StructureTable
         // Check if the column is being dropped or added. Change is not available for addColumn and dropColumn.
         $columnActionLog = $this->getColumnActionLog($column);
         if ($columnActionLog['action'] == 'dropColumn' or $columnActionLog['action'] == 'addColumn') {
-            throw new SqlServicesException('You can\'t update an attribute to a column that is being dropped or added.', 5006007);
+            throw new SqlServicesException('You can\'t update an attribute to a column that is being dropped or added.', 5006007, 'sqlservices.updateAttributeOnModifying');
         }
 
         // Check if the attribute is already being updated in this transaction.
         if (isset($columnActionLog[$attributeName])) {
-            throw new SqlServicesException("The column is updating the $attributeName value already.", 5006008);
+            throw new SqlServicesException("The column is updating the $attributeName value already.", 5006008, 'sqlservices.updateAttributeOnUpdating');
         }
 
         // If the column does not exist in the list, add it to the list.

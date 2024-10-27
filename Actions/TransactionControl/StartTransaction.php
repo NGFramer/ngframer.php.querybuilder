@@ -3,6 +3,9 @@
 namespace NGFramer\NGFramerPHPSQLServices\Actions\TransactionControl;
 
 use Exception;
+use NGFramer\NGFramerPHPDbServices\Exceptions\DbServicesException;
+use NGFramer\NGFramerPHPSQLServices\Exceptions\_BaseException;
+use NGFramer\NGFramerPHPSQLServices\Exceptions\AppException;
 use NGFramer\NGFramerPHPSQLServices\Exceptions\SqlServicesException;
 use NGFramer\NGFramerPHPDbServices\Database;
 
@@ -33,8 +36,8 @@ class StartTransaction
         if (empty(self::$database)) {
             try {
                 self::$database = Database::getInstance();
-            } catch (Exception $exception) {
-                throw new SqlServicesException($exception->getMessage(), $exception->getCode(), $exception);
+            } catch (AppException $exception) {
+                throw new SqlServicesException($exception->getMessage(), $exception->getCode(), $exception->getLabel(), $exception);
             }
         }
         // Getting instance automatically sets the database connection.
@@ -53,16 +56,16 @@ class StartTransaction
         // Only start the transaction if there is no active transaction.
         try {
             $hasActiveTransactions = self::$database->hasActiveTransactions();
-        } catch (Exception $exception) {
-            throw new SqlServicesException($exception->getMessage(), $exception->getCode(), $exception);
+        } catch (AppException $exception) {
+            throw new SqlServicesException($exception->getMessage(), $exception->getCode(), $exception->getLabel(), $exception);
         }
 
         if (!$hasActiveTransactions) {
             // Now start the transaction.
             try {
                 self::$database->beginTransaction();
-            } catch (Exception $exception) {
-                throw new SqlServicesException($exception->getMessage(), $exception->getCode(), $exception);
+            } catch (AppException $exception) {
+                throw new SqlServicesException($exception->getMessage(), $exception->getCode(), $exception->getLabel(), $exception);
             }
         }
         // Else do nothing.

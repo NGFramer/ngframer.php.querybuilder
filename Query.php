@@ -12,7 +12,7 @@ use NGFramer\NGFramerPHPSQLServices\Exceptions\SqlServicesException;
 final class Query
 {
     /**
-     * Private constructor so it can't be instantiated.
+     * Private constructor, so it can't be instantiated.
      */
     private function __construct()
     {

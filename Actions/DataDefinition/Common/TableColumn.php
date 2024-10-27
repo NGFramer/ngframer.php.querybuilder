@@ -35,7 +35,7 @@ Trait TableColumn
     protected function unselect(): static
     {
         if ($this->selectedColumn == null){
-            throw new SqlServicesException('You must select a column before unselecting it.', 5003001);
+            throw new SqlServicesException('You must select a column before unselecting it.', 5003001, 'sqlservices.unselectAtNullError');
         }
         $this->selectedColumn = null;
         return $this;
@@ -65,13 +65,13 @@ Trait TableColumn
             $columnIndex = $this->getIndexOfColumn($column);
             return $this->actionLog['columns'][$columnIndex];
         } else {
-            throw new SqlServicesException("The column $column does not exist in actionLog.", 5003003);
+            throw new SqlServicesException("The column $column does not exist in actionLog.", 5003003, 'sqlservices.columnNotExistForActionLog');
         }
     }
 
 
     /**
-     * This will check if the column exists in the columns key of the actionLog.
+     * This will check if the column exists in the column key of the actionLog.
      * @param string $column
      * @return bool
      */
@@ -96,7 +96,7 @@ Trait TableColumn
     {
         // Check column existence.
         if (!$this->checkColumnExistence($column)) {
-            throw new SqlServicesException('The column does not exist to get its index.', 5003002);
+            throw new SqlServicesException('The column does not exist to get its index.', 5003002, 'sqlservices.columnNotExistForIndex');
         }
         // Get the list of columns.
         $columnList = $this->getColumns();
@@ -112,7 +112,7 @@ Trait TableColumn
             return 0;
         }
         // Finding the index for the new column.
-        // Count starts from 0, and index too starts from 1.
+        // Count starts from 0, and the index too starts from 1.
         // If nothing, the index shall be 0 as is returned by the count.
         return count($this->actionLog['columns']);
     }

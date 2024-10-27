@@ -43,7 +43,7 @@ final class UpdateTable extends StructureTable
 
         // Check if updateData is empty.
         if (empty($updateData)) {
-            throw new SqlServicesException('No data passed to update.', 5003013);
+            throw new SqlServicesException('No data passed to update.', 5003013, 'sqlservices.noDataPassedToUpdate');
         }
 
         // Check if the updateData is an associative array.
@@ -54,7 +54,7 @@ final class UpdateTable extends StructureTable
                     // Method02 starts.
                     $this->actionLog['update'][] = [
                         'column' => $column,
-                        'value' => $value['value'] ?? $value[0] ?? throw new SqlServicesException('Value must be defined for updating.', 5001005),
+                        'value' => $value['value'] ?? $value[0] ?? throw new SqlServicesException('Value must be defined for updating.', 5001005, 'sqlservices.updateValueNotDefined'),
                         'type' => $value['type'] ?? $value[1] ?? 'string'
                     ];
                     // Method02 ends.
@@ -73,13 +73,13 @@ final class UpdateTable extends StructureTable
             foreach ($updateData as $column) {
                 // Method01 starts.
                 $this->actionLog['update'][] = [
-                    'column' => $column['column'] ?? $column[0] ?? throw new SqlServicesException('Column must be defined for updating.', 5001004),
-                    'value' => $column['value'] ?? $column[1] ?? throw new SqlServicesException('Value must be defined for updating.', 5001005),
+                    'column' => $column['column'] ?? $column[0] ?? throw new SqlServicesException('Column must be defined for updating.', 5001004, 'sqlservices.updateColumnNotDefined'),
+                    'value' => $column['value'] ?? $column[1] ?? throw new SqlServicesException('Value must be defined for updating.', 5001005, 'sqlservices.updateValueNotDefined'),
                     'type' => $column['type'] ?? $column[2] ?? 'string'
                 ];
                 // Method01 ends.
             }
-            throw new SqlServicesException('Invalid $updateData passed in update function');
+            throw new SqlServicesException('Invalid $updateData passed in update function', 5003014, 'sqlservices.invalidUpdateData');
         }
 
         return $this;

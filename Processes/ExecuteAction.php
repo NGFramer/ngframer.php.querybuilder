@@ -3,6 +3,7 @@
 namespace NGFramer\NGFramerPHPSQLServices\Processes;
 
 use Exception;
+use NGFramer\NGFramerPHPSQLServices\Exceptions\AppException;
 use NGFramer\NGFramerPHPSQLServices\Exceptions\SqlServicesException;
 use NGFramer\NGFramerPHPDbServices\Database;
 
@@ -35,12 +36,12 @@ final class ExecuteAction
 
         // Check if the queryLog is empty.
         if (empty($queryLog)) {
-            throw new SqlServicesException('Empty queryLog passed, modify the query to continue.', 5007001);
+            throw new SqlServicesException('Empty queryLog passed, modify the query to continue.', 5007001, 'sqlservices.emptyQueryLog');
         }
 
         // Prepare the query. Everything will be executed under prepared method.
         if (empty($queryLog['query'])) {
-            throw new SqlServicesException('Empty query passed, modify the query to continue.', 5007002);
+            throw new SqlServicesException('Empty query passed, modify the query to continue.', 5007002, 'sqlservices.emptyQuery');
         }
 
         // Convert the exception to SqlServicesException.
@@ -54,8 +55,8 @@ final class ExecuteAction
 
             // Now execute the query.
             return Database::getInstance()->execute();
-        } catch (Exception $exception) {
-            throw new SqlServicesException($exception->getMessage(), $exception->getCode(), $exception);
+        } catch (AppException $exception) {
+            throw new SqlServicesException($exception->getMessage(), $exception->getCode(), $exception->getLabel(), $exception);
         }
     }
 }

@@ -26,7 +26,6 @@ class TruncateTable
     /**
      * This function builds the query from the action log.
      * @return array
-     * @throws SqlServicesException
      */
     public function build(): array
     {

@@ -9,7 +9,7 @@ Trait LimitTrait
     /**
      * This function will add the limit details to the actionLog.
      * @param int $limit
-     * @return SelectTable|LimitTrait|SelectView
+     * @return UpdateTable|DeleteTable|LimitTrait|SelectTable|SelectView
      * @throws SqlServicesException
      */
     public function limit(int $limit): self

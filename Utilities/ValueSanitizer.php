@@ -35,7 +35,6 @@ class ValueSanitizer
      *
      * @param string $value The LIKE pattern string to escape
      * @return string The escaped LIKE pattern string
-     * @throws SqlServicesException if no escape character is defined for the database
      */
     public static function escapeLikePattern(string $value): string
     {
@@ -43,13 +42,11 @@ class ValueSanitizer
         $escapeChar = '\\'; // Example: MySQL uses backslash
 
         // Escape the LIKE pattern special characters
-        $escapedValue = str_replace(
+        return str_replace(
             [$escapeChar, '%', '_'],
             [$escapeChar . $escapeChar, $escapeChar . '%', $escapeChar . '_'],
             $value
         );
-
-        return $escapedValue;
     }
 
     /**
@@ -67,7 +64,7 @@ class ValueSanitizer
 
         // Validate the DateTime object
         if (!$dateTime || $dateTime->format($format) !== $value) {
-            throw new SqlServicesException("Invalid date/time format. Expected format: $format", 5005001);
+            throw new SqlServicesException("Invalid date/time format. Expected format: $format", 5005001, 'sqlservices.invalid_datetime_format');
         }
 
         // Return the sanitized date/time string in the specified format
@@ -91,7 +88,7 @@ class ValueSanitizer
                 'integer' => self::sanitizeInteger($value),
                 'datetime' => self::sanitizeDateTime($value),
                 // ... add support for other data types as needed
-                default => throw new SqlServicesException("Unsupported data type: $dataType", 5005001),
+                default => throw new SqlServicesException("Unsupported data type: $dataType", 5005001, 'sqlservices.unsupported_data_type'),
             };
         }
         return $sanitizedValues;

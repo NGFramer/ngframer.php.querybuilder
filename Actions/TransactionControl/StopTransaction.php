@@ -3,6 +3,7 @@
 namespace NGFramer\NGFramerPHPSQLServices\Actions\TransactionControl;
 
 use Exception;
+use NGFramer\NGFramerPHPSQLServices\Exceptions\AppException;
 use NGFramer\NGFramerPHPSQLServices\Exceptions\SqlServicesException;
 use NGFramer\NGFramerPHPDbServices\Database;
 
@@ -33,8 +34,8 @@ class StopTransaction
         if (empty(self::$database)) {
             try {
                 self::$database = Database::getInstance();
-            } catch (Exception $exception) {
-                throw new SqlServicesException($exception->getMessage(), $exception->getCode(), $exception);
+            } catch (AppException $exception) {
+                throw new SqlServicesException($exception->getMessage(), $exception->getCode(), $exception->getLabel(), $exception);
             }
         }
         // Getting instance automatically sets the database connection.
@@ -55,9 +56,9 @@ class StopTransaction
         // Commit the transaction.
         try {
             self::$database->commit();
-        } catch (Exception $exception) {
+        } catch (AppException $exception) {
             // Finally, throw the exception.
-            throw new SqlServicesException($exception->getMessage(), $exception->getCode(), $exception);
+            throw new SqlServicesException($exception->getMessage(), $exception->getCode(), $exception->getLabel(), $exception);
         }
     }
 
@@ -71,12 +72,12 @@ class StopTransaction
         if (empty(self::$database)) {
             self::connect();
         }
-        // Rollback the transaction.
+        // Roll back the transaction.
         try {
             self::$database->rollback();
-        } catch (Exception $exception) {
+        } catch (AppException $exception) {
             // Finally, throw the exception.
-            throw new SqlServicesException($exception->getMessage(), $exception->getCode(), $exception);
+            throw new SqlServicesException($exception->getMessage(), $exception->getCode(), $exception->getLabel(), $exception);
         }
     }
 

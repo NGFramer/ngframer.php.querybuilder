@@ -77,7 +77,7 @@ class ArrayTools
     {
         // Check for the arguments.
         if (count($arguments) < 2) {
-            throw new SqlServicesException("At least two arguments required: a key and a value.", 5004001);
+            throw new SqlServicesException("At least two arguments required: a key and a value.", 5004001, 'sqlservices.atLeastTwoArgumentsRequired');
         }
 
         // Get the value. And, the key is now array's arguments.
@@ -110,7 +110,7 @@ class ArrayTools
     {
         // Check for the arguments.
         if (count($arguments) < 2) {
-            throw new SqlServicesException("At least two arguments required: a key and a value.", 5004002);
+            throw new SqlServicesException("At least two arguments required: a key and a value.", 5004002, 'sqlservices.atLeastTwoArgumentsRequired');
         }
 
         // Get the value to be added to the array.
@@ -151,7 +151,7 @@ class ArrayTools
             }
         }
         if (!$valueExists) {
-            throw new SqlServicesException("Value not found in the array passed.", 5004003);
+            throw new SqlServicesException("Value not found in the array passed.", 5004003, 'sqlservices.valueNotFound');
         }
         // Reindex array to have consecutive keys
         $array = array_values($array);
@@ -167,7 +167,7 @@ class ArrayTools
     public static function dropArray(array &$array): void
     {
         if (count($array) == 0) {
-            throw new SqlServicesException("Empty array, drop is not possible.", 5004004);
+            throw new SqlServicesException("Empty array, drop is not possible.", 5004004, 'sqlservices.emptyArray');
         }
         unset($array);
     }

@@ -8,7 +8,7 @@ Trait SortByTrait
 {
     /**
      * This function will add a sorting instruction to the actionLog.
-     * Can also include multiple instructions in the form of array.
+     * Can also include multiple instructions in the form of an array.
      * No validation is done on the sorting instructions.
      * @param mixed ...$sortInstructions
      * @return SelectView|SelectTable|SortByTrait
@@ -18,7 +18,7 @@ Trait SortByTrait
     {
         // If the sorting instructions have not been passed.
         if (empty($sortInstructions)) {
-            throw new SqlServicesException('At least one sorting instruction must be provided.', 5002005);
+            throw new SqlServicesException('At least one sorting instruction must be provided.', 5002005, 'sqlservices.noSortingInstruction');
         }
 
         // If the sorting instructions are passed as two strings.
@@ -36,12 +36,12 @@ Trait SortByTrait
             }
             // Sort Instruction is not array.
             else {
-                throw new SqlServicesException('Invalid sorting instruction format. Expected 2 arguments.', 5002006);
+                throw new SqlServicesException('Invalid sorting instruction format. Expected 2 arguments.', 5002006, 'sqlservices.invalidSortingInstruction');
             }
         }
 
         // If anything reaches to this point, throw an exception.
-        throw new SqlServicesException('Something went wrong, please check the format of sorting instructions and run the function again.', 5002007);
+        throw new SqlServicesException('Something went wrong, please check the format of sorting instructions and run the function again.', 5002007, 'sqlservices.sortingInstructionError');
     }
 
 
