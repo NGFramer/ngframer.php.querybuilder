@@ -88,7 +88,7 @@ class ValueSanitizer
                 'integer' => self::sanitizeInteger($value),
                 'datetime' => self::sanitizeDateTime($value),
                 // ... add support for other data types as needed
-                default => throw new SqlServicesException("Unsupported data type: $dataType", 5005001, 'sqlservices.unsupported_data_type'),
+                default => throw new SqlServicesException("Unsupported data type: $dataType", 5005002, 'sqlservices.unsupported_data_type'),
             };
         }
         return $sanitizedValues;

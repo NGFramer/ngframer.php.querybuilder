@@ -74,12 +74,12 @@ final class UpdateTable extends StructureTable
                 // Method01 starts.
                 $this->actionLog['update'][] = [
                     'column' => $column['column'] ?? $column[0] ?? throw new SqlServicesException('Column must be defined for updating.', 5001004, 'sqlservices.updateColumnNotDefined'),
-                    'value' => $column['value'] ?? $column[1] ?? throw new SqlServicesException('Value must be defined for updating.', 5001005, 'sqlservices.updateValueNotDefined'),
+                    'value' => $column['value'] ?? $column[1] ?? throw new SqlServicesException('Value must be defined for updating.', 5001014, 'sqlservices.updateValueNotDefined'),
                     'type' => $column['type'] ?? $column[2] ?? 'string'
                 ];
                 // Method01 ends.
             }
-            throw new SqlServicesException('Invalid $updateData passed in update function', 5003014, 'sqlservices.invalidUpdateData');
+            throw new SqlServicesException('Invalid $updateData passed in update function', 5003015, 'sqlservices.invalidUpdateData');
         }
 
         return $this;

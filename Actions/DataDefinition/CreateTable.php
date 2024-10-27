@@ -58,7 +58,7 @@ final class CreateTable extends StructureTable
     private function addColumnAttribute(string $attributeName, mixed $attributeValue): void
     {
         if ($this->getSelectedColumn() == null) {
-            throw new SqlServicesException("Please select a column before adding an attribute to the column/field.", 5003004, 'sqlservices.addColumnAttributeError');
+            throw new SqlServicesException("Please select a column before adding an attribute to the column/field.", 5003016, 'sqlservices.addColumnAttributeError');
         }
         // Get the index of the selected column.
         $columnIndex = $this->getIndexOfColumn($this->getSelectedColumn());
