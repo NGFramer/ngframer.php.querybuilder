@@ -52,7 +52,7 @@ class InsertTable
         // Prepare the initial query
         $query = "INSERT INTO $table ";
 
-        // Store the column names and their values on variables.
+        // Store the column names and their values in variables.
         $columnNames = [];
         $columnValues = [];
         $valueTypes = [];
@@ -60,28 +60,28 @@ class InsertTable
         // Check if first entry has column name or not.
         if (isset($insertData[0]) and isset($insertData[0]['column'])) {
 
-            // Loop through the insertData to get data from single row.
+            // Loop through the insertData to get data from a single row.
             foreach ($insertData as $insertDatum) {
 
                 // Check if the insertDatum is an array or not.
                 if (!is_array($insertDatum) or !ArrayTools::isAssociative($insertDatum)) {
-                    throw new SqlServicesException('Invalid format of data passed to insert.', 5002009);
+                    throw new SqlServicesException('Invalid format of data passed to insert.', 5002009, 'sqlservices.invalidDataFormat');
                 }
 
                 // Get the column name, column value, and value type.
-                $columnName = $insertDatum['column'] ?? throw new SqlServicesException('Column must be defined for inserting.', 5002010);
-                $columnValue = $insertDatum['value'] ?? throw new SqlServicesException('Value must be defined for inserting.', 5002011);
+                $columnName = $insertDatum['column'] ?? throw new SqlServicesException('Column must be defined for inserting.', 5002010, 'sqlservices.columnNotDefined');
+                $columnValue = $insertDatum['value'] ?? throw new SqlServicesException('Value must be defined for inserting.', 5002011, 'sqlservices.valueNotDefined');
                 $valueType = $insertDatum['type'] ?? 'string';
 
-                // Check if the columnName is a string, and column value is also string.
+                // Check if the columnName is a string, and the column value is also string.
                 if (!is_string($columnName)) {
-                    throw new SqlServicesException('The column name must be string.', 5002010);
+                    throw new SqlServicesException('The column name must be string.', 5002010, 'sqlservices.columnNotString');
                 }
 
                 // Sanitize the column name.
                 $columnNames[] = ValueSanitizer::sanitizeString($columnName);
 
-                // Create binding name, and bind the value.
+                // Create a binding name and bind the value.
                 $bindingName = $columnName . '_' . $this->getBindingIndex();
                 $this->addBinding($bindingName, $columnValue);
 
@@ -96,30 +96,34 @@ class InsertTable
                 $query .= '(`' . implode('`, `', $columnNames) . '`) VALUES (' . implode('', $columnValues) . ')';
             }
         } else {
-            // Check if the insertDatum is an array or not.
-            if (!is_array($insertDatum) or !ArrayTools::isAssociative($insertDatum)) {
-                throw new SqlServicesException('Invalid format of data passed to insert.', 5002009);
+            // Loop through the insertData to get data from a single row.
+            foreach ($insertData as $insertDatum) {
+
+                // Check if the insertDatum is an array or not.
+                if (!is_array($insertDatum) or !ArrayTools::isAssociative($insertDatum)) {
+                    throw new SqlServicesException('Invalid format of data passed to insert.', 5002009, 'sqlservices.invalidDataFormat');
+                }
+
+                // Get the column value and value type.
+                $columnValue = $insertDatum['value'] ?? throw new SqlServicesException('Value must be defined for inserting.', 5002011, 'sqlservices.valueNotDefined');
+                $valueType = $insertDatum['type'] ?? 'string';
+
+                // Create a binding name and bind the value.
+                $bindingName = 'column' . '_' . $this->getBindingIndex();
+                $this->addBinding($bindingName, $columnValue);
+
+                // Use the bind name in the query.
+                $columnValues[] = ':' . $bindingName;
             }
 
-            // Get the column value and value type.
-            $columnValue = $insertDatum['value'] ?? throw new SqlServicesException('Value must be defined for inserting.', 5002011);
-            $valueType = $insertDatum['type'] ?? 'string';
-
-            // Create binding name, and bind the value.
-            $bindingName = 'column' . '_' . $this->getBindingIndex();
-            $this->addBinding($bindingName, $columnValue);
-
-            // Use the bind name in the query.
-            $columnValues[] = ':' . $bindingName;
-
             // Now, build the remaining part of the query.
-            if (count($columnNames) > 1) {
+            if (count($columnValues) > 1) {
                 $query .= 'VALUES (' . implode(', ', $columnValues) . ');';
             } else {
                 $query .= 'VALUES (' . implode('', $columnValues) . ');';
             }
         }
-        
+
         // Build the query and return the query built.
         $this->queryLog['query'] = $query;
         return $this->queryLog;
