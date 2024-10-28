@@ -64,7 +64,7 @@ class ValueSanitizer
 
         // Validate the DateTime object
         if (!$dateTime || $dateTime->format($format) !== $value) {
-            throw new SqlServicesException("Invalid date/time format. Expected format: $format", 5005001, 'sqlservices.invalid_datetime_format');
+            throw new SqlServicesException("Invalid date/time format. Expected format: $format.", 5055001, 'sqlservices.utility.value.invalidDateTimeFormat');
         }
 
         // Return the sanitized date/time string in the specified format
@@ -88,7 +88,7 @@ class ValueSanitizer
                 'integer' => self::sanitizeInteger($value),
                 'datetime' => self::sanitizeDateTime($value),
                 // ... add support for other data types as needed
-                default => throw new SqlServicesException("Unsupported data type: $dataType", 5005002, 'sqlservices.unsupported_data_type'),
+                default => throw new SqlServicesException("Unsupported data type: $dataType.", 5055002, 'sqlservices.unsupported_data_type'),
             };
         }
         return $sanitizedValues;

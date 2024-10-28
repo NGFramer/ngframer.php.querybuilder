@@ -47,7 +47,7 @@ class CreateTable
         foreach ($columns as $column) {
             // Check if the column has attributes.
             if (!isset($column['column']) || !isset($column['type'])) {
-                throw new SqlServicesException('Column must have column and type attributes.', 5001009, 'sqlservices.columnAttributesNotDefined');
+                throw new SqlServicesException('Column must have column and type attributes.', 5029001, 'sqlservices.columnAttributesNotDefined');
             }
 
             // Initialize the column definition.
@@ -84,7 +84,7 @@ class CreateTable
             // Check for foreign key constraints.
             if (isset($column['foreign'])) {
                 if (!isset($column['foreign']['table']) || !isset($column['foreign']['column'])) {
-                    throw new SqlServicesException('Foreign constraint must have foreign table and foreign column attributes.', 5001010, 'sqlservices.foreignAttributesNotDefined');
+                    throw new SqlServicesException('Foreign constraint must have foreign table and foreign column attributes.', 5029002, 'sqlservices.processes.createTable.missingFkArguments');
                 } else {
                     $foreignKeys[] = "FOREIGN KEY (`" . $column['column'] . "`) REFERENCES `" . $column['foreign']['table'] . "` (`" . $column['foreign']['column'] . "`)";
                 }
@@ -101,7 +101,7 @@ class CreateTable
         if (!empty($columnDefinitions)) {
             $query .= implode(', ', $columnDefinitions);
         } else {
-            throw new SqlServicesException('Table must have at least one column.', 5003012, 'sqlservices.noColumnDefined');
+            throw new SqlServicesException('Table must have at least one column.', 5029003, 'sqlservices.processes.createTable.zeroColumns');
         }
         if (!empty($foreignKeys)) {
             $query .= ', ' . implode(', ', $foreignKeys);

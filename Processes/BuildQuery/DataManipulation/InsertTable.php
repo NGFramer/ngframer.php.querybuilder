@@ -65,17 +65,17 @@ class InsertTable
 
                 // Check if the insertDatum is an array or not.
                 if (!is_array($insertDatum) or !ArrayTools::isAssociative($insertDatum)) {
-                    throw new SqlServicesException('Invalid format of data passed to insert.', 5002009, 'sqlservices.invalidDataFormat');
+                    throw new SqlServicesException('Invalid format of data passed to insert.', 5038001, 'sqlservices.processes.insertTable.invalidDataFormat');
                 }
 
                 // Get the column name, column value, and value type.
-                $columnName = $insertDatum['column'] ?? throw new SqlServicesException('Column must be defined for inserting.', 5002010, 'sqlservices.columnNotDefined');
-                $columnValue = $insertDatum['value'] ?? throw new SqlServicesException('Value must be defined for inserting.', 5002011, 'sqlservices.valueNotDefined');
+                $columnName = $insertDatum['column'] ?? throw new SqlServicesException('Column must be defined for inserting.', 5038002, 'sqlservices.processes.insertTable.columnNotDefined');
+                $columnValue = $insertDatum['value'] ?? throw new SqlServicesException('Value must be defined for inserting.', 5038003, 'sqlservices.valueNotDefined');
                 $valueType = $insertDatum['type'] ?? 'string';
 
                 // Check if the columnName is a string, and the column value is also string.
                 if (!is_string($columnName)) {
-                    throw new SqlServicesException('The column name must be string.', 5002010, 'sqlservices.columnNotString');
+                    throw new SqlServicesException('The column name must be string.', 5038004, 'sqlservices.processes.insertTable.columnNotString');
                 }
 
                 // Sanitize the column name.
@@ -101,11 +101,11 @@ class InsertTable
 
                 // Check if the insertDatum is an array or not.
                 if (!is_array($insertDatum) or !ArrayTools::isAssociative($insertDatum)) {
-                    throw new SqlServicesException('Invalid format of data passed to insert.', 5002009, 'sqlservices.invalidDataFormat');
+                    throw new SqlServicesException('Invalid format of data passed to insert.', 5038005, 'sqlservices.processes.insertTable.invalidDataFormat.2');
                 }
 
                 // Get the column value and value type.
-                $columnValue = $insertDatum['value'] ?? throw new SqlServicesException('Value must be defined for inserting.', 5002011, 'sqlservices.valueNotDefined');
+                $columnValue = $insertDatum['value'] ?? throw new SqlServicesException('Value must be defined for inserting.', 5038006, 'sqlservices.processes.insertTable.valueNotDefined.2');
                 $valueType = $insertDatum['type'] ?? 'string';
 
                 // Create a binding name and bind the value.

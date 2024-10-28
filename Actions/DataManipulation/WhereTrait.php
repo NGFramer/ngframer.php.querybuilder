@@ -19,7 +19,7 @@ Trait WhereTrait
         // Format for passing the arguments is (column, value) condition.
         if (!is_array($arguments[0])) {
             if (count($arguments) > 3 or count($arguments) < 2) {
-                throw new SqlServicesException('InvalidArgumentException, Invalid where condition format. Expected 2 or 3 arguments.', 5002001, 'sqlservices.invalidWhereCondition');
+                throw new SqlServicesException('InvalidArgumentException, Invalid where condition format. Expected 2 or 3 arguments.', 5006001, 'sqlservices.actions.where.invalidArgumentsCount');
             }
             // If the argument is not an array, it is a simple "column, value" condition.
             $where['elements'][] = $this->processWhereOne($arguments[0], $arguments[1], $arguments[2] ?? '=');
@@ -29,13 +29,13 @@ Trait WhereTrait
             foreach ($arguments as $argument) {
                 // If the argument is not an array, throw an exception.
                 if (!is_array($argument)) {
-                    throw new SqlServicesException('Invalid where condition: Invalid argument type.', 5002002, 'sqlservices.invalidWhereCondition');
+                    throw new SqlServicesException('Invalid where condition: Invalid argument type.', 5006002, 'sqlservices.actions.where.invalidArgumentType');
                 }
 
                 // If the argument is an indexed array, it is a simple "column, value, operator" condition.
                 if (!ArrayTools::isAssociative($argument)) {
                     if (count($argument) > 3 or count($argument) < 2) {
-                        throw new SqlServicesException('Invalid where condition format. Expected 2 or 3 arguments.', 5002003, 'sqlservices.invalidWhereCondition');
+                        throw new SqlServicesException('Invalid where condition format. Expected 2 or 3 arguments.', 5006003, 'sqlservices.actions.where.invalidArgumentsCount.2');
                     }
                     $where['elements'][] = $this->processWhereOne($argument[0], $argument[1], $argument[2] ?? '=');
                 } // If the argument is an indexed array, it is a simple "column, value" condition.
@@ -57,7 +57,7 @@ Trait WhereTrait
                     $where['elements'][] = $nestedWhere;
                 } // If the argument is an associative array, it is a nexted WHERE condition.
                 else {
-                    throw new SqlServicesException('Invalid where condition structure.', 5002004, 'sqlservices.invalidWhereCondition');
+                    throw new SqlServicesException('Invalid where condition structure.', 5006004, 'sqlservices.actions.where.invalidConditionStructure');
                 }
             }
         }

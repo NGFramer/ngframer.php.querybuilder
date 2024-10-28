@@ -39,7 +39,7 @@ final class CreateTable extends StructureTable
     {
         // Check if the column already exists in the list.
         if (in_array($columnName, $this->getColumns())) {
-            throw new SqlServicesException("Column $columnName already exists", 5006010, 'sqlservices.columnAlreadyExists');
+            throw new SqlServicesException("Column $columnName already exists.", 5016001, 'sqlservices.actions.createTable.columnAlreadyExists');
         }
         // If the column does not exist in the list, add it to the list.
         $this->addToActionLog('columns', ['column' => $columnName]);
@@ -58,7 +58,7 @@ final class CreateTable extends StructureTable
     private function addColumnAttribute(string $attributeName, mixed $attributeValue): void
     {
         if ($this->getSelectedColumn() == null) {
-            throw new SqlServicesException("Please select a column before adding an attribute to the column/field.", 5003016, 'sqlservices.addColumnAttributeError');
+            throw new SqlServicesException("Please select a column before adding an attribute to the column/field.", 5016002, 'sqlservices.actions.createTable.selectToAdd');
         }
         // Get the index of the selected column.
         $columnIndex = $this->getIndexOfColumn($this->getSelectedColumn());

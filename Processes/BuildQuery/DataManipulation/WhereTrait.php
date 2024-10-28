@@ -13,7 +13,7 @@ trait WhereTrait
     {
         // If there are no WHERE conditions, throw an exception.
         if (empty($whereConditions)) {
-            throw new SqlServicesException('Empty whereConditions asked, modify the query to continue.', 5003014, 'sqlservices.noWhereConditions');
+            throw new SqlServicesException('Empty whereConditions asked, modify the query to continue.', 5045001, 'sqlservices.processes.where.noConditions');
         }
 
         // Build the WHERE clause using the provided conditions.
@@ -35,7 +35,7 @@ trait WhereTrait
         // Determine the logical link (AND/OR) for the condition group. Default is 'AND'.
         $link = strtoupper($conditions['link'] ?? 'AND');
         // Get the elements' array, which contains condition blocks or nested groups.
-        $elements = $conditions['elements'] ?? throw new SqlServicesException('Elements not found in whereConditions.', 5001011, 'sqlservices.noElements');
+        $elements = $conditions['elements'] ?? throw new SqlServicesException('Elements not found in whereConditions.', 5045002, 'sqlservices.processes.where.noElements');
 
         // Initialize an array to hold individual WHERE clauses.
         $clauses = [];
@@ -47,8 +47,8 @@ trait WhereTrait
                 $clauses[] = '(' . $this->buildWhereConditions($element) . ')';
             } else {
                 // Handle a single condition block.
-                $column = $element['column'] ?? throw new SqlServicesException('Column not found in whereConditions.', 5001012, 'sqlservices.noColumnInWhere');
-                $value = $element['value'] ?? throw new SqlServicesException('Value not found in whereConditions.', 5001013, 'sqlservices.noValueInWhere');
+                $column = $element['column'] ?? throw new SqlServicesException('Column not found in whereConditions.', 5045003, 'sqlservices.noColumnInWhere');
+                $value = $element['value'] ?? throw new SqlServicesException('Value not found in whereConditions.', 5045004, 'sqlservices.noValueInWhere');
                 $operator = $element['operator'] ?? '=';
                 // We shall have bindings in a query statement instead of value.
                 $binding = ':' . $column. '_' . $this->getBindingIndex();

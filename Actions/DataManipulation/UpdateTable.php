@@ -54,7 +54,7 @@ final class UpdateTable extends StructureTable
                     // Method02 starts.
                     $this->actionLog['update'][] = [
                         'column' => $column,
-                        'value' => $value['value'] ?? $value[0] ?? throw new SqlServicesException('Value must be defined for updating.', 5001005, 'sqlservices.updateValueNotDefined'),
+                        'value' => $value['value'] ?? $value[0] ?? throw new SqlServicesException('Value must be defined for updating.', 5002001, 'sqlservices.actions.updateTable.valueNotDefined'),
                         'type' => $value['type'] ?? $value[1] ?? 'string'
                     ];
                     // Method02 ends.
@@ -73,13 +73,13 @@ final class UpdateTable extends StructureTable
             foreach ($updateData as $column) {
                 // Method01 starts.
                 $this->actionLog['update'][] = [
-                    'column' => $column['column'] ?? $column[0] ?? throw new SqlServicesException('Column must be defined for updating.', 5001004, 'sqlservices.updateColumnNotDefined'),
-                    'value' => $column['value'] ?? $column[1] ?? throw new SqlServicesException('Value must be defined for updating.', 5001014, 'sqlservices.updateValueNotDefined'),
+                    'column' => $column['column'] ?? $column[0] ?? throw new SqlServicesException('Column must be defined for updating.', 5002002, 'sqlservices.actions.updateTable.columnNotDefined'),
+                    'value' => $column['value'] ?? $column[1] ?? throw new SqlServicesException('Value must be defined for updating.', 5002003, 'sqlservices.actions.updateTable.valueNotDefined.2'),
                     'type' => $column['type'] ?? $column[2] ?? 'string'
                 ];
                 // Method01 ends.
             }
-            throw new SqlServicesException('Invalid $updateData passed in update function', 5003015, 'sqlservices.invalidUpdateData');
+            throw new SqlServicesException('Invalid $updateData passed in update function.', 5002004, 'sqlservices.invalidUpdateData');
         }
 
         return $this;

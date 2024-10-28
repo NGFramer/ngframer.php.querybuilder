@@ -42,7 +42,7 @@ final class BuildQuery
         } elseif (in_array($action, ['selectTable', 'selectView', 'insertTable', 'updateTable', 'deleteTable'])) {
             $class = '\\NGFramer\\NGFramerPHPSQLServices\\Processes\\BuildQuery\\DataManipulation\\' . ucfirst($action);
         } else {
-            throw new SqlServicesException('Invalid action log. Check actionLog documentation and error_log for more.', 5000001, 'sqlservices.invalidActionLog');
+            throw new SqlServicesException('Invalid action log. Check actionLog documentation and error_log for more.', 5000001, 'sqlservices.processes.buildQuery.invalidActionLog');
         }
 
         // Instantiate the class.

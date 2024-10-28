@@ -2,8 +2,6 @@
 
 namespace NGFramer\NGFramerPHPSQLServices\Processes\BuildQuery\DataDefinition;
 
-use NGFramer\NGFramerPHPSQLServices\Exceptions\SqlServicesException;
-
 /**
  * Class AlterView
  * No need to cross-check, just the replication of CreateView class.

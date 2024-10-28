@@ -18,7 +18,7 @@ Trait SortByTrait
     {
         // If the sorting instructions have not been passed.
         if (empty($sortInstructions)) {
-            throw new SqlServicesException('At least one sorting instruction must be provided.', 5002005, 'sqlservices.noSortingInstruction');
+            throw new SqlServicesException('At least one sorting instruction must be provided.', 5007001, 'sqlservices.actions.sortBy.noInstruction');
         }
 
         // If the sorting instructions are passed as two strings.
@@ -36,12 +36,12 @@ Trait SortByTrait
             }
             // Sort Instruction is not array.
             else {
-                throw new SqlServicesException('Invalid sorting instruction format. Expected 2 arguments.', 5002006, 'sqlservices.invalidSortingInstruction');
+                throw new SqlServicesException('Invalid sorting instruction format. Expected 2 arguments.', 5007002, 'sqlservices.actions.sortBy.invalidArgumentCount');
             }
         }
 
         // If anything reaches to this point, throw an exception.
-        throw new SqlServicesException('Something went wrong, please check the format of sorting instructions and run the function again.', 5002007, 'sqlservices.sortingInstructionError');
+        throw new SqlServicesException('Something went wrong, please check the format of sorting instructions and run the function again.', 5007003, 'sqlservices.actions.sortBy.unknownError');
     }
 
 

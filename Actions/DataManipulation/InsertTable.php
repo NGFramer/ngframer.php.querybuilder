@@ -42,8 +42,8 @@ final class InsertTable extends StructureTable
                 // Loop through the columns.
                 foreach ($insertData as $insertColumn) {
                     $this->actionLog['insert'][] = [
-                        'column' => $insertColumn['column'] ?? $insertColumn[0] ?? throw new SqlServicesException('Column must be defined for inserting.', 5001001, 'sqlservices.insertColumnNotDefined'),
-                        'value' => $insertColumn['value'] ?? $insertColumn[1] ?? throw new SqlServicesException('Value must be defined for inserting.', 5001002, 'sqlservices.insertValueNotDefined'),
+                        'column' => $insertColumn['column'] ?? $insertColumn[0] ?? throw new SqlServicesException('Column must be defined for inserting.', 5001001, 'sqlservices.actions.insertTable.columnNotDefined'),
+                        'value' => $insertColumn['value'] ?? $insertColumn[1] ?? throw new SqlServicesException('Value must be defined for inserting.', 5001002, 'sqlservices.actions.insertTable.valueNotDefined'),
                         'type' => $insertColumn['type'] ?? $insertColumn[2] ?? 'string'
                     ];
                 }
@@ -65,7 +65,7 @@ final class InsertTable extends StructureTable
                     // Method02 starts.
                     $this->actionLog['insert'][] = [
                         'column' => $key,
-                        'value' => $value['value'] ?? $value[0] ?? throw new SqlServicesException('Value must be defined for inserting.', 5001003, 'sqlservices.insertValueNotDefined'),
+                        'value' => $value['value'] ?? $value[0] ?? throw new SqlServicesException('Value must be defined for inserting.', 5001003, 'sqlservices.action.insertTable.valueNotDefined.2'),
                         'type' => $value['type'] ?? $value[1] ?? 'string'
                     ];
                     // Method02 ends.

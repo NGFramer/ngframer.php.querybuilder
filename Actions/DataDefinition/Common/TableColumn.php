@@ -35,7 +35,7 @@ Trait TableColumn
     protected function unselect(): static
     {
         if ($this->selectedColumn == null){
-            throw new SqlServicesException('You must select a column before unselecting it.', 5003001, 'sqlservices.unselectAtNullError');
+            throw new SqlServicesException('You must select a column before unselecting it.', 5013001, 'sqlservices.actions.tableColumn.unselectAtNullError');
         }
         $this->selectedColumn = null;
         return $this;
@@ -65,7 +65,7 @@ Trait TableColumn
             $columnIndex = $this->getIndexOfColumn($column);
             return $this->actionLog['columns'][$columnIndex];
         } else {
-            throw new SqlServicesException("The column $column does not exist in actionLog.", 5003003, 'sqlservices.columnNotExistForActionLog');
+            throw new SqlServicesException("The column $column does not exist in actionLog.", 5013002, 'sqlservices.actions.tableColumn.columnNotExists');
         }
     }
 
@@ -96,7 +96,7 @@ Trait TableColumn
     {
         // Check column existence.
         if (!$this->checkColumnExistence($column)) {
-            throw new SqlServicesException('The column does not exist to get its index.', 5003002, 'sqlservices.columnNotExistForIndex');
+            throw new SqlServicesException('The column does not exist to get its index.', 5013003, 'sqlservices.actions.tableColumn.columnNotExists.2');
         }
         // Get the list of columns.
         $columnList = $this->getColumns();

@@ -36,12 +36,12 @@ final class ExecuteAction
 
         // Check if the queryLog is empty.
         if (empty($queryLog)) {
-            throw new SqlServicesException('Empty queryLog passed, modify the query to continue.', 5007001, 'sqlservices.emptyQueryLog');
+            throw new SqlServicesException('Empty queryLog passed, modify the query to continue.', 5024001, 'sqlservices.processes.executeAction.emptyQueryLog');
         }
 
         // Prepare the query. Everything will be executed under prepared method.
         if (empty($queryLog['query'])) {
-            throw new SqlServicesException('Empty query passed, modify the query to continue.', 5007002, 'sqlservices.emptyQuery');
+            throw new SqlServicesException('Empty query passed, modify the query to continue.', 5024002, 'sqlservices.processes.executeAction.emptyQuery');
         }
 
         // Convert the exception to SqlServicesException.
