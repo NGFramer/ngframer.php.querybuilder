@@ -2,8 +2,7 @@
 
 namespace NGFramer\NGFramerPHPSQLServices\Processes;
 
-use Exception;
-use NGFramer\NGFramerPHPExceptions\exceptions\BaseException;
+use NGFramer\NGFramerPHPExceptions\Exceptions\BaseException;
 use NGFramer\NGFramerPHPSQLServices\Exceptions\SqlServicesException;
 use NGFramer\NGFramerPHPDbServices\Database;
 
