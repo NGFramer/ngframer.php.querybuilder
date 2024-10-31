@@ -5,67 +5,79 @@ namespace NGFramer\NGFramerPHPSQLServices\Actions\DataManipulation;
 use NGFramer\NGFramerPHPSQLServices\Exceptions\SqlServicesException;
 use NGFramer\NGFramerPHPSQLServices\Utilities\ArrayTools;
 
-Trait WhereTrait
+trait WhereTrait
 {
     /**
      * @throws SqlServicesException
      */
-    public function where(mixed ...$arguments): self
+    public function where(array $condition): self
     {
         // Initialize an empty array to store WHERE conditions.
         $where = [];
 
-        // Handle the case where the first argument is not an array.
-        // Format for passing the arguments is (column, value) condition.
-        if (!is_array($arguments[0])) {
-            if (count($arguments) > 3 or count($arguments) < 2) {
-                throw new SqlServicesException('InvalidArgumentException, Invalid where condition format. Expected 2 or 3 arguments.', 5006001, 'sqlservices.actions.where.invalidArgumentsCount');
+        // Check if the array is associative or not.
+        if (ArrayTools::isAssociative($condition)) {
+            // Check if we can find the 'link' key.
+            isset($condition['link']) ? $where['link'] = $condition['link'] : 'and';
+            // Check if we can find the 'elements' key.
+            if (isset($condition['elements'])) {
+                $where['elements'] = $this->formElements($condition['elements']);
             }
-            // If the argument is not an array, it is a simple "column, value" condition.
-            $where['elements'][] = $this->processWhereOne($arguments[0], $arguments[1], $arguments[2] ?? '=');
-        } // Handle the case where the first argument is an array, meaning that other arguments should also be an array.
-        else {
-            // Proceed with the original logic for handling array-based conditions
-            foreach ($arguments as $argument) {
-                // If the argument is not an array, throw an exception.
-                if (!is_array($argument)) {
-                    throw new SqlServicesException('Invalid where condition: Invalid argument type.', 5006002, 'sqlservices.actions.where.invalidArgumentType');
-                }
-
-                // If the argument is an indexed array, it is a simple "column, value, operator" condition.
-                if (!ArrayTools::isAssociative($argument)) {
-                    if (count($argument) > 3 or count($argument) < 2) {
-                        throw new SqlServicesException('Invalid where condition format. Expected 2 or 3 arguments.', 5006003, 'sqlservices.actions.where.invalidArgumentsCount.2');
-                    }
-                    $where['elements'][] = $this->processWhereOne($argument[0], $argument[1], $argument[2] ?? '=');
-                } // If the argument is an indexed array, it is a simple "column, value" condition.
-                else if (isset($argument['column'])) {
-                    if (count($argument) > 1) $where['link'] = $argument['link'] ?? 'and';
-                    $where['elements'][] = $this->processWhereOne($argument['column'], $argument['value'], $argument['operator'] ?? '=');
-                } else if (isset($argument['elements'])) {
-                    $nestedWhere = [];
-                    if (count($argument['elements']) > 1) $nestedWhere['link'] = $argument['link'] ?? 'and';
-                    $nestedWhere['elements'] = [];
-
-                    foreach ($argument['elements'] as $subArgument) {
-                        $nestedWhere['elements'][] = $this->processWhereOne(
-                            $subArgument['column'] ?? $subArgument[0],
-                            $subArgument['value'] ?? $subArgument[1],
-                            $subArgument['operator'] ?? $subArgument[2] ?? '='
-                        );
-                    }
-                    $where['elements'][] = $nestedWhere;
-                } // If the argument is an associative array, it is a nexted WHERE condition.
-                else {
-                    throw new SqlServicesException('Invalid where condition structure.', 5006004, 'sqlservices.actions.where.invalidConditionStructure');
-                }
-            }
+        } else {
+            isset($condition['link']) ? $where['link'] = $condition['link'] : 'and';
+            $where['elements'] = $this->formElements($condition);
         }
 
-        // Add the WHERE conditions to the query log.
+        // Add to the action log.
         $this->addToActionLog('where', $where);
-        // Return the Query object to allow for method chaining.
+        // For object chaining.
         return $this;
+    }
+
+    private function formElements(array $condition)
+    {
+        error_log('Condition: ' . json_encode($condition));
+        // Initialize an empty array to store WHERE conditions.
+        $elements = [];
+        // Check if the array is associative or not.
+        if (ArrayTools::isAssociative($condition)) {
+            foreach ($condition as $key => $value) {
+                $element['column'] = $key;
+                $element['value'] = $value;
+                $element['operator'] = '=';
+                $elements[] = $element;
+            }
+        } else {
+            // Check if all elements are array.
+            if (ArrayTools::areAllArray($condition)) {
+                foreach ($condition as $element) {
+                    $elements[] = $this->formWhereElement($element);
+                }
+            } else {
+                // Check the number of elements.
+                if (count($condition) > 3 or count($condition) < 2) {
+                    throw new SqlServicesException('Invalid where condition format. Expected 2 or 3 arguments.', 5006005, 'sqlservices.actions.where.invalidArgumentsCount.3');
+                }
+                // Check if the first element (column) is a string.
+                if (is_string($condition[0])) {
+                    $element['column'] = $condition[0];
+                } else {
+                    // TODO: Check and change the exception code, and label.
+                    throw new SqlServicesException('Invalid where condition structure.', 5006006, 'sqlservices.actions.where.invalidConditionStructure.2');
+                }
+                // Check for the second element.
+                if (count($condition) == 2) {
+                    $element['value'] = $condition[1];
+                    $element['operator'] = '=';
+                } else {
+                    $element['value'] = $condition[2];
+                    $element['operator'] = $condition[1];
+                }
+                $elements[] = $element;
+            }
+        }
+        // Return the elements.
+        return $elements;
     }
 
 
@@ -83,7 +95,6 @@ Trait WhereTrait
     {
         if ($type) {
             $where = ['type' => $type, 'column' => $column, 'value' => $value, 'operator' => $operator];
-
         } else {
             $where = ['column' => $column, 'value' => $value, 'operator' => $operator];
         }
