@@ -18,13 +18,15 @@ trait WhereTrait
         // Check if the array is associative or not.
         if (ArrayTools::isAssociative($condition)) {
             // Check if we can find the 'link' key.
-            isset($condition['link']) ? $where['link'] = $condition['link'] : 'and';
+            $where['link'] = $condition['link'] ?? 'and';
             // Check if we can find the 'elements' key.
             if (isset($condition['elements'])) {
                 $where['elements'] = $this->formElements($condition['elements']);
+            } else {
+                $where['elements'] = $this->formElements($condition);
             }
         } else {
-            isset($condition['link']) ? $where['link'] = $condition['link'] : 'and';
+            $where['link'] = $condition['link'] ?? 'and';
             $where['elements'] = $this->formElements($condition);
         }
 
@@ -41,6 +43,7 @@ trait WhereTrait
         // Check if the array is associative or not.
         if (ArrayTools::isAssociative($condition)) {
             foreach ($condition as $key => $value) {
+                $element = [];
                 $element['column'] = $key;
                 $element['value'] = $value;
                 $element['operator'] = '=';
@@ -50,7 +53,7 @@ trait WhereTrait
             // Check if all elements are array.
             if (ArrayTools::areAllArray($condition)) {
                 foreach ($condition as $element) {
-                    $elements[] = $this->formWhereElement($element);
+                    $elements[] = $this->formElements($element);
                 }
             } else {
                 // Check the number of elements.
