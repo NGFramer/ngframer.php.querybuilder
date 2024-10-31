@@ -36,7 +36,6 @@ trait WhereTrait
 
     private function formElements(array $condition)
     {
-        error_log('Condition: ' . json_encode($condition));
         // Initialize an empty array to store WHERE conditions.
         $elements = [];
         // Check if the array is associative or not.
